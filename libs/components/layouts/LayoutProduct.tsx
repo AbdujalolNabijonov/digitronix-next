@@ -1,12 +1,12 @@
-import { Stack } from "@mui/material";
 import { NextPage } from "next";
-import Head from "next/head";
 import Navbar from "../navbar/navbarFull";
+import Head from "next/head";
+import { Stack } from "@mui/material";
 import Footer from "../footer/footer";
 
-const LayoutHome = (Component: NextPage) => {
+const LayoutProduct = (Component: NextPage) => {
     return (props: any) => {
-        const device: string = "desktop";
+        const device: string = "desktop"
         if (device === "mobile") {
             return (
                 <>
@@ -14,7 +14,7 @@ const LayoutHome = (Component: NextPage) => {
                         <title>Digitronix</title>
                         <meta content="Digitronix" name="title" />
                     </Head>
-                    <Stack className="mobile-wrapper">
+                    <Stack flexDirection={"column"} className="mobile-wrapper">
                         <Navbar {...props} />
                         <Component {...props} />
                         <Footer />
@@ -26,7 +26,7 @@ const LayoutHome = (Component: NextPage) => {
                 <>
                     <Head>
                         <title>Digitronix</title>
-                        <meta content="Digitronix" name={"title"} />
+                        <meta content="Digitronix" name="title" />
                     </Head>
                     <Stack className="pc-wrapper">
                         <Navbar {...props} />
@@ -39,4 +39,4 @@ const LayoutHome = (Component: NextPage) => {
     }
 }
 
-export default LayoutHome
+export default LayoutProduct
