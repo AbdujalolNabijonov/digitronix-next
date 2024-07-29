@@ -3,6 +3,7 @@ import { NextPage } from "next";
 import Head from "next/head";
 import Navbar from "../navbar/navbarFull";
 import Footer from "../footer/footer";
+import HomeBanner from "../three/homeBanner";
 
 const LayoutHome = (Component: NextPage) => {
     return (props: any) => {
@@ -30,6 +31,7 @@ const LayoutHome = (Component: NextPage) => {
                     </Head>
                     <Stack className="pc-wrapper">
                         <Navbar {...props} />
+                        <HomeBanner />
                         <Component {...props} />
                     </Stack>
                     <Footer />

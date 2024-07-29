@@ -30,7 +30,9 @@ const LayoutProduct = (Component: NextPage) => {
                     </Head>
                     <Stack className="pc-wrapper">
                         <Navbar {...props} />
-                        <Component {...props} />
+                        <Stack className="main">
+                            <Component {...props} />
+                        </Stack>
                     </Stack>
                     <Footer />
                 </>
