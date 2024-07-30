@@ -3,6 +3,7 @@ import { NextPage } from "next";
 import Head from "next/head";
 import Navbar from "../navbar/navbarFull";
 import Footer from "../footer/footer";
+import Banner from "../general/basicBanner";
 
 const LayoutBasic = (Component: NextPage) => {
     return (props: any) => {
@@ -30,6 +31,7 @@ const LayoutBasic = (Component: NextPage) => {
                     </Head>
                     <Stack className="pc-wrapper">
                         <Navbar {...props} />
+                        <Banner />
                         <Component {...props} />
                     </Stack>
                     <Footer />

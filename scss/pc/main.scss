@@ -1,5 +1,15 @@
-@import "./home/home.scss";
 @import "../variables.scss";
+
+//General
+@import "./general.scss";
+
+//HomePage
+@import "./home/home.scss";
+@import "./home/homeBanner.scss";
+
+//ProductPage
+@import "./product/index.scss";
+
 
 .list-menu{
     position:absolute; 

@@ -3,6 +3,7 @@ import Navbar from "../navbar/navbarFull";
 import Head from "next/head";
 import { Stack } from "@mui/material";
 import Footer from "../footer/footer";
+import ProductBanner from "../products/productBanner";
 
 const LayoutProduct = (Component: NextPage) => {
     return (props: any) => {
@@ -30,7 +31,8 @@ const LayoutProduct = (Component: NextPage) => {
                     </Head>
                     <Stack className="pc-wrapper">
                         <Navbar {...props} />
-                        <Stack className="main">
+                        <ProductBanner/>
+                        <Stack className="container">
                             <Component {...props} />
                         </Stack>
                     </Stack>

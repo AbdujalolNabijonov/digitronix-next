@@ -96,7 +96,10 @@ const Navbar: NextPage = (props: any) => {
         setAnchorEl3(null)
     }
     const goToAddress = (url: string) => {
-        router.push(url)
+        router.push(url);
+        if (router.pathname.includes("/products")) {
+            router.reload()
+        }
     }
 
     if (device === "mobile") {
@@ -116,9 +119,6 @@ const Navbar: NextPage = (props: any) => {
                 </Link>
                 <Link href={"/mypage"}>
                     My Page
-                </Link>
-                <Link href={"/whatsnew"}>
-                    What's New
                 </Link>
                 <Link href={"/cs"}>
                     CS
@@ -156,10 +156,15 @@ const Navbar: NextPage = (props: any) => {
                                 gap={"20px"}
                                 className="navbar-links"
                             >
-                                <Link href={"/"} className={router.pathname === "/" ? "active" : ""} >
+                                <Link
+                                    href={"/"}
+                                    className={router.pathname === "/" ? "active" : ""}
+                                >
                                     Home
                                 </Link>
-                                <a>
+                                <a
+                                    className={router.pathname === "/products" ? "active" : ""}
+                                >
                                     <Button
                                         disableRipple
                                         className="product-btn"
@@ -188,25 +193,25 @@ const Navbar: NextPage = (props: any) => {
                                                 </Stack>
                                             </MenuItem>
                                             <MenuItem className="list-item">
-                                                <Stack>
+                                                <Stack onClick={() => goToAddress("/products?category=DESKTOP")}>
                                                     <DesktopTower size={"50px"} />
                                                     <div>Desktops</div>
                                                 </Stack>
                                             </MenuItem>
                                             <MenuItem className="list-item">
-                                                <Stack>
+                                                <Stack onClick={() => goToAddress("/products?category=GRAPHICS")}>
                                                     <img src="/img/icons/graphics-card.svg" alt="graphics" style={{ width: "50px" }} />
                                                     <div>Graphics</div>
                                                 </Stack>
                                             </MenuItem>
                                             <MenuItem className="list-item">
-                                                <Stack>
+                                                <Stack onClick={() => goToAddress("/products?category=PERIPHERAL")}>
                                                     <Usb style={{ fontSize: "50px" }} />
                                                     <div>Peripherals</div>
                                                 </Stack>
                                             </MenuItem>
                                             <MenuItem className="list-item">
-                                                <Stack alignItems={"center"}>
+                                                <Stack alignItems={"center"} onClick={() => goToAddress("/products?category=CHAIR")}>
                                                     <Chair style={{ fontSize: "50px" }} />
                                                     <div>Chair</div>
                                                 </Stack>
@@ -215,19 +220,28 @@ const Navbar: NextPage = (props: any) => {
                                     </Menu>
                                 </a>
 
-                                <Link href={"/agents"}>
+                                <Link
+                                    href={"/agents"}
+                                    className={router.pathname === "/agents" ? "active" : ""}
+                                >
                                     Agents
                                 </Link>
-                                <Link href={"/community"}>
+                                <Link
+                                    href={"/community"}
+                                    className={router.pathname === "/community" ? "active" : ""}
+                                >
                                     Community
                                 </Link>
-                                <Link href={"/mypage"}>
+                                <Link
+                                    href={"/mypage"}
+                                    className={router.pathname === "/mypage" ? "active" : ""}
+                                >
                                     My Page
                                 </Link>
-                                <Link href={"/whatsnew"}>
-                                    What's New
-                                </Link>
-                                <Link href={"/cs"}>
+                                <Link
+                                    href={"/cs"}
+                                    className={router.pathname === "/cs" ? "active" : ""}
+                                >
                                     CS
                                 </Link>
                             </Stack>

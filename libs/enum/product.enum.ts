@@ -1,0 +1,7 @@
+export enum ProductType{
+    LAPTOP = "LAPTOP",
+    DESKTOP="DESKTOP",
+    GRAPHICS="GRAPHICS",
+    PERIPHERAL ="PERIPHERAL",
+    CHAIR = "CHAIR"
+}

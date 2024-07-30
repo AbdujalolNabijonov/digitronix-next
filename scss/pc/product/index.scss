@@ -1,0 +1,41 @@
+.pc-wrapper {
+  .product-banner {
+    .vid-ads {
+      position: relative;
+      height: 450px;
+      width: 100%;
+      video {
+        height: 100%;
+        width: 100%;
+        object-fit: cover;
+        object-position: center;
+      }
+      .container {
+        .info {
+          position: absolute;
+          left: 10%;
+          bottom: 15%;
+          & > div:nth-child(1) {
+            color: white;
+            font-weight: bold;
+            font-size: 40px;
+            letter-spacing: 2px;
+            text-shadow: 4px 4px 0px black;
+          }
+          & > div:nth-child(2) {
+            color: gray;
+            font-weight: bold;
+            font-size: 30px;
+            letter-spacing: 1px;
+            text-shadow: 2px 2px 0px white;
+          }
+        }
+      }
+    }
+  }
+  .container {
+    .products-page {
+      height: 900px;
+    }
+  }
+}

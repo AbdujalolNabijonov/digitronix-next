@@ -1,0 +1,28 @@
+.pc-wrapper{
+    .banner-basic{
+        position: relative;
+        height: 450px;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: cover;
+        .container{
+            .banner-info{
+                position: absolute;
+                bottom: 15%;
+                left: 10%;
+                .title{
+                    font-size: 40px;
+                    font-weight: bold;
+                    letter-spacing: 2px;
+                    color: white;
+                }
+                .desc{
+                    color:gray;
+                    text-shadow: 1px 1px 0px white;
+                    font-size: 25px;
+                    font-weight: 600;
+                }
+            }
+        }
+    }
+}
