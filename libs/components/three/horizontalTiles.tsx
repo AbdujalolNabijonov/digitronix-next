@@ -47,7 +47,7 @@ function Item({ index, position, scale, c = new THREE.Color(), ...props }) {
     const out = () => hover(false)
     useFrame((state, delta) => {
         const y = scroll.curve(index / urls.length - 1.5 / urls.length, 4 / urls.length)
-        easing.damp3(ref.current.scale, [clicked === index ? 4.7 : scale[0], clicked === index ? 5 : 4 + y, 1], 0.15, delta)
+        easing.damp3(ref.current.scale, [clicked === index ? 5.9 : scale[0], clicked === index ? 5 : 4 + y, 1], 0.15, delta)
         ref.current.material.scale[0] = ref.current.scale.x
         ref.current.material.scale[1] = ref.current.scale.y
         if (clicked !== null && index < clicked) easing.damp(ref.current.position, 'x', position[0] - 2, 0.15, delta)
@@ -59,7 +59,7 @@ function Item({ index, position, scale, c = new THREE.Color(), ...props }) {
     return <Image ref={ref} {...props} position={position} scale={scale} onClick={click} onPointerOver={over} onPointerOut={out} />
 }
 
-function Items({ w = 1, gap = 0.15 }) {
+function Items({ w = 3, gap = 0.15 }) {
     const { urls } = useSnapshot(state)
     const { width } = useThree((state) => state.viewport)
     const xW = w + gap

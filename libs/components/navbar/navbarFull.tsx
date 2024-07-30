@@ -96,10 +96,7 @@ const Navbar: NextPage = (props: any) => {
         setAnchorEl3(null)
     }
     const goToAddress = (url: string) => {
-        router.push(url);
-        if (router.pathname.includes("/products")) {
-            router.reload()
-        }
+        router.replace(url);
     }
 
     if (device === "mobile") {

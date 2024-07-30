@@ -1,28 +1,27 @@
+import React, { useCallback, useEffect, useState } from "react"
 import { Box, CircularProgress, Stack } from "@mui/material"
 import { NextPage } from "next"
 import { useRouter } from "next/router"
-import { useEffect, useState } from "react"
 
-const ProductBanner: NextPage = () => {
-    //initialState
+const ProductBanner = (props: any) => {
+    //Initialization
     const router = useRouter()
+
     const [category, setCategory] = useState<string>("")
+
     //LifeCircle
     useEffect(() => {
-        console.log(router.query.category)
-        if (router.isReady) {
-            const categoryQuery = router.query.category;
-            if (typeof categoryQuery === "string") {
-                setCategory(categoryQuery)
-            }
+        const queryCategory = router.query.category ? String(router.query.category) : '';
+        if (queryCategory && queryCategory !== category) {
+            setCategory(queryCategory);
         }
-    }, [router.query.category])
+    }, [router.query])
 
     if (category) {
         return (
             <Box className="product-banner">
                 <Box className={"vid-ads"}>
-                    <video autoPlay muted loop>
+                    <video key={category} autoPlay muted loop>
                         <source src={`/vids/product/${category}.mp4`} />
                     </video>
                     <Box className="container">

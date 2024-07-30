@@ -4,10 +4,14 @@ import Head from "next/head";
 import { Stack } from "@mui/material";
 import Footer from "../footer/footer";
 import ProductBanner from "../products/productBanner";
+import { useCallback, useEffect, useState } from "react";
+import { useRouter } from "next/router";
 
 const LayoutProduct = (Component: NextPage) => {
     return (props: any) => {
+        //Initialization
         const device: string = "desktop"
+
         if (device === "mobile") {
             return (
                 <>
@@ -31,7 +35,7 @@ const LayoutProduct = (Component: NextPage) => {
                     </Head>
                     <Stack className="pc-wrapper">
                         <Navbar {...props} />
-                        <ProductBanner/>
+                        <ProductBanner />
                         <Stack className="container">
                             <Component {...props} />
                         </Stack>
