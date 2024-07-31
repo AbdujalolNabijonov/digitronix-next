@@ -32,9 +32,13 @@ const LayoutBasic = (Component: NextPage) => {
                     <Stack className="pc-wrapper">
                         <Navbar {...props} />
                         <Banner />
-                        <Component {...props} />
+                        <div className="main">
+                            <Component {...props} />
+                        </div>
+                        <div className="footer">
+                            <Footer />
+                        </div>
                     </Stack>
-                    <Footer />
                 </>
             )
         }

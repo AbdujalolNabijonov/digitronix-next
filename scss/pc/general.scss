@@ -27,87 +27,105 @@
   }
   .footer {
     margin-top: 100px;
-    background-color: #6f7f97;
     padding-top: 50px;
     padding-bottom: 50px;
-    .container{
-        .footer-col {
-            width: 35%;
-            padding: 0 25px;
-            h4 {
-              font-size: 18px;
-              color: #ffffff;
+    background-color: #201f2f;
+    .container {
+      .footer-col {
+        width: 35%;
+        padding: 0 25px;
+        .brand-name {
+          font-size: 30px;
+          letter-spacing: 1px;
+          font-weight: bold;
+          color: white;
+        }
+        ul {
+          padding: 0;
+          margin-top: 30px;
+          li {
+            list-style: none;
+            &:not(:last-child) {
+              margin-bottom: 10px;
+            }
+            a {
+              font-size: 16px;
               text-transform: capitalize;
-              margin-bottom: 35px;
+              color: white;
+              text-decoration: none;
               font-weight: 500;
-              position: relative;
-      
-              &::before {
-                content: "";
-                position: absolute;
-                left: 0;
-                bottom: -10px;
-                background-color: #e91e63;
-                height: 2px;
-                box-sizing: border-box;
-                width: 50px;
-              }
-            }
-      
-            ul {
-              li {
-                &:not(:last-child) {
-                  margin-bottom: 10px;
-                }
-      
-                a {
-                  font-size: 16px;
-                  text-transform: capitalize;
-                  color: white;
-                  text-decoration: none;
-                  font-weight: 500;
-                  display: block;
-                  transition: all 0.3s ease;
-      
-                  &:hover {
-                    color: #ffffff;
-                    padding-left: 8px;
-                  }
-                }
-              }
-      
-              width: 100%;
-            }
-      
-            .social-links a {
-              display: inline-block;
-              height: 40px;
-              width: 40px;
-              background-color: rgba(255, 255, 255, 0.2);
-              margin: 0 10px 10px 0;
-              text-align: center;
-              line-height: 40px;
-              border-radius: 20%;
-              color: #ffffff;
-              transition: all 0.5s ease;
-      
-              &:hover {
-                color: #24262b;
-                background-color: #ffffff;
-              }
-            }
-          }
-          .email-col {
-            width: 500px;
-          }
-    }
+              display: block;
+              transition: all 0.3s ease;
 
-    .footer_email button {
-      border: 1px solid white;
-      background-color: transparent;
-      color: white;
-      letter-spacing: 1px;
-      padding: 0 15px;
+              &:hover {
+                color: #ffffff;
+                padding-left: 8px;
+              }
+            }
+          }
+          width: 100%;
+        }
+
+        .social-links a {
+          display: inline-block;
+          height: 40px;
+          width: 40px;
+          background-color: rgba(255, 255, 255, 0.2);
+          margin: 20px 20px 10px 0;
+          text-align: center;
+          line-height: 40px;
+          border-radius: 20%;
+          transition: all 0.5s ease;
+
+          button {
+            color: white;
+          }
+
+          &:hover {
+            color: #24262b;
+            opacity: 0.6;
+            transform: translateY(-7px);
+          }
+        }
+      }
+      .email-col {
+        width: 500px;
+        .title {
+          color: white;
+          margin-bottom: 10px;
+        }
+        input {
+          padding: 10px 15px;
+          border-radius: 10px;
+          width: 100%;
+          font-size: 20px;
+          color: rgb(70, 70, 70);
+          &:focus {
+            outline: none;
+          }
+        }
+        button {
+          background:linear-gradient(45deg, rgb(36, 243, 63), #554DD1);
+          background-size: 200%;
+          background-position: 100% 0%;
+          border-radius: 10px;
+          padding: 10px 15px;
+          transition: all .3s ease-in-out;
+          color: white;
+          font-weight: 600;
+          letter-spacing: 1px;
+          &:hover{
+            background-position: 0% 100%;
+          }
+        }
+        .contact-info{
+          color: white;
+          margin-top: 10px;
+        }
+      }
+      .privacies{
+        color:white
+      }
     }
   }
 }

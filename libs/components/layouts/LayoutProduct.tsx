@@ -21,8 +21,12 @@ const LayoutProduct = (Component: NextPage) => {
                     </Head>
                     <Stack flexDirection={"column"} className="mobile-wrapper">
                         <Navbar {...props} />
-                        <Component {...props} />
-                        <Footer />
+                        <div className="main">
+                            <Component {...props} />
+                        </div>
+                        <div className="footer">
+                            <Footer />
+                        </div>
                     </Stack>
                 </>
             )
@@ -36,11 +40,13 @@ const LayoutProduct = (Component: NextPage) => {
                     <Stack className="pc-wrapper">
                         <Navbar {...props} />
                         <ProductBanner />
-                        <Stack className="container">
+                        <div className="main">
                             <Component {...props} />
-                        </Stack>
+                        </div>
+                        <div className="footer">
+                            <Footer />
+                        </div>
                     </Stack>
-                    <Footer />
                 </>
             )
         }

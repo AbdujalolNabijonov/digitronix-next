@@ -122,7 +122,7 @@ const OurBrands = () => {
                                             </Button>
                                         </Stack>
                                         <Stack className={"brand-img"}>
-                                            <img src="/img/banner/agent.png" alt="" />
+                                            <img src="/img/banner/banner-1.jpeg" alt="" />
                                         </Stack>
                                     </Stack>
                                 </TabPanel>
