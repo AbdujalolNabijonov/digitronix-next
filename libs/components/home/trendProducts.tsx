@@ -3,14 +3,24 @@ import { Memory, SdCard } from "@mui/icons-material"
 import { Box, Button, Stack } from "@mui/material"
 import { NextPage } from "next"
 import { ArrowSquareOut, Laptop, Monitor } from "phosphor-react"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Keyboard, Mousewheel, Navigation } from "swiper/modules"
 import { Swiper, SwiperSlide } from "swiper/react"
 
 const TrendProduct: NextPage = () => {
     //Initialization
-    const [type, setType] = useState<string>(ProductType.LAPTOP)
+    const [type, setType] = useState<string>(ProductType.LAPTOP);
+    const [scroll, setScroll] = useState<boolean>(false)
     const colors = ["red", "black", "gray", "yellow"]
+
+    //LifeCircle
+    useEffect(() => {
+        const handleScroll = () => {
+            setScroll(window.scrollY > 1000)
+        }
+        window.addEventListener("scroll", handleScroll)
+    }, [])
+
     //Handlers
     const handleType = (str: string) => {
         setType(str)
@@ -67,9 +77,9 @@ const TrendProduct: NextPage = () => {
 
                         >
                             {
-                                Array.from({ length: 7 }).map((ele) => (
+                                Array.from({ length: 7 }).map((ele:any, num:number) => (
                                     <SwiperSlide>
-                                        <Stack className="product-card">
+                                        <Stack data-aos="fade-up" data-aos-duration={`${3000*num}`} className={scroll?"product-card aos-animate":"product-card"}>
                                             <Stack className="card-head" alignItems={"center"}>
                                                 <img src="/img/products/laptop/400.png" alt="" />
                                                 <Stack

@@ -1,3 +1,4 @@
+import Ads from "@/libs/components/home/Ads";
 import OurBrands from "@/libs/components/home/ourBrands";
 import TrendProduct from "@/libs/components/home/trendProducts";
 import LayoutHome from "@/libs/components/layouts/LayoutHome";
@@ -18,6 +19,7 @@ const Home: NextPage = (props: any) => {
         <Stack className={"home-page"}>
           <OurBrands />
           <TrendProduct />
+          <Ads />
         </Stack>
       </>
     );

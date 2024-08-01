@@ -92,14 +92,14 @@
               width: 100%;
               padding: 40px;
               .product-card {
-                cursor:pointer;
+                cursor: pointer;
                 height: 80vh;
                 width: 350px;
                 background-color: whitesmoke;
                 border-radius: 20px;
                 padding: 50px 0;
-                transition: transform .3s ease-in-out;
-                &:hover{
+                transition: all 0.3s ease-in-out;
+                &:hover {
                   transform: scale(1.1);
                 }
                 .card-head {
@@ -129,12 +129,47 @@
                     margin: 20px;
                     padding: 10px 15px;
                     background-color: #0071e3;
-                    color:white;
+                    color: white;
                     font-weight: 600;
                   }
                 }
               }
             }
+          }
+        }
+      }
+      .home-ads {
+        background-image: url('/img/banner/pxfuel.jpg');
+        padding: 50px 0 100px 0;
+        margin-top: 50px;
+        .container {
+          position: relative;
+          height: 80vh;
+          video {
+            height: 100%;
+            width: 100%;
+            border-radius: 30px;
+            border: solid rgb(213, 211, 211);
+            border-width: 30px 14px 10px 14px;
+            object-fit: cover;
+          }
+          .camera {
+            position: absolute;
+            height: 20px;
+            width: 20px;
+            border-radius: 50%;
+            background-color: #343438;
+            border:5px solid black;
+            top: 5px;
+            left: 50%;
+          }
+          .monitor-footer {
+            position: absolute;
+            right: 20%;
+            bottom: -50px;
+            height: 50px;
+            width: 60%;
+            background-color: rgb(213, 211, 211);
           }
         }
       }
