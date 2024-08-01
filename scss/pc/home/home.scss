@@ -38,8 +38,8 @@
             button {
               display: inline;
               color: white;
-              background-color: #D77B3D;
-              padding:10px 15px;
+              background-color: #d77b3d;
+              padding: 10px 15px;
               font-weight: 600;
             }
             .brand-img {
@@ -54,6 +54,85 @@
               img {
                 height: 100%;
                 width: 100%;
+              }
+            }
+          }
+        }
+      }
+      .trend-products {
+        .container {
+          .info {
+            margin-top: 50px;
+            .title {
+              font-size: 30px;
+              font-weight: bold;
+            }
+          }
+          .product-swiper {
+            .control-panel {
+              margin-top: 30px;
+              background-color: whitesmoke;
+              width: 650px;
+              padding: 10px 0;
+              border-radius: 10px;
+              button {
+                padding: 10px 18px;
+                border-radius: 20px;
+                color: Black;
+                font-size: 20px;
+                transition: background-color 0.3s ease-in-out;
+              }
+              .active-btn {
+                background-color: #1d1d1f;
+                color: white;
+              }
+            }
+            .swiper {
+              margin-top: 70px;
+              width: 100%;
+              padding: 40px;
+              .product-card {
+                cursor:pointer;
+                height: 80vh;
+                width: 350px;
+                background-color: whitesmoke;
+                border-radius: 20px;
+                padding: 50px 0;
+                transition: transform .3s ease-in-out;
+                &:hover{
+                  transform: scale(1.1);
+                }
+                .card-head {
+                  img {
+                    width: 80%;
+                  }
+                  .color-list {
+                    .colr {
+                      height: 15px;
+                      width: 15px;
+                      border-radius: 50%;
+                      border: 1px solid black;
+                    }
+                  }
+                }
+                .card-body {
+                  margin-top: 40px;
+                  padding: 0 30px;
+                  .name {
+                    font-size: 20px;
+                    font-weight: 600;
+                    letter-spacing: 1px;
+                  }
+                }
+                .card-footer {
+                  button {
+                    margin: 20px;
+                    padding: 10px 15px;
+                    background-color: #0071e3;
+                    color:white;
+                    font-weight: 600;
+                  }
+                }
               }
             }
           }

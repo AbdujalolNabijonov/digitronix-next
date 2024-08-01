@@ -1,4 +1,5 @@
 import OurBrands from "@/libs/components/home/ourBrands";
+import TrendProduct from "@/libs/components/home/trendProducts";
 import LayoutHome from "@/libs/components/layouts/LayoutHome";
 import { Stack } from "@mui/material";
 import { NextPage } from "next";
@@ -16,6 +17,7 @@ const Home: NextPage = (props: any) => {
       <>
         <Stack className={"home-page"}>
           <OurBrands />
+          <TrendProduct />
         </Stack>
       </>
     );
