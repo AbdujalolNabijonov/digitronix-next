@@ -39,13 +39,12 @@
         position: fixed;
         transition: all .3 ease-in-out;
         z-index: 99;
-        
         &::after{
             position: absolute;
             content: "";
             height: 100%;
             width: 100%;
-            background-color:#a8a8a8;
+            background-color:#b1b1b1;
             opacity: 0.7;
             z-index: -1 ;
         }
@@ -67,7 +66,7 @@
                 font-size: 28px;
                 a{
                     text-decoration: none;
-                    color: rgb(86, 79, 69);
+                    color: rgb(32, 32, 31);
                 }       
             }
             .navbar-body{

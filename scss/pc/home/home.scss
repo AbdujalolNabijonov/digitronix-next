@@ -62,6 +62,8 @@
         }
       }
       .trend-products {
+        background: linear-gradient(white, gray);
+        padding-bottom: 50px;
         .container {
           .info {
             margin-top: 50px;
@@ -77,6 +79,7 @@
               background-color: whitesmoke;
               padding: 10px;
               border-radius: 10px;
+              box-shadow: 0 0 5px rgb(92, 91, 91);
               button {
                 padding: 10px 18px;
                 border-radius: 20px;
@@ -92,10 +95,11 @@
             .swiper {
               margin-top: 70px;
               width: 100%;
-              padding: 40px 30px;
+              padding: 40px 20px;
               .product-card {
+                box-shadow: 0 0 10px rgb(53, 53, 53);
                 cursor: pointer;
-                height: 80vh;
+                height: auto;
                 width: 350px;
                 background-color: whitesmoke;
                 border-radius: 20px;
@@ -143,7 +147,7 @@
       .home-ads {
         background-image: url("/img/banner/pxfuel.jpg");
         padding: 50px 0 100px 0;
-        margin-top: 50px;
+        padding-top: 50px;
         .container {
           position: relative;
           height: 80vh;
@@ -177,8 +181,8 @@
       }
       .gaming-pc {
         background: linear-gradient(whitesmoke, gray);
-        padding: 50px 0;
         height: 500px;
+        padding: 50px 0;
         .images {
           .img-big {
             height: 430px;
@@ -463,8 +467,8 @@
             color: rgb(208, 206, 206);
             span {
               font-weight: bold;
-              color: white
-            };
+              color: white;
+            }
           }
           .event-swiper {
             padding: 30px 20px;
@@ -507,9 +511,9 @@
               &:hover {
                 transform: translateY(-20px);
               }
-              .title{
+              .title {
                 position: absolute;
-                top:10px;
+                top: 10px;
                 left: 15px;
                 font-size: 24px;
               }
@@ -523,6 +527,154 @@
                 &:hover {
                   opacity: 1;
                 }
+              }
+            }
+          }
+        }
+      }
+      .community-article {
+        height: auto;
+        padding: 30px 0 50px 0;
+        background: linear-gradient(white, gray);
+        .container {
+          .title {
+            text-align: start;
+            font-weight: bold;
+            font-size: 30px;
+            margin-bottom: 30px;
+          }
+          .vertical-card {
+            cursor: pointer;
+            height: 420px;
+            width: 300px;
+            background-color: whitesmoke;
+            border-radius: 20px;
+            box-shadow: 0 0 10px black;
+            overflow: hidden;
+            .card-head {
+              overflow: hidden;
+              width: 100%;
+              height: 300px;
+              img {
+                width: 100%;
+                height: 100%;
+                transition: transform 0.3s ease-in-out;
+                &:hover {
+                  transform: scale(1.2);
+                }
+              }
+            }
+            .card-body {
+              padding: 10px;
+              .category {
+                display: inline-block;
+                color: white;
+                width: auto;
+                margin-top: 10px;
+                padding: 3px 7px;
+                border-radius: 10px;
+                background-color: #d77b3d;
+                letter-spacing: 1px;
+              }
+              .title {
+                margin: 10px 0;
+                font-weight: 600;
+                color: rgb(42, 41, 41);
+                font-size: 20px;
+              }
+              .context {
+                color: rgb(104, 103, 103);
+                font-size: 14px;
+              }
+            }
+            .card-footer {
+              padding: 10px;
+              .user-img {
+                font-size: 40px;
+              }
+              .user-info {
+                .name {
+                  font-weight: bold;
+                }
+                .date {
+                  color: rgb(104, 103, 103);
+                  font-size: 14px;
+                }
+              }
+              .link {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 35px;
+                width: 35px;
+                border-radius: 50%;
+                background-color: #4a2bb4;
+                color: white;
+              }
+            }
+          }
+          .horizontal-card {
+            padding: 7px;
+            height: 200px;
+            width: 600px;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 0 10px black;
+            background-color: whitesmoke;
+            .card-img {
+              border-radius: 20px;
+              height: 98%;
+              width: 40%;
+              overflow: hidden;
+              img {
+                height: 100%;
+                width: 100%;
+                transition: transform 0.3s ease-in-out;
+                &:hover {
+                  transform: scale(1.2);
+                }
+              }
+            }
+            .card-body {
+              padding: 10px;
+              width: 60%;
+              .category {
+                display: inline-block;
+                padding: 3px 5px;
+                letter-spacing: 1px;
+                background-color: #596fb7;
+                color: white;
+                border-radius: 10px;
+                margin: 10px 0;
+              }
+              .title {
+                font-weight: 600;
+                letter-spacing: 1px;
+                color: rgb(42, 41, 41);
+                font-size: 20px;
+              }
+              .context {
+                color: rgb(104, 103, 103);
+                font-size: 14px;
+              }
+              .user-info {
+                margin: 5px 0;
+                .user-img {
+                  font-size: 30px;
+                }
+                .name {
+                  font-weight: bold;
+                }
+              }
+              .link {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 35px;
+                width: 35px;
+                border-radius: 50%;
+                background-color: #4a2bb4;
+                color: white;
               }
             }
           }

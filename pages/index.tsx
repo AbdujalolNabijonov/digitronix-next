@@ -7,6 +7,7 @@ import { NextPage } from "next";
 import SearchPc from "@/libs/components/home/searchPc";
 import MonitorAds from "@/libs/components/home/monitorAds";
 import Event from "@/libs/components/home/event";
+import CommunityArticle from "@/libs/components/home/communityArticle";
 
 const Home: NextPage = (props: any) => {
   const device: string = "desktop"
@@ -25,6 +26,7 @@ const Home: NextPage = (props: any) => {
           <MonitorAds />
           <SearchPc />
           <Event />
+          <CommunityArticle />
         </Stack>
       </>
     );
