@@ -1,4 +1,4 @@
-import { ProductType } from "@/libs/enum/product.enum"
+import { ProductSort, ProductType } from "@/libs/enum/product.enum"
 import { Memory, SdCard } from "@mui/icons-material"
 import { Box, Button, Stack } from "@mui/material"
 import { NextPage } from "next"
@@ -7,9 +7,10 @@ import { useEffect, useState } from "react"
 import { Keyboard, Mousewheel, Navigation } from "swiper/modules"
 import { Swiper, SwiperSlide } from "swiper/react"
 
-const TrendProduct: NextPage = () => {
+const SortProduct: NextPage = () => {
     //Initialization
     const [type, setType] = useState<string>(ProductType.LAPTOP);
+    const [sort, setSort] = useState<string>(ProductSort.LIKES)
     const [scroll, setScroll] = useState<boolean>(false)
     const colors = ["red", "black", "gray", "yellow"]
 
@@ -25,6 +26,9 @@ const TrendProduct: NextPage = () => {
     const handleType = (str: string) => {
         setType(str)
     }
+    const handleSort = (str: string) => {
+        setSort(str)
+    }
     return (
         <>
             <Stack className="trend-products">
@@ -32,38 +36,62 @@ const TrendProduct: NextPage = () => {
                     <Stack className="info">
                         <div className="title">Trend Products</div>
                     </Stack>
-                    <Stack className={"product-swiper"}>
-                        <Stack
-                            className="control-panel"
-                            direction={"row"}
-                            gap={"20px"}
-                            justifyContent={"center"}
-                        >
-                            <Button
-                                onClick={() => handleType(ProductType.LAPTOP)}
-                                className={type === ProductType.LAPTOP ? "active-btn" : ""}>
-                                Laptop
-                            </Button>
-                            <Button
-                                onClick={() => handleType(ProductType.DESKTOP)}
-                                className={type === ProductType.DESKTOP ? "active-btn" : ""}>
-                                Desktop
-                            </Button>
-                            <Button
-                                onClick={() => handleType(ProductType.GRAPHICS)}
-                                className={type === ProductType.GRAPHICS ? "active-btn" : ""}>
-                                Graphics
-                            </Button>
-                            <Button
-                                onClick={() => handleType(ProductType.PERIPHERAL)}
-                                className={type === ProductType.PERIPHERAL ? "active-btn" : ""}>
-                                Peripheral
-                            </Button>
-                            <Button
-                                onClick={() => handleType(ProductType.CHAIR)}
-                                className={type === ProductType.CHAIR ? "active-btn" : ""}>
-                                Chair
-                            </Button>
+                    <Stack className={"product-swiper"} >
+                        <Stack direction={"row"} justifyContent={"space-between"}>
+                            <Stack
+                                className="control-panel"
+                                direction={"row"}
+                                gap={"20px"}
+                                justifyContent={"center"}
+                            >
+                                <Button
+                                    onClick={() => handleType(ProductType.LAPTOP)}
+                                    className={type === ProductType.LAPTOP ? "active-btn" : ""}>
+                                    Laptop
+                                </Button>
+                                <Button
+                                    onClick={() => handleType(ProductType.DESKTOP)}
+                                    className={type === ProductType.DESKTOP ? "active-btn" : ""}>
+                                    Desktop
+                                </Button>
+                                <Button
+                                    onClick={() => handleType(ProductType.GRAPHICS)}
+                                    className={type === ProductType.GRAPHICS ? "active-btn" : ""}>
+                                    Graphics
+                                </Button>
+                                <Button
+                                    onClick={() => handleType(ProductType.PERIPHERAL)}
+                                    className={type === ProductType.PERIPHERAL ? "active-btn" : ""}>
+                                    Peripheral
+                                </Button>
+                                <Button
+                                    onClick={() => handleType(ProductType.CHAIR)}
+                                    className={type === ProductType.CHAIR ? "active-btn" : ""}>
+                                    Chair
+                                </Button>
+                            </Stack>
+                            <Stack
+                                className="control-panel"
+                                direction={"row"}
+                                gap={"20px"}
+                                justifyContent={"center"}
+                            >
+                                <Button
+                                    onClick={() => handleSort(ProductSort.LIKES)}
+                                    className={sort === ProductSort.LIKES ? "active-btn" : ""}>
+                                    Trend
+                                </Button>
+                                <Button
+                                    onClick={() => handleSort(ProductSort.VIEWS)}
+                                    className={sort === ProductSort.VIEWS ? "active-btn" : ""}>
+                                    Popular
+                                </Button>
+                                <Button
+                                    onClick={() => handleSort(ProductSort.PRODUCTRANK)}
+                                    className={sort === ProductSort.PRODUCTRANK ? "active-btn" : ""}>
+                                    Top
+                                </Button>
+                            </Stack>
                         </Stack>
                         <Swiper
                             slidesPerView={3}
@@ -77,9 +105,9 @@ const TrendProduct: NextPage = () => {
 
                         >
                             {
-                                Array.from({ length: 7 }).map((ele:any, num:number) => (
+                                Array.from({ length: 7 }).map((ele: any, num: number) => (
                                     <SwiperSlide>
-                                        <Stack data-aos="fade-up" data-aos-duration={`${3000*num}`} className={scroll?"product-card aos-animate":"product-card"}>
+                                        <Stack data-aos="fade-up" data-aos-duration={`${3000 * num}`} className={scroll ? "product-card aos-animate" : "product-card"}>
                                             <Stack className="card-head" alignItems={"center"}>
                                                 <img src="/img/products/laptop/400.png" alt="" />
                                                 <Stack
@@ -137,4 +165,4 @@ const TrendProduct: NextPage = () => {
     )
 }
 
-export default TrendProduct
+export default SortProduct

@@ -5,7 +5,8 @@ import { useState } from "react";
 import "../scss/pc/main.scss"
 import "../scss/app.scss";
 import "swiper/css"
-import "swiper/css/pagination"
+import "swiper/css/pagination";
+import "swiper/swiper-bundle.css"
 
 export default function App({ Component, pageProps }: AppProps) {
   //@ts-ignore

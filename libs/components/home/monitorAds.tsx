@@ -1,6 +1,6 @@
 import { NextPage } from "next";
 
-const Ads: NextPage = () => {
+const MonitorAds: NextPage = () => {
 
     return (
         <>
@@ -17,4 +17,4 @@ const Ads: NextPage = () => {
     )
 }
 
-export default Ads
+export default MonitorAds

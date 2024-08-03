@@ -1,9 +1,12 @@
-import Ads from "@/libs/components/home/Ads";
+import React from "react";
 import OurBrands from "@/libs/components/home/ourBrands";
-import TrendProduct from "@/libs/components/home/trendProducts";
+import SortProduct from "@/libs/components/home/sortProduct";
 import LayoutHome from "@/libs/components/layouts/LayoutHome";
 import { Stack } from "@mui/material";
 import { NextPage } from "next";
+import SearchPc from "@/libs/components/home/searchPc";
+import MonitorAds from "@/libs/components/home/monitorAds";
+import Event from "@/libs/components/home/event";
 
 const Home: NextPage = (props: any) => {
   const device: string = "desktop"
@@ -18,8 +21,10 @@ const Home: NextPage = (props: any) => {
       <>
         <Stack className={"home-page"}>
           <OurBrands />
-          <TrendProduct />
-          <Ads />
+          <SortProduct />
+          <MonitorAds />
+          <SearchPc />
+          <Event />
         </Stack>
       </>
     );
