@@ -14,11 +14,8 @@ const Join = () => {
     const [login_mb_nick, set_login_mb_nick] = useState<string>("")
     const [login_mb_email, set_login_mb_email] = useState<string>("")
     const [login_mb_password, set_login_mb_password] = useState<string>("")
-    let resizeWidth: number = 32;
-    //LifeCircle
-    useEffect(() => {
-        resizeWidth = window.screen.width
-    }, [])
+    const [inputType, setInputType] = useState<string>("USER")
+
     //Handlers
     const handleSignUpRequest = async () => {
         try {
@@ -57,7 +54,7 @@ const Join = () => {
     }
 
     const checkUserTypeHandler = (event: any) => {
-        alert(event.target.checked)
+        setInputType(event.target.name)
     }
     return (
         <>
@@ -82,7 +79,7 @@ const Join = () => {
                                                         size="small"
                                                         name={'USER'}
                                                         onChange={checkUserTypeHandler}
-                                                        checked={false}
+                                                        checked={inputType === "USER"}
                                                     />
                                                 }
                                                 label="User"
@@ -93,18 +90,17 @@ const Join = () => {
                                                 control={
                                                     <Checkbox
                                                         size="small"
-                                                        name={'AGENT'}
+                                                        name={'SELLER'}
                                                         onChange={checkUserTypeHandler}
-                                                        checked={true}
+                                                        checked={inputType === "SELLER"}
                                                     />
                                                 }
-                                                label="Agent"
+                                                label="Seller"
                                             />
                                         </FormGroup>
                                     </Stack>
                                 </Stack>
                                 <Button className={"login-btn"} onClick={handleSignUpRequest} >Sign Up</Button>
-
                             </Box>
                         </Box>
                         <Box className={"auth_logIn"}>
@@ -132,7 +128,7 @@ const Join = () => {
                                         <div className="left_overlay_title">Welcome Back!</div>
                                         <p>Enter your personal details and start journey with us</p>
                                         <Button onClick={() => toggle(true)}>
-                                            Sign In
+                                            I'm already a member
                                         </Button>
                                     </Box>
                                     <div className="overlay-wrapper"></div>
@@ -141,8 +137,8 @@ const Join = () => {
                                     <Box className="overlay_panel">
                                         <div className="right_overlay_title ">Hello, Friend!</div>
                                         <p>To keep connected with us please login with your personal info</p>
-                                        <Button  onClick={() => toggle(false)}>
-                                            Sign Up
+                                        <Button onClick={() => toggle(false)}>
+                                            Create an account
                                         </Button>
                                     </Box>
                                     <div className="overlay-wrapper"></div>

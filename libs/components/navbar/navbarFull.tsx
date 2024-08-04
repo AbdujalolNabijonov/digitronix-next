@@ -249,11 +249,10 @@ const Navbar: NextPage = (props: any) => {
                                 className="navbar-features"
                             >
                                 <div className="register-box">
-                                    <Box className={"register-btn"}>
+                                    <Button className={"register-btn"} onClick={() => router.push("/account/join")}>
                                         <AccountCircleRounded style={{ fontSize: "45px" }} />
                                         <p>Login / Register</p>
-                                    </Box>
-                                    
+                                    </Button>
                                 </div>
                                 <Button>
                                     <YoutubeSearchedForRounded />
