@@ -248,9 +248,13 @@ const Navbar: NextPage = (props: any) => {
                                 gap="10px"
                                 className="navbar-features"
                             >
-                                <Button>
-                                    <AccountCircleRounded style={{ fontSize: "45px" }} />
-                                </Button>
+                                <div className="register-box">
+                                    <Box className={"register-btn"}>
+                                        <AccountCircleRounded style={{ fontSize: "45px" }} />
+                                        <p>Login / Register</p>
+                                    </Box>
+                                    
+                                </div>
                                 <Button>
                                     <YoutubeSearchedForRounded />
                                 </Button>
@@ -325,6 +329,7 @@ const Navbar: NextPage = (props: any) => {
                                         </MenuItem>
                                     </StyledMenu>
                                 </div>
+
                             </Stack>
                         </Stack>
                     </Stack>

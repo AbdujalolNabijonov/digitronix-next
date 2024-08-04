@@ -34,6 +34,11 @@ const Banner: NextPage = (props: any) => {
                 desc = "Customer Service"
                 bgImg = "/img/banner/cs.jpg"
                 break
+            case "/account/join":
+                title = "Login/Signup"
+                desc = "Authentication Procees"
+                bgImg = "/img/auth/3.png"
+                break
             default:
                 break;
 
