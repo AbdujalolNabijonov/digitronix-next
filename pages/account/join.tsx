@@ -1,46 +1,58 @@
 import LayoutBasic from "@/libs/components/layouts/LayoutBasic";
 import { Box, Button, Checkbox, FormControlLabel, FormGroup, Stack } from "@mui/material";
-import { NextPage } from "next";
 import React, { useEffect, useState } from "react";
+import { sweetErrorAlert } from "@/libs/sweetAlert";
+import { logIn, signUp } from "@/libs/auth";
+import { useRouter } from "next/router";
 
 const Join = () => {
     //Initilizations
+    const [input, setInput] = useState({ nick: '', phone: '', email: '', type: "USER", password: '', })
     const [signIn, toggle] = React.useState(true);
-    const [mb_nick, setMb_nick] = React.useState('');
-    const [mb_phone, setMb_phone] = React.useState("");
-    const [email, setEmail] = React.useState('');
-    const [password, setPassword] = React.useState("");
     const [checkPassword, setCheckPassword] = React.useState("");
-    const [login_mb_nick, set_login_mb_nick] = useState<string>("")
-    const [login_mb_email, set_login_mb_email] = useState<string>("")
-    const [login_mb_password, set_login_mb_password] = useState<string>("")
-    const [inputType, setInputType] = useState<string>("USER")
+    const [input2, setInput2] = useState({ nick: '', email: '', password: '' });
+    const router = useRouter()
 
     //Handlers
     const handleSignUpRequest = async () => {
         try {
-            const isFullFilled = (mb_nick != "" && email != "") && (password != "" && checkPassword != "")
-            alert("hello")
-
+            if (input.password !== checkPassword) {
+                throw new Error("Password is not the same!")
+            }
+            if (!handleEmailValidator(input.email)) {
+                throw new Error("Enter valid email address!")
+            }
+            await signUp(input);
+            router.push("/")
         } catch (err: any) {
+            console.log("handleSignUpRequest:", err.message)
+            sweetErrorAlert(err.message)
         }
     }
     async function handleLogInRequest() {
         try {
-            alert("Logged in")
+            await logIn(input2);
+            router.push("/")
         } catch (err: any) {
+            console.log("handleLogInRequest:", err.message)
+            sweetErrorAlert(err.message)
         }
     }
     const handleLogInUserName = (e: any) => {
         if (!e.target.value.includes("@")) {
-            set_login_mb_nick(e.target.value)
+            setInput2({ ...input2, nick: e.target.value })
         } else {
-            set_login_mb_email(e.target.value)
+            setInput2({ ...input2, email: e.target.value })
         }
     }
     const handleEmailValidator = async (text: string) => {
         const validate_emails = ["gmail", "yahoo", "mail", "yandex", "hotman", "outlook", "icloud", "gmx", "hubspot", "pm"]
-        return validate_emails.some((ele) => text.includes(ele))
+        const valid = validate_emails.some((ele) => text.includes(ele));
+        let cat: boolean = false;
+        if (valid) {
+            cat = text.includes("@")
+        }
+        return cat && valid
     }
     const handleKeyDownSignUp = (e: any) => {
         if (e.key == "Enter") {
@@ -54,7 +66,19 @@ const Join = () => {
     }
 
     const checkUserTypeHandler = (event: any) => {
-        setInputType(event.target.name)
+        setInput({ ...input, type: event.target.name })
+    }
+    const validatePhoneNumber = (e: any) => {
+        let newValue = e.key.replace(/\D/g, '')
+        if (input.phone) {
+            newValue = input.phone + newValue
+        }
+        if (e.key == "Backspace") {
+            newValue = newValue.slice(0, newValue.length - 1)
+        }
+        if (newValue.length < 12) {
+            setInput({ ...input, phone: newValue })
+        }
     }
     return (
         <>
@@ -64,10 +88,10 @@ const Join = () => {
                         <Box className={"auth_signUp"} style={signIn ? {} : { transform: "translateX(100%)", opacity: "1", zIndex: "5" }}>
                             <Box className={"signUp_body"}>
                                 <div className="login_title">Create Account</div>
-                                <input type="text" id="floatingUser" placeholder="User Name" onChange={(e) => { setMb_nick(e.target.value) }} />
-                                <input type="email" id="floatingEmail" placeholder="Email" onChange={(e) => { setEmail(e.target.value) }} />
-                                <input type="text" id="floatingphone" placeholder="Phone Number" onChange={(e) => { setMb_phone(e.target.value) }} />
-                                <input type="password" id="floatingpassword" placeholder="Password" onChange={(e) => { setPassword(e.target.value) }} />
+                                <input type="text" id="floatingUser" placeholder="User Name" onChange={(e) => { setInput({ ...input, nick: e.target.value }) }} />
+                                <input type="email" id="floatingEmail" placeholder="Email" onChange={(e) => { setInput({ ...input, email: e.target.value }) }} />
+                                <input type="text" maxLength={11} id="floatingphone" placeholder="Phone Number" onKeyDown={validatePhoneNumber} value={input.phone} readOnly />
+                                <input type="password" id="floatingpassword" placeholder="Password" onChange={(e) => { setInput({ ...input, password: e.target.value }) }} />
                                 <input type="password" className="form-control" id="floatingre" placeholder="Re-enter Password" onKeyDown={handleKeyDownSignUp} onChange={(e) => { setCheckPassword(e.target.value) }} />
                                 <Stack direction={"row"} gap={"10px"} alignItems={"center"}>
                                     <span className={'text'}>I want to be registered as:</span>
@@ -79,7 +103,7 @@ const Join = () => {
                                                         size="small"
                                                         name={'USER'}
                                                         onChange={checkUserTypeHandler}
-                                                        checked={inputType === "USER"}
+                                                        checked={input.type === "USER"}
                                                     />
                                                 }
                                                 label="User"
@@ -90,12 +114,12 @@ const Join = () => {
                                                 control={
                                                     <Checkbox
                                                         size="small"
-                                                        name={'SELLER'}
+                                                        name={'ADMIN'}
                                                         onChange={checkUserTypeHandler}
-                                                        checked={inputType === "SELLER"}
+                                                        checked={input.type === "ADMIN"}
                                                     />
                                                 }
-                                                label="Seller"
+                                                label="Admin"
                                             />
                                         </FormGroup>
                                     </Stack>
@@ -110,7 +134,7 @@ const Join = () => {
                                     <input type="text" id="floatinguser" placeholder="User Name" onChange={handleLogInUserName} />
                                 </div>
                                 <div className="form-floating">
-                                    <input type="password" className="form-control" id="floatingpassord" placeholder="Password" onKeyDown={handleKeyDownLogIn} onChange={(e) => set_login_mb_password(e.target.value)} />
+                                    <input type="password" className="form-control" id="floatingpassord" placeholder="Password" onKeyDown={handleKeyDownLogIn} onChange={(e) => setInput2({ ...input2, password: e.target.value })} />
                                 </div>
                                 <div className="warn">If you forget your password, you can log in with your signed up email address </div>
                                 <Button onClick={handleLogInRequest}>Sign In</Button>

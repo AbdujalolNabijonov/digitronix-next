@@ -8,6 +8,8 @@ import SearchPc from "@/libs/components/home/searchPc";
 import MonitorAds from "@/libs/components/home/monitorAds";
 import Event from "@/libs/components/home/event";
 import CommunityArticle from "@/libs/components/home/communityArticle";
+import { useReactiveVar } from "@apollo/client"
+import { userVar } from "@/apollo/store";
 
 const Home: NextPage = (props: any) => {
   const device: string = "desktop"

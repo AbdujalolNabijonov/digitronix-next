@@ -21,6 +21,7 @@
     "@types/three": "^0.167.1",
     "apollo-link-token-refresh": "0.4.0",
     "apollo-upload-client": "17.0.0",
+    "jwt-decode": "^4.0.0",
     "next": "14.2.5",
     "phosphor-react": "^1.4.1",
     "react": "^18",
@@ -28,6 +29,7 @@
     "sass": "^1.77.8",
     "sass-loader": "^16.0.0",
     "subscriptions-transport-ws": "^0.11.0",
+    "sweetalert2": "11.7.27",
     "swiper": "^11.1.8",
     "three": "^0.167.0",
     "valtio": "^1.13.2"

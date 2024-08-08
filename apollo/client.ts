@@ -6,7 +6,7 @@ import { getMainDefinition } from '@apollo/client/utilities';
 import { onError } from '@apollo/client/link/error';
 import { TokenRefreshLink } from 'apollo-link-token-refresh';
 import { socketVar } from './store';
-import { getJwtToken } from '@/libs/components/auth';
+import { getJwtToken } from '@/libs/auth';
 let apolloClient: ApolloClient<NormalizedCacheObject>;
 
 function getHeaders() {
