@@ -3,6 +3,7 @@ import {
     AccountCircleRounded,
     Chair,
     LaptopOutlined,
+    Logout,
     NotificationsOutlined,
     Usb,
     YoutubeSearchedForRounded
@@ -13,6 +14,9 @@ import Link from "next/link";
 import { CaretDown, DesktopTower } from "phosphor-react"
 import { alpha, styled } from '@mui/material/styles';
 import { useRouter } from "next/router";
+import { useReactiveVar } from "@apollo/client";
+import { userVar } from "@/apollo/store";
+import { getJwtToken, logOut, updateUserInfo } from "@/libs/auth";
 
 
 const Navbar: NextPage = (props: any) => {
@@ -22,9 +26,11 @@ const Navbar: NextPage = (props: any) => {
     const [lang, setLang] = useState<string | null>("en");
     const drop = Boolean(anchorEl2);
     const [scrolled, setScrolled] = useState<boolean>(false);
-    const [visitedLink, setVisitedLink] = useState<string>("");
     const [anchorEl3, setAnchorEl3] = useState(null)
+    const [logoutAnchor, setLogoutAnchor] = useState<null | HTMLElement>(null);
+    const logoutOpen = Boolean(logoutAnchor)
     const drop2 = Boolean(anchorEl3)
+    const user = useReactiveVar(userVar)
 
     const router = useRouter()
     //LifeCircle
@@ -36,6 +42,14 @@ const Navbar: NextPage = (props: any) => {
         return () => {
             window.removeEventListener("scroll", scrolledWindow)
         }
+    }, [])
+
+    useEffect(()=>{
+        const jwtToken = getJwtToken();
+        if(jwtToken){
+            updateUserInfo(jwtToken)
+        }
+        console.log(user)
     }, [])
 
     //Customize Style
@@ -99,6 +113,11 @@ const Navbar: NextPage = (props: any) => {
         router.replace(url);
     }
 
+    const handleLogOut = () => {
+        logOut()
+        router.push("/")
+    }
+
     if (device === "mobile") {
         return (
             <>
@@ -123,6 +142,7 @@ const Navbar: NextPage = (props: any) => {
             </>
         )
     } else if (device === "desktop") {
+        const imageUrl = user?.memberImage?`${"http://localhost:3005"}/${user.memberImage}`:"/img/profile/defaultUser.svg"
         return (
             <>
                 <Stack
@@ -249,10 +269,38 @@ const Navbar: NextPage = (props: any) => {
                                 className="navbar-features"
                             >
                                 <div className="register-box">
-                                    <Button className={"register-btn"} onClick={() => router.push("/account/join")}>
-                                        <AccountCircleRounded style={{ fontSize: "45px" }} />
-                                        <p>Login / Register</p>
-                                    </Button>
+                                    {
+                                        user && user._id ?
+                                            (
+                                                <>
+                                                    <Button className={"register-btn"} onClick={(e: any) => setLogoutAnchor(e.target)}>
+                                                        <img src={imageUrl} alt=""/>
+                                                        <p>Logout</p>
+                                                    </Button>
+                                                    <Menu
+                                                        id="basic-menu"
+                                                        anchorEl={logoutAnchor}
+                                                        open={logoutOpen}
+                                                        onClose={() => {
+                                                            setLogoutAnchor(null);
+                                                        }}
+                                                        sx={{ mt: '5px' }}
+                                                    >
+                                                        <MenuItem onClick={handleLogOut}>
+                                                            <Logout fontSize="small" style={{ color: 'blue', marginRight: '10px' }} />
+                                                            Logout
+                                                        </MenuItem>
+                                                    </Menu>
+                                                </>
+                                            )
+                                            :
+                                            (
+                                                <Button className={"register-btn"} onClick={() => router.push("/account/join")}>
+                                                    <AccountCircleRounded style={{ fontSize: "45px" }} />
+                                                    <p>Login / Register</p>
+                                                </Button>
+                                            )}
+
                                 </div>
                                 <Button>
                                     <YoutubeSearchedForRounded />

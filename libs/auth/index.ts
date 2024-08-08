@@ -5,6 +5,7 @@ import { sweetMixinErrorAlert } from "../sweetAlert";
 import { jwtDecode } from "jwt-decode";
 import { CustomJwtPayload } from "../types/customJwtPayload";
 import { LOG_IN } from "@/apollo/user/query";
+import { Messages } from "../config";
 
 export function getJwtToken() {
     if (typeof window !== "undefined") {
@@ -34,7 +35,8 @@ export async function logIn({ nick, email, password }: { nick: string, email: st
         }
     } catch (err: any) {
         console.warn("login err", err);
-        logOut();
+        logOut()
+        throw new Error(Messages.error1)
     }
 }
 

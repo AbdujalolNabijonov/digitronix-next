@@ -126,6 +126,11 @@
               p {
                 font-weight: 600;
               }
+              img {
+                height: 40px;
+                width: 40px;
+                border-radius: 50%;
+              }
             }
           }
           .notify-ring {
@@ -155,6 +160,26 @@
             }
           }
         }
+      }
+    }
+  }
+  .admin-navbar {
+    background-color: whitesmoke;
+    padding: 15px 20px;
+    .brand-title {
+      font-weight: bold;
+      font-size: 30px;
+    }
+    .notify{
+      height: 40px;
+      width: 40px;
+      
+    }
+    button {
+      img {
+        height: 40px;
+        width: 40px;
+        border-radius: 50%;
       }
     }
   }
