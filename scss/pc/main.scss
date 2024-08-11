@@ -14,6 +14,9 @@
 @import "./account/join.scss";
 @import "./account/auth.scss";
 
+//Admin
+@import "./admin//admin.scss";
+
 .list-menu {
   position: absolute;
   margin-top: 15px;
@@ -160,26 +163,6 @@
             }
           }
         }
-      }
-    }
-  }
-  .admin-navbar {
-    background-color: whitesmoke;
-    padding: 15px 20px;
-    .brand-title {
-      font-weight: bold;
-      font-size: 30px;
-    }
-    .notify{
-      height: 40px;
-      width: 40px;
-      
-    }
-    button {
-      img {
-        height: 40px;
-        width: 40px;
-        border-radius: 50%;
       }
     }
   }

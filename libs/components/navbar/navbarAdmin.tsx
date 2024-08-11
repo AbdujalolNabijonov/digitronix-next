@@ -17,10 +17,7 @@ const NavbarAdmin = () => {
     }
     return (
         <>
-            <Stack className={"admin-navbar"} direction={"row"} justifyContent={"space-between"}>
-                <div className="brand-title">
-                    DEGITRONIX
-                </div>
+            <Stack className={"admin-navbar"} direction={"row"} justifyContent={"end"}>
                 <Stack direction={"row"} alignItems={"center"} gap={"10px"}>
                     <>
                         <Button className="notify">

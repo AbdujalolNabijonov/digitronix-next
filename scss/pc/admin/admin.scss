@@ -1,0 +1,135 @@
+.pc-wrapper {
+  .admin-navbar {
+    position: sticky;
+    top: 0;
+    width: 100%;
+    background-color: #201f2f;
+    padding: 15px 20px;
+    border-bottom: 2px solid rgb(86, 86, 86);
+    .brand-title {
+      font-weight: bold;
+      font-size: 30px;
+      color: white;
+    }
+    .notify {
+      height: 40px;
+      width: 40px;
+      color: white;
+    }
+    button {
+      img {
+        height: 40px;
+        width: 40px;
+        border-radius: 50%;
+      }
+    }
+  }
+  .admin-panel {
+    position: fixed;
+    width: 400px;
+    background-color: #201f2f;
+    height: 100vh;
+    padding: 20px;
+    border-right: 2px solid rgb(86, 86, 86);
+    .brand-title {
+      align-items: center;
+      border-bottom: 2px solid white;
+      .title {
+        color: white;
+        font-weight: 600;
+        margin: 40px 0 20px 0;
+        font-size: 30px;
+        letter-spacing: 5px;
+      }
+      .user {
+        align-items: center;
+        margin-bottom: 20px;
+        img {
+          height: 60px;
+          width: 60px;
+          border-radius: 50%;
+          border: 2px solid #8e8d97;
+        }
+        .name {
+          color: white;
+          font-weight: 600;
+          font-size: 24px;
+        }
+      }
+    }
+    .btn-list {
+      a {
+        display: flex;
+        gap: 10px;
+        text-decoration: none;
+        color: white;
+        border-radius: 10px;
+        margin: 10px 0;
+        padding: 13px 15px;
+        font-size: 20px;
+        align-items: center;
+      }
+      .accordion-cs {
+        background-color: transparent;
+        .title {
+          gap: 10px;
+          font-size: 20px;
+          color: white;
+        }
+      }
+      .on {
+        background-color: #a9dfd8;
+        font-weight: 600;
+        color: #201f2f;
+      }
+    }
+  }
+  #main {
+    flex-grow: 1;
+    background-color: #201f2f;
+    height: 100%;
+    margin-left: 400px;
+    .admin-user {
+      background-color: #201f2f;
+      height: 200vh;
+      padding: 50px 30px;
+      .title {
+        font-size: 30px;
+        color: white;
+        font-weight: 600;
+      }
+      .search-panel {
+        position: relative;
+        z-index: 9;
+        margin-top: 30px;
+        border-radius: 10px;
+        background-color: #373644;
+        padding: 20px;
+        .status {
+          padding: 0 15px;
+          border-bottom: 2px solid #8e8d97;
+          div {
+            color: whitesmoke;
+            padding: 5px 15px;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: color 0.2s ease-in-out;
+          }
+          .on {
+            color: rgb(251, 39, 39);
+            border-bottom: 3px solid rgb(243, 52, 52);
+          }
+        }
+        .search-area {
+          margin-top: 20px;
+        }
+      }
+      .table-list {
+        background-color: #373644;
+        margin-top: 25px;
+        border-radius:10px;
+        overflow: hidden;
+      }
+    }
+  }
+}

@@ -1,10 +1,13 @@
 import LayoutAdmin from "@/libs/components/layouts/LayoutAdmin"
 import { NextPage } from "next"
+import { useRouter } from "next/router"
+import { useEffect } from "react"
 
-const Admin: NextPage = (props: any) => {
-    return <>
-        THIS IS ADMIN
-    </>
+const Admin = (props: any) => {
+    const router = useRouter()
+    useEffect(() => {
+        router.push("/_admin/users")
+    }, [])
 }
 
 export default LayoutAdmin(Admin)

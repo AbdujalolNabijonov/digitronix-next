@@ -1,8 +1,9 @@
-import { Stack } from "@mui/material";
+import { Box, Stack } from "@mui/material";
 import { NextPage } from "next";
 import Head from "next/head";
 import React from "react";
 import NavbarAdmin from "../navbar/navbarAdmin";
+import AdminPanel from "../admin/adminPanel";
 
 const LayoutAdmin = (Component: any) => {
     return (props: any) => {
@@ -21,10 +22,13 @@ const LayoutAdmin = (Component: any) => {
                 <>
                     <Head>Digitronix</Head>
                     <Stack className="pc-wrapper">
-                        <NavbarAdmin />
-                        <div className="main">
-                            <Component />
-                        </div>
+                        <Stack direction={"row"}>
+                            <AdminPanel />
+                            <Stack id="main">
+                                <NavbarAdmin />
+                                <Component />
+                            </Stack>
+                        </Stack>
                     </Stack>
                 </>
             )
