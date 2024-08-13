@@ -1,5 +1,5 @@
-import { ArrowDropDown, DevicesOutlined, ForumOutlined, HomeWork, HomeWorkOutlined, PeopleOutline, SupportAgentOutlined } from "@mui/icons-material";
-import { Accordion, AccordionDetails, AccordionSummary, Box, Stack, Typography } from "@mui/material"
+import { ArrowDropDown, Campaign, DevicesOutlined, ForumOutlined, HomeWork, HomeWorkOutlined, PeopleOutline, Quiz, SupportAgentOutlined } from "@mui/icons-material";
+import { Accordion, AccordionDetails, AccordionSummary, Box, MenuItem, Stack, Typography } from "@mui/material"
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState } from "react";
@@ -21,23 +21,19 @@ const AdminPanel = () => {
                     </Stack>
                 </Stack>
                 <Stack className="btn-list" gap={"10px"}>
-                    <Link href="/_admin/companies" className={pathname.includes("companies") ? 'on' : ''}>
-                        <HomeWorkOutlined fontSize="medium" />
-                        <div>Companies</div>
-                    </Link>
                     <Link href="/_admin/users" className={pathname.includes("users") ? 'on' : ''}>
                         <PeopleOutline />
                         <div>Users</div>
                     </Link>
-                    <Link href="/_admin/products" className={pathname.includes("companies") ? 'on' : ''}>
+                    <Link href="/_admin/products" className={pathname.includes("products") ? 'on' : ''}>
                         <DevicesOutlined />
                         <div>Products</div>
                     </Link>
-                    <Link href="/_admin/community" className={pathname.includes("companies") ? 'on' : ''}>
+                    <Link href="/_admin/community" className={pathname.includes("community") ? 'on' : ''}>
                         <ForumOutlined />
                         <div>Community</div>
                     </Link>
-                    <Accordion className="accordion-cs">
+                    <Accordion className={"accordion-cs"} defaultExpanded={pathname.includes("cs")}>
                         <AccordionSummary
                             expandIcon={<ArrowDropDown />}
 
@@ -50,10 +46,18 @@ const AdminPanel = () => {
                             </Stack>
                         </AccordionSummary>
                         <AccordionDetails>
-                            <Typography>
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-                                malesuada lacus ex, sit amet blandit leo lobortis eget.
-                            </Typography>
+                            <MenuItem sx={{ display: "block" }}>
+                                <Link href="/_admin/cs/faq" className={pathname.includes("faq") ? 'on' : ''}>
+                                    <Quiz />
+                                    <div>FAQ</div>
+                                </Link>
+                            </MenuItem>
+                            <MenuItem sx={{ display: "block" }}>
+                                <Link href="/_admin/cs/notice" className={pathname.includes("notice") ? 'on' : ''}>
+                                    <Campaign />
+                                    <div>Notice</div>
+                                </Link>
+                            </MenuItem>
                         </AccordionDetails>
                     </Accordion>
                 </Stack>
