@@ -17,6 +17,8 @@ import { useRouter } from "next/router";
 import { useReactiveVar } from "@apollo/client";
 import { userVar } from "@/apollo/store";
 import { getJwtToken, logOut, updateUserInfo } from "@/libs/auth";
+import { sweetTopSuccessAlert } from "@/libs/sweetAlert";
+import { Messages } from "@/libs/config";
 
 
 const Navbar: NextPage = (props: any) => {
@@ -44,9 +46,9 @@ const Navbar: NextPage = (props: any) => {
         }
     }, [])
 
-    useEffect(()=>{
+    useEffect(() => {
         const jwtToken = getJwtToken();
-        if(jwtToken){
+        if (jwtToken) {
             updateUserInfo(jwtToken)
         }
         console.log(user)
@@ -113,8 +115,9 @@ const Navbar: NextPage = (props: any) => {
         router.replace(url);
     }
 
-    const handleLogOut = () => {
+    const handleLogOut = async () => {
         logOut()
+        await sweetTopSuccessAlert(Messages.error6)
         router.push("/")
     }
 
@@ -128,13 +131,13 @@ const Navbar: NextPage = (props: any) => {
                     Products
                 </Link>
                 <Link href={"/agents"}>
-                    Agents
+                    Retailers
                 </Link>
                 <Link href={"/community"}>
-                    Community
+                    Society
                 </Link>
                 <Link href={"/mypage"}>
-                    My Page
+                    My Profile
                 </Link>
                 <Link href={"/cs"}>
                     CS
@@ -142,7 +145,7 @@ const Navbar: NextPage = (props: any) => {
             </>
         )
     } else if (device === "desktop") {
-        const imageUrl = user?.memberImage?`${"http://localhost:3005"}/${user.memberImage}`:"/img/profile/defaultUser.svg"
+        const imageUrl = user?.memberImage ? `${"http://localhost:3005"}/${user.memberImage}` : "/img/profile/defaultUser.svg"
         return (
             <>
                 <Stack
@@ -241,19 +244,19 @@ const Navbar: NextPage = (props: any) => {
                                     href={"/agents"}
                                     className={router.pathname === "/agents" ? "active" : ""}
                                 >
-                                    Agents
+                                    Retailer
                                 </Link>
                                 <Link
                                     href={"/community"}
                                     className={router.pathname === "/community" ? "active" : ""}
                                 >
-                                    Community
+                                    Society
                                 </Link>
                                 <Link
                                     href={"/mypage"}
                                     className={router.pathname === "/mypage" ? "active" : ""}
                                 >
-                                    My Page
+                                    My Profile
                                 </Link>
                                 <Link
                                     href={"/cs"}
@@ -274,7 +277,7 @@ const Navbar: NextPage = (props: any) => {
                                             (
                                                 <>
                                                     <Button className={"register-btn"} onClick={(e: any) => setLogoutAnchor(e.target)}>
-                                                        <img src={imageUrl} alt=""/>
+                                                        <img src={imageUrl} alt="" />
                                                         <p>Logout</p>
                                                     </Button>
                                                     <Menu

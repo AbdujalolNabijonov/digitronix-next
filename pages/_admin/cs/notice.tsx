@@ -1,4 +1,4 @@
-import SearchPanel from "@/libs/components/admin/cs/searchPanel"
+import SearchPanel from "@/libs/components/admin/searchPanel"
 import LayoutAdmin from "@/libs/components/layouts/LayoutAdmin"
 import { MembersInquiry } from "@/libs/types/member/member.input"
 import { Box, Button, Stack, TablePagination } from "@mui/material"

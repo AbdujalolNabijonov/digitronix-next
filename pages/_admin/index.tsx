@@ -1,5 +1,4 @@
 import LayoutAdmin from "@/libs/components/layouts/LayoutAdmin"
-import { NextPage } from "next"
 import { useRouter } from "next/router"
 import { useEffect } from "react"
 

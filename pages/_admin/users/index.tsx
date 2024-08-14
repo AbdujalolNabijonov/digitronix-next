@@ -1,17 +1,28 @@
-import SearchPanel from "@/libs/components/admin/users/searchPanel"
+import SearchPanel from "@/libs/components/admin/searchPanel"
 import { MemberPanelList } from "@/libs/components/admin/users/membersPanelList"
 import LayoutAdmin from "@/libs/components/layouts/LayoutAdmin"
 import { MembersInquiry } from "@/libs/types/member/member.input"
 import { Box, Stack, TablePagination } from "@mui/material"
 import { NextPage } from "next"
-import { useState } from "react"
+import { useEffect, useState } from "react"
+import { getJwtToken } from "@/libs/auth"
+import { useRouter } from "next/router"
 
 const AdminUser: NextPage = ({ initialProps, ...props }: any) => {
     //Initializations
     const [anchorEl, setAnchorEl] = useState<HTMLElement[] | []>([])
     const [membersInquiry, setMembersInquiry] = useState<MembersInquiry>(initialProps)
     const members: any[] = []
-    const membersTotal = 4
+    const membersTotal = 4;
+    const router = useRouter();
+
+    //LifeCircle
+    useEffect(() => {
+        const jwtToken = getJwtToken();
+        if (!jwtToken) {
+            router.push("/")
+        }
+    }, [])
     //Handlers
     const changePageHandler = async (event: unknown, newPage: number) => {
         membersInquiry.page = newPage + 1;

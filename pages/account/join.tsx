@@ -1,9 +1,10 @@
+import React, { useEffect, useState } from "react";
 import LayoutBasic from "@/libs/components/layouts/LayoutBasic";
 import { Box, Button, Checkbox, FormControlLabel, FormGroup, Stack } from "@mui/material";
-import React, { useEffect, useState } from "react";
-import { sweetErrorAlert } from "@/libs/sweetAlert";
+import { sweetErrorAlert, sweetTopSmallSuccessAlert } from "@/libs/sweetAlert";
 import { logIn, signUp } from "@/libs/auth";
 import { useRouter } from "next/router";
+import { Messages } from "@/libs/config";
 
 const Join = () => {
     //Initilizations
@@ -32,6 +33,7 @@ const Join = () => {
     async function handleLogInRequest() {
         try {
             await logIn(input2);
+            await sweetTopSmallSuccessAlert(Messages.success1)
             router.push("/")
         } catch (err: any) {
             console.log("handleLogInRequest:", err.message)
