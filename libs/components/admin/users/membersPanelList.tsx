@@ -158,14 +158,14 @@ export const MemberPanelList = (props: MemberPanelListType) => {
 						{members.length !== 0 &&
 							members.map((member: Member, index: number) => {
 								const member_image = member.memberImage
-									? `${REACT_APP_API_URL}/${member.memberImage}`
+									? `${"http://localhost:3005"}/${member.memberImage}`
 									: '/img/profile/defaultUser.svg';
 								return (
 									<TableRow hover key={member?._id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-										<TableCell align="left">{member._id}</TableCell>
+										<TableCell  align="left">{member._id}</TableCell>
 
 										<TableCell align="left" className={'name'}>
-											<Stack direction={'row'}>
+											<Stack direction={'row'} alignItems={"center"}>
 												<Link href={`/member?memberId=${member._id}`}>
 													<div>
 														<Avatar alt="Remy Sharp" src={member_image} sx={{ ml: '2px', mr: '10px' }} />

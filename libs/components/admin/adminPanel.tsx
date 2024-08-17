@@ -29,9 +29,9 @@ const AdminPanel = () => {
                         <DevicesOutlined />
                         <div>Products</div>
                     </Link>
-                    <Link href="/_admin/community" className={pathname.includes("community") ? 'on' : ''}>
+                    <Link href="/_admin/society" className={pathname.includes("society") ? 'on' : ''}>
                         <ForumOutlined />
-                        <div>Community</div>
+                        <div>Society</div>
                     </Link>
                     <Accordion className={"accordion-cs"} defaultExpanded={pathname.includes("cs")}>
                         <AccordionSummary

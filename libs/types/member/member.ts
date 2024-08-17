@@ -1,13 +1,12 @@
 export enum MemberStatus {
     ACTIVE = "ACTIVE",
     BLOCK = "BLOCK",
-    DELETE = "DELTE"
+    DELETE = "DELETE"
 }
 
 export enum MemberType {
-    ALL = "ALL",
     ADMIN = "ADMIN",
-    SELLER = "SELLER",
+    RETAILER = "RETAILER",
     USER = "USER"
 }
 

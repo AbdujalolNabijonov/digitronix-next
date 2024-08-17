@@ -129,6 +129,15 @@
         margin-top: 25px;
         border-radius:10px;
         overflow: hidden;
+        td{
+          color: white;
+          a{
+            text-decoration: none;
+          }
+          button{
+            color: white;
+          }
+        }
       }
     }
   }
