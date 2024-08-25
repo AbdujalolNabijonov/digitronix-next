@@ -15,18 +15,19 @@ import {
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
 import { Stack } from '@mui/material';
-import { Member, MemberStatus, MemberType } from '../../../types/member/member';
 import { REACT_APP_API_URL } from '@/libs/config';
+import { Product } from '@/libs/types/product/product';
+import { ProductStatus } from '@/libs/enum/product.enum';
+import { numberSplitterHandler } from '@/libs/features/splitter';
 
 interface Data {
+	label: string;
 	id: string;
-	nickname: string;
-	fullname: string;
-	phone: string;
-	type: string;
-	state: string;
-	warning: string;
-	block: string;
+	title: string;
+	price: string;
+	retailer: string;
+	category: string;
+	status: string;
 }
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
@@ -50,53 +51,47 @@ interface HeadCell {
 
 const headCells: readonly HeadCell[] = [
 	{
+		id: 'label',
+		numeric: false,
+		disablePadding: false,
+		label: 'LABEL',
+	},
+	{
 		id: 'id',
 		numeric: true,
 		disablePadding: false,
-		label: 'MB ID',
+		label: 'PRODUCT ID',
 	},
 	{
-		id: 'nickname',
+		id: 'title',
 		numeric: true,
 		disablePadding: false,
-		label: 'NICK NAME',
+		label: 'TITLE',
 	},
 	{
-		id: 'fullname',
-		numeric: false,
-		disablePadding: false,
-		label: 'FULL NAME',
-	},
-	{
-		id: 'phone',
+		id: 'price',
 		numeric: true,
 		disablePadding: false,
-		label: 'PHONE NUM',
+		label: 'PRICE',
 	},
 	{
-		id: 'type',
+		id: 'retailer',
 		numeric: false,
 		disablePadding: false,
-		label: 'MEMBER TYPE',
+		label: 'RETAILER',
 	},
 	{
-		id: 'warning',
+		id: 'category',
 		numeric: false,
 		disablePadding: false,
-		label: 'WARNING',
+		label: 'CATEGORY',
 	},
 	{
-		id: 'block',
+		id: 'status',
 		numeric: false,
 		disablePadding: false,
-		label: 'BLOCK CRIMES',
-	},
-	{
-		id: 'state',
-		numeric: false,
-		disablePadding: false,
-		label: 'STATE',
-	},
+		label: 'STATUS',
+	}
 ];
 
 interface EnhancedTableProps {
@@ -119,7 +114,7 @@ function EnhancedTableHead(props: EnhancedTableProps) {
 						key={headCell.id}
 						align={headCell.numeric ? 'left' : 'center'}
 						padding={headCell.disablePadding ? 'none' : 'normal'}
-						style={{color:"white"}}
+						style={{ color: "white" }}
 					>
 						{headCell.label}
 					</TableCell>
@@ -130,15 +125,15 @@ function EnhancedTableHead(props: EnhancedTableProps) {
 }
 
 interface MemberPanelListType {
-	members: Member[];
+	products: Product[];
 	anchorEl: any;
 	menuIconClickHandler: any;
 	menuIconCloseHandler: any;
-	updateMemberHandler: any;
+	updateProductHandler: any;
 }
 
 export const ProductList = (props: MemberPanelListType) => {
-	const { members, anchorEl, menuIconClickHandler, menuIconCloseHandler, updateMemberHandler } = props;
+	const { products, anchorEl, menuIconClickHandler, menuIconCloseHandler, updateProductHandler } = props;
 
 	return (
 		<Stack>
@@ -147,42 +142,44 @@ export const ProductList = (props: MemberPanelListType) => {
 					{/*@ts-ignore*/}
 					<EnhancedTableHead />
 					<TableBody>
-						{members.length === 0 && (
+						{products.length === 0 && (
 							<TableRow>
-								<TableCell align="center" colSpan={8} style={{color:"white"}}>
+								<TableCell align="center" colSpan={8} style={{ color: "white" }}>
 									<span className={'no-data'}>data not found!</span>
 								</TableCell>
 							</TableRow>
 						)}
 
-						{members.length !== 0 &&
-							members.map((member: Member, index: number) => {
-								const member_image = member.memberImage
-									? `${REACT_APP_API_URL}/${member.memberImage}`
+						{products.length !== 0 &&
+							products.map((product: Product, index: number) => {
+								const member_image = product.productImages[0]
+									? `${REACT_APP_API_URL}/${product.productImages[0]}`
 									: '/img/profile/defaultUser.svg';
 								return (
-									<TableRow hover key={member?._id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-										<TableCell align="left">{member._id}</TableCell>
+									<TableRow hover key={product?._id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+										<TableCell align="center">{product.productLabel ?? "-"}</TableCell>
+										<TableCell align="left">{product._id}</TableCell>
 
 										<TableCell align="left" className={'name'}>
 											<Stack direction={'row'}>
-												<Link href={`/member?memberId=${member._id}`}>
+												<Link href={`/product?productId=${product?._id}`}>
 													<div>
 														<Avatar alt="Remy Sharp" src={member_image} sx={{ ml: '2px', mr: '10px' }} />
 													</div>
 												</Link>
-												<Link href={`/member?memberId=${member._id}`}>
-													<div>{member.memberNick}</div>
+												<Link href={`/product?productId=${product._id}`}>
+													<div>{product.productName}</div>
 												</Link>
 											</Stack>
 										</TableCell>
 
-										<TableCell align="center">{member.memberFullName ?? '-'}</TableCell>
-										<TableCell align="left">{member.memberPhone}</TableCell>
+										<TableCell align="center">{numberSplitterHandler(product.productPrice, 3, ",")}₩</TableCell>
+										<TableCell align="left">{product.memberData?.memberNick}</TableCell>
+										<TableCell align="left">{product.productCategory}</TableCell>
 
 										<TableCell align="center">
 											<Button onClick={(e: any) => menuIconClickHandler(e, index)} className={'badge success'}>
-												{member.memberType}
+												{product.productStatus}
 											</Button>
 
 											<Menu
@@ -196,44 +193,11 @@ export const ProductList = (props: MemberPanelListType) => {
 												TransitionComponent={Fade}
 												sx={{ p: 1 }}
 											>
-												{Object.values(MemberType)
-													.filter((ele) => ele !== member?.memberType)
-													.map((type: string) => (
-														<MenuItem
-															onClick={() => updateMemberHandler({ _id: member._id, memberType: type })}
-															key={type}
-														>
-															<Typography variant={'subtitle1'} component={'span'}>
-																{type}
-															</Typography>
-														</MenuItem>
-													))}
-											</Menu>
-										</TableCell>
-
-										<TableCell align="center">{member.memberWarnings}</TableCell>
-										<TableCell align="center">{member.memberBlocks}</TableCell>
-										<TableCell align="center">
-											<Button onClick={(e: any) => menuIconClickHandler(e, member._id)} className={'badge success'}>
-												{member.memberStatus}
-											</Button>
-
-											<Menu
-												className={'menu-modal'}
-												MenuListProps={{
-													'aria-labelledby': 'fade-button',
-												}}
-												anchorEl={anchorEl[member._id]}
-												open={Boolean(anchorEl[member._id])}
-												onClose={menuIconCloseHandler}
-												TransitionComponent={Fade}
-												sx={{ p: 1 }}
-											>
-												{Object.values(MemberStatus)
-													.filter((ele: string) => ele !== member?.memberStatus)
+												{Object.values(ProductStatus)
+													.filter((ele) => ele !== product?.productStatus)
 													.map((status: string) => (
 														<MenuItem
-															onClick={() => updateMemberHandler({ _id: member._id, memberStatus: status })}
+															onClick={() => updateProductHandler({ _id: product?._id, productStatus: status })}
 															key={status}
 														>
 															<Typography variant={'subtitle1'} component={'span'}>

@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import LayoutBasic from "@/libs/components/layouts/LayoutBasic";
 import { Box, Button, Checkbox, FormControlLabel, FormGroup, Stack } from "@mui/material";
 import { sweetErrorAlert, sweetTopSmallSuccessAlert } from "@/libs/sweetAlert";
 import { logIn, signUp } from "@/libs/auth";
 import { useRouter } from "next/router";
 import { Messages } from "@/libs/config";
+import { RemoveRedEyeRounded, VisibilityOff, VisibilityOffRounded } from "@mui/icons-material";
 
 const Join = () => {
     //Initilizations
@@ -12,6 +13,8 @@ const Join = () => {
     const [signIn, toggle] = React.useState(true);
     const [checkPassword, setCheckPassword] = React.useState("");
     const [input2, setInput2] = useState({ nick: '', email: '', password: '' });
+    const [hidden, setHidden] = useState<boolean>(true)
+    const [inputType, setInputType] = useState<string>("password")
     const router = useRouter()
 
     //Handlers
@@ -30,16 +33,17 @@ const Join = () => {
             sweetErrorAlert(err.message)
         }
     }
-    async function handleLogInRequest() {
+    const handleLogInRequest = useCallback(async () => {
         try {
             await logIn(input2);
             await sweetTopSmallSuccessAlert(Messages.success1)
             router.push("/")
         } catch (err: any) {
             console.log("handleLogInRequest:", err.message)
-            sweetErrorAlert(err.message)
+            sweetErrorAlert(Messages.error1)
         }
-    }
+    }, [input2])
+
     const handleLogInUserName = (e: any) => {
         if (!e.target.value.includes("@")) {
             setInput2({ ...input2, nick: e.target.value })
@@ -82,6 +86,15 @@ const Join = () => {
             setInput({ ...input, phone: newValue })
         }
     }
+
+    const handleHiddenPassword = (cond: boolean) => {
+        if (cond) {
+            setInputType("password")
+        } else {
+            setInputType("text")
+        }
+        setHidden(!hidden)
+    }
     return (
         <>
             <Stack className="join-auth" alignItems={"center"} justifyContent={"center"}>
@@ -93,8 +106,8 @@ const Join = () => {
                                 <input type="text" id="floatingUser" placeholder="User Name" onChange={(e) => { setInput({ ...input, nick: e.target.value }) }} />
                                 <input type="email" id="floatingEmail" placeholder="Email" onChange={(e) => { setInput({ ...input, email: e.target.value }) }} />
                                 <input type="text" maxLength={11} id="floatingphone" placeholder="Phone Number" onKeyDown={validatePhoneNumber} value={input.phone} readOnly />
-                                <input type="password" id="floatingpassword" placeholder="Password" onChange={(e) => { setInput({ ...input, password: e.target.value }) }} />
-                                <input type="password" className="form-control" id="floatingre" placeholder="Re-enter Password" onKeyDown={handleKeyDownSignUp} onChange={(e) => { setCheckPassword(e.target.value) }} />
+                                <input type="type" id="floatingpassword" placeholder="Password" onChange={(e) => { setInput({ ...input, password: e.target.value }) }} />
+                                <input type="type" className="form-control" id="floatingre" placeholder="Re-enter Password" onKeyDown={handleKeyDownSignUp} onChange={(e) => { setCheckPassword(e.target.value) }} />
                                 <Stack direction={"row"} gap={"10px"} alignItems={"center"}>
                                     <span className={'text'}>I want to be registered as:</span>
                                     <Stack direction={"row"} alignItems={"center"} gap={"10px"}>
@@ -116,12 +129,12 @@ const Join = () => {
                                                 control={
                                                     <Checkbox
                                                         size="small"
-                                                        name={'ADMIN'}
+                                                        name={'RETAILER'}
                                                         onChange={checkUserTypeHandler}
-                                                        checked={input.type === "ADMIN"}
+                                                        checked={input.type === "RETAILER"}
                                                     />
                                                 }
-                                                label="Admin"
+                                                label="Retailer"
                                             />
                                         </FormGroup>
                                     </Stack>
@@ -135,8 +148,22 @@ const Join = () => {
                                 <div>
                                     <input type="text" id="floatinguser" placeholder="User Name" onChange={handleLogInUserName} />
                                 </div>
-                                <div className="form-floating">
-                                    <input type="password" className="form-control" id="floatingpassord" placeholder="Password" onKeyDown={handleKeyDownLogIn} onChange={(e) => setInput2({ ...input2, password: e.target.value })} />
+                                <div className="form-floating" style={{ position: "relative" }}>
+                                    <input type={inputType} className="form-control" id="floatingpassord" placeholder="Password" onKeyDown={handleKeyDownLogIn} onChange={(e) => setInput2({ ...input2, password: e.target.value })} />
+                                    <Button
+                                        onClick={() => handleHiddenPassword(!hidden)}
+                                        style={{
+                                            position: "absolute",
+                                            right: "10px",
+                                            height: "30px",
+                                            width: "30px",
+                                            borderRadius: "50%",
+                                            top: "17px",
+                                            padding: "5px",
+                                            backgroundColor: "gray"
+                                        }}>
+                                        {hidden ? (<VisibilityOffRounded />) : (<RemoveRedEyeRounded />)}
+                                    </Button>
                                 </div>
                                 <div className="warn">If you forget your password, you can log in with your signed up email address </div>
                                 <Button onClick={handleLogInRequest}>Sign In</Button>

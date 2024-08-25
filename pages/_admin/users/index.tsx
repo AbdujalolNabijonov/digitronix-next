@@ -13,6 +13,8 @@ import { GET_ALL_MEMBERS_BY_ADMIN } from "@/apollo/admin/query";
 import { UPDATE_MEMBER_BY_ADMIN } from "@/apollo/admin/mutation";
 import { useMutation } from "@apollo/client"
 import { sweetErrorHandling } from "@/libs/sweetAlert";
+import { useReactiveVar } from "@apollo/client"
+import { userVar } from "@/apollo/store";
 
 const AdminUser: NextPage = ({ initialProps, ...props }: any) => {
     //Initializations
@@ -22,6 +24,7 @@ const AdminUser: NextPage = ({ initialProps, ...props }: any) => {
     const [membersTotal, setMembersTotal] = useState<number>(0);
     const [value, setValue] = useState<string>("ALL")
     const router = useRouter();
+    const userInfo = useReactiveVar(userVar)
 
     //Apollo Request
     const {
@@ -48,6 +51,12 @@ const AdminUser: NextPage = ({ initialProps, ...props }: any) => {
             router.push("/")
         }
     }, [])
+
+    useEffect(()=>{
+        if(userInfo.memberType !== MemberType.ADMIN){
+            router.push("/")
+        }
+    },[])
 
 
     //Handlers
@@ -191,7 +200,7 @@ const AdminUser: NextPage = ({ initialProps, ...props }: any) => {
 
 AdminUser.defaultProps = {
     initialProps: {
-        limit: 1,
+        limit: 10,
         page: 1,
         sort: "createdAt",
         search: {}

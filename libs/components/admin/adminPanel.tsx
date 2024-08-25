@@ -3,10 +3,13 @@ import { Accordion, AccordionDetails, AccordionSummary, Box, MenuItem, Stack, Ty
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState } from "react";
+import {useReactiveVar} from "@apollo/client"
+import { userVar } from "@/apollo/store";
 
 const AdminPanel = () => {
     //Initializations
     const pathname = useRouter().pathname;
+    const userInfo = useReactiveVar(userVar)
 
     return (
         <>
@@ -17,7 +20,7 @@ const AdminPanel = () => {
                     </div>
                     <Stack className="user">
                         <img src="/img/profile/defaultUser.svg" alt="user" />
-                        <div className="name">Shawn</div>
+                        <div className="name">{userInfo.memberNick}</div>
                     </Stack>
                 </Stack>
                 <Stack className="btn-list" gap={"10px"}>

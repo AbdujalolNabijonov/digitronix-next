@@ -31,3 +31,37 @@ mutation UpdateMemberByAdmin($input:UpdateMemberInquiry!) {
     }
 }
 `
+
+export const UPDATE_PRODUCT_BY_ADMIN = gql`
+mutation UpdateProductByAdmin($input:UpdateProduct!) {
+    updateProductByAdmin(input: $input) {
+        memberId
+        productName
+        productStatus
+        productLabel
+        productBrand
+        productCategory
+        productPrice
+        productColor
+        productCore
+        productSerie
+        productDisplay
+        productMemory
+        productStorage
+        productWeight
+        productGraphics
+        productConnectivity
+        productMaterial
+        productImages
+        productDesc
+        productViews
+        productLikes
+        productComments
+        productRank
+        soldAt
+        deletedAt
+        createdAt
+        updatedAt
+    }
+}
+`

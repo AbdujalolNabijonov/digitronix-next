@@ -36,7 +36,7 @@ export async function logIn({ nick, email, password }: { nick: string, email: st
     } catch (err: any) {
         console.warn("login err", err);
         logOut()
-        throw new Error(Messages.error1)
+        throw err
     }
 }
 
@@ -101,7 +101,7 @@ const requestSignUpJwtToken = async ({ nick, password, phone, email, type }:
     } catch (err: any) {
         console.log('request token err', err.graphQLErrors)
         switch (err.graphQLErrors[0].message) {
-            case 'Definer: login and password do not match':
+            case 'wrong password, try again':
                 await sweetMixinErrorAlert('Please check your password again');
                 break;
             case 'Definer: user has been blocked!':
@@ -126,7 +126,7 @@ export const requestJwtToken = async ({ nick, email, password }: { nick: string,
     } catch (err: any) {
         console.log("Error, requestJwtToken:", err.graphQLErrors);
         switch (err.graphQLErrors[0].message) {
-            case 'Definer: login and password do not match':
+            case 'Wrong password, try again':
                 await sweetMixinErrorAlert('Please check your password again');
                 break;
             case 'Definer: user has been blocked!':
