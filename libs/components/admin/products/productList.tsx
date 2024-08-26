@@ -161,7 +161,7 @@ export const ProductList = (props: MemberPanelListType) => {
 										<TableCell align="left">{product._id}</TableCell>
 
 										<TableCell align="left" className={'name'}>
-											<Stack direction={'row'}>
+											<Stack direction={'row'} alignItems={"center"}>
 												<Link href={`/product?productId=${product?._id}`}>
 													<div>
 														<Avatar alt="Remy Sharp" src={member_image} sx={{ ml: '2px', mr: '10px' }} />
@@ -178,7 +178,7 @@ export const ProductList = (props: MemberPanelListType) => {
 										<TableCell align="left">{product.productCategory}</TableCell>
 
 										<TableCell align="center">
-											<Button onClick={(e: any) => menuIconClickHandler(e, index)} className={'badge success'}>
+											<Button onClick={(e: any) => menuIconClickHandler(e, index)} style={{backgroundColor:'gray'}}>
 												{product.productStatus}
 											</Button>
 

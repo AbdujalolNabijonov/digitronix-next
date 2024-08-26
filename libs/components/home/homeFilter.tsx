@@ -6,7 +6,7 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import { useRouter } from 'next/router';
-import { ProductCompany, ProductType } from '@/libs/enum/product.enum';
+import { ProductCategory, ProductCompany} from '@/libs/enum/product.enum';
 import { MagnifyingGlass, SlidersHorizontal } from 'phosphor-react';
 
 const style = {
@@ -46,7 +46,7 @@ const HomeFilter = (props: any) => {
     const [openType, setOpenType] = useState(false);
     const [openRooms, setOpenRooms] = useState(false);
     const [productCompany, setProductCompany] = useState<ProductCompany[]>(Object.values(ProductCompany));
-    const [productType, setProductType] = useState<ProductType[]>(Object.values(ProductType));
+    const [productType, setProductType] = useState<ProductCategory[]>(Object.values(ProductCategory));
     const [yearCheck, setYearCheck] = useState({ start: 1970, end: thisYear });
     const [optionCheck, setOptionCheck] = useState('all');
 

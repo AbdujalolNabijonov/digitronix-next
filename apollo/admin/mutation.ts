@@ -65,3 +65,42 @@ mutation UpdateProductByAdmin($input:UpdateProduct!) {
     }
 }
 `
+
+export const UPDATE_ARTICLE_BY_ADMIN = gql`
+mutation UpdateArticleByAdmin($input:UpdateArticle!) {
+    updateArticleByAdmin(input: $input) {
+        _id
+        memberId
+        articleCategory
+        articleStatus
+        articleTitle
+        articleContext
+        articleImage
+        articleLikes
+        articleViews
+        articleComments
+        updatedAt
+        createdAt
+    }
+}
+
+`
+
+export const REMOVE_ARTICLE_BY_ADMIN = gql`
+mutation RemoveArticelByAdmin($input:String!) {
+    removeArticelByAdmin(input: $input) {
+        _id
+        memberId
+        articleCategory
+        articleStatus
+        articleTitle
+        articleContext
+        articleImage
+        articleLikes
+        articleViews
+        articleComments
+        updatedAt
+        createdAt
+    }
+}
+`

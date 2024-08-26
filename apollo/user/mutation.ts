@@ -9,7 +9,6 @@ mutation Signup($input: MemberInput!) {
         memberAuthType
         memberPhone
         memberNick
-        memberPassword
         memberImage
         memberAddress
         memberDesc

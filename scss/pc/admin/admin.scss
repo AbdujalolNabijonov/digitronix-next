@@ -1,6 +1,7 @@
 .pc-wrapper {
   .admin-navbar {
     position: sticky;
+    z-index: 1000;
     top: 0;
     width: 100%;
     background-color: #201f2f;
@@ -26,6 +27,7 @@
   }
   .admin-panel {
     position: fixed;
+    z-index: 1000;
     width: 400px;
     background-color: #201f2f;
     height: 100vh;

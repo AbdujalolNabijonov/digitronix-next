@@ -9,7 +9,6 @@ query Login($input: LoginInput!) {
         memberAuthType
         memberPhone
         memberNick
-        memberPassword
         memberImage
         memberAddress
         memberDesc

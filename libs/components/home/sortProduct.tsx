@@ -1,4 +1,4 @@
-import { ProductSort, ProductType } from "@/libs/enum/product.enum"
+import { ProductCategory, ProductSort } from "@/libs/enum/product.enum"
 import { Memory, SdCard } from "@mui/icons-material"
 import { Box, Button, Stack } from "@mui/material"
 import { NextPage } from "next"
@@ -9,7 +9,7 @@ import { Swiper, SwiperSlide } from "swiper/react"
 
 const SortProduct: NextPage = () => {
     //Initialization
-    const [type, setType] = useState<string>(ProductType.LAPTOP);
+    const [type, setType] = useState<string>(ProductCategory.LAPTOP);
     const [sort, setSort] = useState<string>(ProductSort.LIKES)
     const [scroll, setScroll] = useState<boolean>(false)
     const colors = ["red", "black", "gray", "yellow"]
@@ -45,28 +45,28 @@ const SortProduct: NextPage = () => {
                                 justifyContent={"center"}
                             >
                                 <Button
-                                    onClick={() => handleType(ProductType.LAPTOP)}
-                                    className={type === ProductType.LAPTOP ? "active-btn" : ""}>
+                                    onClick={() => handleType(ProductCategory.LAPTOP)}
+                                    className={type === ProductCategory.LAPTOP ? "active-btn" : ""}>
                                     Laptop
                                 </Button>
                                 <Button
-                                    onClick={() => handleType(ProductType.DESKTOP)}
-                                    className={type === ProductType.DESKTOP ? "active-btn" : ""}>
+                                    onClick={() => handleType(ProductCategory.DESKTOP)}
+                                    className={type === ProductCategory.DESKTOP ? "active-btn" : ""}>
                                     Desktop
                                 </Button>
                                 <Button
-                                    onClick={() => handleType(ProductType.GRAPHICS)}
-                                    className={type === ProductType.GRAPHICS ? "active-btn" : ""}>
+                                    onClick={() => handleType(ProductCategory.GRAPHICS)}
+                                    className={type === ProductCategory.GRAPHICS ? "active-btn" : ""}>
                                     Graphics
                                 </Button>
                                 <Button
-                                    onClick={() => handleType(ProductType.PERIPHERAL)}
-                                    className={type === ProductType.PERIPHERAL ? "active-btn" : ""}>
-                                    Peripheral
+                                    onClick={() => handleType(ProductCategory.KEYBOARD)}
+                                    className={type === ProductCategory.KEYBOARD ? "active-btn" : ""}>
+                                    Keyboard
                                 </Button>
                                 <Button
-                                    onClick={() => handleType(ProductType.CHAIR)}
-                                    className={type === ProductType.CHAIR ? "active-btn" : ""}>
+                                    onClick={() => handleType(ProductCategory.CHAIR)}
+                                    className={type === ProductCategory.CHAIR ? "active-btn" : ""}>
                                     Chair
                                 </Button>
                             </Stack>

@@ -10,7 +10,6 @@ query GetAllMembersByAdmin($input:MemberInquiry!) {
             memberAuthType
             memberPhone
             memberNick
-            memberPassword
             memberImage
             memberAddress
             memberDesc
@@ -79,7 +78,6 @@ query GetAllProductsByAdmin($input: ProductInquiry!) {
                 memberAuthType
                 memberPhone
                 memberNick
-                memberPassword
                 memberImage
                 memberAddress
                 memberDesc
@@ -106,3 +104,56 @@ query GetAllProductsByAdmin($input: ProductInquiry!) {
     }
 }
 `
+
+export const GET_ALL_ARTICLES_BY_ADMIN = gql`
+query GetAllArticlesByAdmin($input:ArticlesInquiry!) {
+    getAllArticlesByAdmin(input: $input) {
+        list {
+            _id
+            memberId
+            articleCategory
+            articleStatus
+            articleTitle
+            articleContext
+            articleImage
+            articleLikes
+            articleViews
+            articleComments
+            updatedAt
+            createdAt
+            memberData {
+                _id
+                memberFullName
+                memberStatus
+                memberType
+                memberAuthType
+                memberPhone
+                memberNick
+                memberImage
+                memberAddress
+                memberDesc
+                memberProducts
+                memberArticles
+                memberFollowers
+                memberFollowings
+                memberPoints
+                memberLikes
+                memberViews
+                memberComments
+                memberRank
+                memberWarnings
+                memberBlocks
+                accessToken
+                deletedAt
+                createdAt
+                updatedAt
+            }
+        }
+        metaCounter {
+            total
+        }
+    }
+}
+
+`
+
