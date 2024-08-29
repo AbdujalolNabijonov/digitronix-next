@@ -85,6 +85,7 @@ export enum GraphicsType {
     GeForce_GTX_1650 = "GeForce GTX™ 1650",
 }
 
+
 export enum Connectivity {
     WIRE = "WIRE",
     WIRELESS = "WIRELESS",

@@ -2,8 +2,10 @@ import { useEffect, useState } from "react";
 import {
     AccountCircleRounded,
     Chair,
+    Keyboard,
     LaptopOutlined,
     Logout,
+    Mouse,
     NotificationsOutlined,
     Usb,
     YoutubeSearchedForRounded
@@ -226,8 +228,14 @@ const Navbar: NextPage = (props: any) => {
                                             </MenuItem>
                                             <MenuItem className="list-item">
                                                 <Stack onClick={() => goToAddress("/products?category=PERIPHERAL")}>
-                                                    <Usb style={{ fontSize: "50px" }} />
-                                                    <div>Peripherals</div>
+                                                    <Mouse style={{ fontSize: "50px" }} />
+                                                    <div>Mouse</div>
+                                                </Stack>
+                                            </MenuItem>
+                                            <MenuItem className="list-item">
+                                                <Stack onClick={() => goToAddress("/products?category=PERIPHERAL")}>
+                                                    <Keyboard style={{ fontSize: "50px" }} />
+                                                    <div>Keyboard</div>
                                                 </Stack>
                                             </MenuItem>
                                             <MenuItem className="list-item">
@@ -379,7 +387,6 @@ const Navbar: NextPage = (props: any) => {
                                         </MenuItem>
                                     </StyledMenu>
                                 </div>
-
                             </Stack>
                         </Stack>
                     </Stack>
