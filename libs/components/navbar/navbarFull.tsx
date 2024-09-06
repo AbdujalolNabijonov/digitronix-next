@@ -113,8 +113,8 @@ const Navbar: NextPage = (props: any) => {
     const closeProductList = (event: any) => {
         setAnchorEl3(null)
     }
-    const goToAddress = (url: string) => {
-        router.replace(url);
+    const goToAddress = async (adrss: string) => {
+        await router.push(adrss,adrss,{scroll:false});
     }
 
     const handleLogOut = async () => {
@@ -209,7 +209,7 @@ const Navbar: NextPage = (props: any) => {
                                                 backgroundColor: "#EEEEEE"
                                             }}>
                                             <MenuItem className="list-item">
-                                                <Stack onClick={() => goToAddress("/products?category=LAPTOP")}>
+                                                <Stack onClick={() => goToAddress('/products?input={"page":1, "limit":6, "search":{"productCategory":"LAPTOP"}}')}>
                                                     <LaptopOutlined style={{ fontSize: "50px" }} />
                                                     <div>Laptops</div>
                                                 </Stack>

@@ -50,9 +50,8 @@ export interface Product {
     updatedAt: Date
 }
 
-
 export const IntelCoreList = [
-    'Intel 14th Gen.',
+    'Intel 14th Gen',
     'Intel 12th Gen',
     'Intel 11th Gen',
     'Intel 10th Gen',
@@ -60,11 +59,11 @@ export const IntelCoreList = [
 ]
 
 export const AmdCoreList = [
-    "Ryzen™ AI 300 Series",
-    "Ryzen™ 8000 Series",
-    "Ryzen™ 7000 Series"
+    "Ryzen AI 300",
+    "Ryzen 8000",
+    "Ryzen 7000"
 ]
 
 export const DisplayResolution = ["14'", "15'", "16'", "17'", "18'"];
 
-export const BrandsList=["MSI", 'LENOVO', "ASUS", "ACER", 'LG', 'SAMSUNG']
+export const BrandsList = ["MSI", 'LENOVO', "ASUS", "ACER", 'LG', 'SAMSUNG']

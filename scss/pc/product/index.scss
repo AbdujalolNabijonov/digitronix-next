@@ -33,14 +33,14 @@
       }
     }
   }
-  .container {
-    .products-page {
-      height: auto;
-      width: 100%;
+  .products-page {
+    background-color: rgb(41, 41, 41);
+    .container {
       user-select: none;
       padding-bottom: 50px;
       .navigator {
         margin: 30px 0;
+        color: white;
         .navigator-name {
           font-weight: bold;
           font-size: 27px;
@@ -62,10 +62,18 @@
           }
         }
       }
+      .main {
+        > div:nth-child(1) {
+          width: 22%;
+        }
+        > div:nth-child(2) {
+          width: 75%;
+        }
+      }
       .control-panel {
-        background-color: rgb(212, 208, 208);
-        width: 25%;
+        background-color: #1a1a1a;
         padding: 20px;
+        color: white;
         > div:nth-child(1) {
           font-weight: 600;
         }
@@ -73,6 +81,7 @@
           position: relative;
           display: flex;
           margin-bottom: 20px;
+          color: white;
           .search-input {
             margin-top: 10px;
             padding: 18px 14px;
@@ -82,6 +91,7 @@
             border-radius: 8px;
             border: 1px solid #ddd;
             padding: 0 0 0 30px;
+            color: white;
           }
           img {
             position: absolute;
@@ -102,13 +112,93 @@
             width: 20px;
           }
         }
+        .extra-list {
+          color: white;
+          div {
+            ::before {
+              pointer-events: none;
+              display: inline-block;
+              content: "";
+              border-style: solid;
+              border-width: 5px 0 5px 8.7px;
+              border-color: transparent transparent transparent red;
+              padding: 0 3px 0 0;
+            }
+          }
+        }
         .checkbox-item {
           padding: 0 0px 0 25px;
           font-size: 10px;
+          color: white;
           .checkbox {
             padding: 0px;
             font-size: 10px;
+            color: red;
           }
+        }
+      }
+      .product-list {
+        .item-box {
+          height: 380px;
+          position: relative;
+          background-color: transparent;
+          padding: 20px 10px 0 10px;
+          color: white;
+          border: 1px solid rgb(59, 58, 58);
+          transition: all 0.3s ease-in-out;
+          cursor: pointer;
+          border-radius: 10px;
+          &:hover {
+            transform: scale(1.1);
+            background-color: rgb(68, 67, 67);
+          }
+          .tringle {
+            width: 0;
+            height: 0;
+            border: solid;
+            border-width: 75px;
+            border-color: #e30613 transparent transparent transparent;
+            border-bottom: 0;
+            border-right: 0;
+            position: absolute;
+            top: 0;
+            right: 0;
+            color: white;
+          }
+          .label {
+            position: absolute;
+            top: 10px;
+            right: 5px;
+            color: white;
+            font-size: 14px;
+            font-weight: 500;
+          }
+          .item-img {
+            height: 220px;
+            width: 100%;
+            img {
+              height: 100%;
+              width: 100%;
+            }
+          }
+          .title {
+            border-bottom: 1px solid white;
+          }
+          .context {
+            padding: 15px 0 10px 0;
+          }
+          .item-footer {
+            border-top: 1px solid rgb(96, 93, 93);
+            padding: 5px;
+          }
+        }
+      }
+      .pagination-box{
+        align-items: center;
+        margin-top: 30px;
+        .css-15k5uk4-MuiButtonBase-root-MuiPaginationItem-root{
+          color: rgb(212, 206, 206);
+          border-color: rgb(78, 75, 75);
         }
       }
     }

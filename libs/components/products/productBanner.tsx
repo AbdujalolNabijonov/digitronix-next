@@ -11,11 +11,11 @@ const ProductBanner = (props: any) => {
 
     //LifeCircle
     useEffect(() => {
-        const queryCategory = router.query.category ? String(router.query.category) : '';
-        if (queryCategory && queryCategory !== category) {
-            setCategory(queryCategory);
+        const queryInput = router.query.input ? JSON.parse(router?.query?.input as string) : '';
+        if (queryInput && queryInput.search.productCategory !== category) {
+            setCategory(queryInput.search.productCategory);
         }
-    }, [router.query])
+    }, [router])
 
     if (category) {
         return (

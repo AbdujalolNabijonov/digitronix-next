@@ -13,11 +13,16 @@ export const light = {
 			paper: common.white,
 		},
 		primary: {
-			contrastText: '#ffffff',
-			main: '#E92C28',
+			light: '#757ce8',
+			main: '#3f50b5',
+			dark: '#002884',
+			contrastText: '#fff',
 		},
 		secondary: {
-			main: '#1646C1',
+			light: '#ff796',
+			main: '#f44336',
+			dark: '#ba000d',
+			contrastText: '#000',
 		},
 		text: {
 			primary: '#212121',
