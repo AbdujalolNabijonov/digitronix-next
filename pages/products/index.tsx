@@ -25,21 +25,22 @@ const Products: NextPage = (props: any) => {
     const device = useDeviceDetect()
     const router = useRouter();
     const [currentPage, setCurrentPage] = useState<number>(1);
-    const [productsInquiry, setProductsInquiry] = useState<ProductsInquiry>({ page: 1, limit: 6, search: {} });
+    const [productsInquiry, setProductsInquiry] = useState<ProductsInquiry>(router?.query?.input ? JSON.parse(router?.query?.input as string) : null);
     const [products, setProducts] = useState<Product[]>([])
     const [totalProducts, setTotalProducts] = useState<number>(0)
 
     //LifeCircle
     useEffect(() => {
-        if (router.query.input) {
-            const inputObj = JSON.parse(router?.query?.input as string)
-            setProductsInquiry(inputObj)
+        const query = router?.query?.input ? JSON.parse(router?.query?.input as string) : null
+        console.log(query)
+        if (!query) {
+            router.push("/").then();
+        } else if (query && !query.search.productCategory) {
+            router.push("/").then();
+        } else {
+            setProductsInquiry(query)
         }
-    }, [router])
-
-    useEffect(() => {
-        console.log("productsInquiry", productsInquiry)
-    }, [productsInquiry])
+    }, [router.query.input])
 
     //Apollo Request
     const {
@@ -80,7 +81,9 @@ const Products: NextPage = (props: any) => {
                                 <Stack className="path-history" direction={"row"} gap={"10px"}>
                                     <Link href={"/"}> HOME </Link>
                                     <div>/</div>
-                                    <div>PRODUCT</div>
+                                    <a >PRODUCT</a>
+                                    <div>/</div>
+                                    <div>{productsInquiry?.search?.productCategory?.toUpperCase()}</div>
                                 </Stack>
                                 <Stack direction={"row"} className="sort">
                                     <Stack direction={"row"} alignItems={"center"}>
@@ -106,9 +109,9 @@ const Products: NextPage = (props: any) => {
                                             alignContent={"start"}
                                         >
                                             {
-                                                products.map((product: Product) => (
-                                                    <ProductCard product={product} />
-                                                ))
+                                                products.map((product: Product) =>
+                                                    <ProductCard product={product} key={product._id} />
+                                                )
                                             }
 
                                         </Stack>
@@ -126,7 +129,7 @@ const Products: NextPage = (props: any) => {
                                 <Stack className="pagination-box">
                                     <Pagination
                                         page={currentPage}
-                                        count={Math.ceil(4)}
+                                        count={productsInquiry?.page > 3 ? productsInquiry.page + 1 : Math.ceil(3)}
                                         onChange={handlePaginationChange}
                                         variant="outlined"
                                         shape="rounded"

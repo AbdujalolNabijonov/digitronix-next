@@ -114,6 +114,7 @@ const Navbar: NextPage = (props: any) => {
         setAnchorEl3(null)
     }
     const goToAddress = async (adrss: string) => {
+        setAnchorEl3(null)
         await router.push(adrss,adrss,{scroll:false});
     }
 
@@ -180,6 +181,7 @@ const Navbar: NextPage = (props: any) => {
                             >
                                 <Link
                                     href={"/"}
+                                    onClick={()=>goToAddress("/")}
                                     className={router.pathname === "/" ? "active" : ""}
                                 >
                                     Home
@@ -215,31 +217,31 @@ const Navbar: NextPage = (props: any) => {
                                                 </Stack>
                                             </MenuItem>
                                             <MenuItem className="list-item">
-                                                <Stack onClick={() => goToAddress("/products?category=DESKTOP")}>
+                                                <Stack onClick={() => goToAddress('/products?input={"page":1, "limit":6, "search":{"productCategory":"DESKTOP"}}')}>
                                                     <DesktopTower size={"50px"} />
                                                     <div>Desktops</div>
                                                 </Stack>
                                             </MenuItem>
                                             <MenuItem className="list-item">
-                                                <Stack onClick={() => goToAddress("/products?category=GRAPHICS")}>
-                                                    <img src="/img/icons/graphics-card.svg" alt="graphics" style={{ width: "50px" }} />
+                                                <Stack onClick={() => goToAddress('/products?input={"page":1, "limit":6, "search":{"productCategory":"GRAPHICS"}}')}>
+                                                    <img src="/img/icons/graphics-card.svg" alt="graphics" style={{ width: "50px", fill:"gray" }} />
                                                     <div>Graphics</div>
                                                 </Stack>
                                             </MenuItem>
                                             <MenuItem className="list-item">
-                                                <Stack onClick={() => goToAddress("/products?category=PERIPHERAL")}>
+                                                <Stack onClick={() => goToAddress('/products?input={"page":1, "limit":6, "search":{"productCategory":"MOUSE"}}')}>
                                                     <Mouse style={{ fontSize: "50px" }} />
                                                     <div>Mouse</div>
                                                 </Stack>
                                             </MenuItem>
                                             <MenuItem className="list-item">
-                                                <Stack onClick={() => goToAddress("/products?category=PERIPHERAL")}>
+                                                <Stack onClick={() => goToAddress('/products?input={"page":1, "limit":6, "search":{"productCategory":"KEYBOARD"}}')}>
                                                     <Keyboard style={{ fontSize: "50px" }} />
                                                     <div>Keyboard</div>
                                                 </Stack>
                                             </MenuItem>
                                             <MenuItem className="list-item">
-                                                <Stack alignItems={"center"} onClick={() => goToAddress("/products?category=CHAIR")}>
+                                                <Stack alignItems={"center"} onClick={() => goToAddress('/products?input={"page":1, "limit":6, "search":{"productCategory":"CHAIR"}}')}>
                                                     <Chair style={{ fontSize: "50px" }} />
                                                     <div>Chair</div>
                                                 </Stack>
@@ -250,9 +252,9 @@ const Navbar: NextPage = (props: any) => {
 
                                 <Link
                                     href={"/agents"}
-                                    className={router.pathname === "/agents" ? "active" : ""}
+                                    className={router.pathname === "/retailers" ? "active" : ""}
                                 >
-                                    Retailer
+                                    Retailers
                                 </Link>
                                 <Link
                                     href={"/community"}

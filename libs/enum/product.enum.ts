@@ -83,6 +83,7 @@ export enum GraphicsType {
     GeForce_RTX_2050 = "GeForce RTX 2050",
     GeForce_GTX_1660_TI = "GeForce GTX 1660 TI",
     GeForce_GTX_1650 = "GeForce GTX 1650",
+    RADEON_RX_6550M = "Radeon RX 6550M"
 }
 
 

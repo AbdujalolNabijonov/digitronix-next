@@ -1,7 +1,7 @@
 import LayoutBasic from "@/libs/components/layouts/LayoutBasic";
 import { NextPage } from "next";
 
-const Agents: NextPage = (props: any) => {
+const Retailers: NextPage = (props: any) => {
     return (
         <>
             <h1>This is a agent page</h1>
@@ -9,4 +9,4 @@ const Agents: NextPage = (props: any) => {
     )
 }
 
-export default LayoutBasic(Agents)
+export default LayoutBasic(Retailers)

@@ -8,3 +8,12 @@ export function numberSplitterHandler(
     const regex = new RegExp(regexPattern, "g");
     return number.toString().replace(regex, withChar);
 };
+
+
+export const stringSplitterHandler = (
+    context: string = "",
+    withChar: string = "_"
+) => {
+    const regex = new RegExp(withChar, "g")
+    return context.toString().replace(regex, " ");
+}

@@ -1,3 +1,4 @@
+import { stringSplitterHandler } from "@/libs/features/splitter"
 import { Product } from "@/libs/types/product/product"
 import { FavoriteOutlined, VisibilityOutlined } from "@mui/icons-material"
 import { Button, IconButton, Stack } from "@mui/material"
@@ -9,7 +10,7 @@ const ProductCard = (props: propsData) => {
     const { product } = props
     const prod_img = `${process.env.REACT_APP_API_URL}/${product.productImages[0]}`
     return (
-        <Stack className="item-box" >
+        <Stack className="item-box" justifyContent={"space-between"}>
             <div className="item-img">
                 <img src={prod_img} alt="" />
             </div>
@@ -24,7 +25,7 @@ const ProductCard = (props: propsData) => {
                     {product.productName}
                 </div>
                 <div className="context">
-                    {product.productCore}/ {product.productGraphics}
+                    {stringSplitterHandler(product.productCore, "_")} / {stringSplitterHandler(product.productGraphics, "_")}
                 </div>
             </Stack>
             <Stack className="item-footer">

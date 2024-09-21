@@ -1,4 +1,4 @@
-import { GraphicsType, ProductCore, ProductSeries } from "@/libs/enum/product.enum"
+import { GraphicsType, ProductCategory, ProductCore, ProductSeries } from "@/libs/enum/product.enum"
 import { AmdCoreList, BrandsList, DisplayResolution, IntelCoreList } from "@/libs/types/product/product"
 import { ProductsInquiry } from "@/libs/types/product/product.input"
 import { CancelRounded, Computer, ExpandMore, HomeWorkOutlined, KeyboardDoubleArrowDownOutlined, KeyboardDoubleArrowUpOutlined, Memory, Refresh, Search, Tab, TabOutlined } from "@mui/icons-material"
@@ -51,8 +51,15 @@ const ProductFilter = (props: ProductProps) => {
                 `products/?input=${JSON.stringify({ ...productsInquiry, search: { ...productsInquiry.search } })}`,
                 { scroll: false }
             ).then()
-        } else if (!productsInquiry.search.text) {
+        } else if (productsInquiry && !productsInquiry.search.text) {
             delete productsInquiry.search.text;
+            router.push(
+                `products/?input=${JSON.stringify({ ...productsInquiry, search: { ...productsInquiry.search } })}`,
+                `products/?input=${JSON.stringify({ ...productsInquiry, search: { ...productsInquiry.search } })}`,
+                { scroll: false }
+            ).then()
+        } else if (productsInquiry?.search?.displayList?.length == 0) {
+            delete productsInquiry.search.displayList;
             router.push(
                 `products/?input=${JSON.stringify({ ...productsInquiry, search: { ...productsInquiry.search } })}`,
                 `products/?input=${JSON.stringify({ ...productsInquiry, search: { ...productsInquiry.search } })}`,
@@ -61,11 +68,6 @@ const ProductFilter = (props: ProductProps) => {
         }
     }, [productsInquiry])
 
-    useEffect(() => {
-        if (!productsInquiry.search.productCategory) {
-            router.push("/").then();
-        }
-    }, [])
     //handlers
 
     const handleSelectSerie = useCallback(
@@ -137,6 +139,15 @@ const ProductFilter = (props: ProductProps) => {
             }
         }, [productsInquiry])
 
+    const handleSelectDisplayResolution = useCallback(async (e: any) => {
+        try {
+            const resolution = Number(e.target.value);
+
+        } catch (err: any) {
+            console.log(`Error, handleSelectDisplayResolution ${err.message}`)
+        }
+    }, [productsInquiry])
+
     const refreshHandler = async () => {
         try {
             for (let objKey in productsInquiry.search) {
@@ -151,6 +162,7 @@ const ProductFilter = (props: ProductProps) => {
                 { scroll: false }
             )
             setProductsInquiry(productsInquiry)
+            setSearchText("")
         } catch (err: any) {
             console.log(`Error, refreshHandler ${err.message}`)
         }
@@ -184,6 +196,7 @@ const ProductFilter = (props: ProductProps) => {
                         endAdornment={
                             <>
                                 <CancelRounded
+                                    style={{ cursor: "pointer" }}
                                     onClick={() => {
                                         setSearchText('');
                                         setProductsInquiry({ ...productsInquiry, search: { ...productsInquiry.search, text: "" } });
@@ -196,7 +209,7 @@ const ProductFilter = (props: ProductProps) => {
                     <img src={'/img/icons/search_icon.png'} alt={''} />
                     <Tooltip title="Reset">
                         <IconButton onClick={refreshHandler}>
-                            <Refresh style={{ color: "white" }} />
+                            <Refresh style={{ color: "white", cursor: "pointer" }} />
                         </IconButton>
                     </Tooltip>
                 </Stack>
@@ -328,7 +341,7 @@ const ProductFilter = (props: ProductProps) => {
             </Box>
             <Box className="core-sec">
                 <Stack direction={"row"}>
-                    <img src="/img/icons/graphics-card.svg" alt="" />
+                    <img src="/img/icons/graphics-card-white.svg" alt="" />
                     <>Graphics</>
                 </Stack>
                 <Stack>
@@ -339,11 +352,11 @@ const ProductFilter = (props: ProductProps) => {
                         onMouseLeave={() => setShowMore3(false)}
                     >
                         <AccordionSummary expandIcon={<ExpandMore sx={{ color: "white" }} />} className="extra-list">
-                            <span style={{ marginLeft: "10px", fontWeight: "600" }}>GeForce RTX™ 40 Series</span>
+                            <span style={{ marginLeft: "10px", fontWeight: "600", fontSize: "14px" }}>GeForce RTX™ 40 Series</span>
                         </AccordionSummary>
                         {Object.values(GraphicsType).map((card: string) => {
                             if (card.includes("40")) return (
-                                <AccordionDetails sx={{ paddingLeft: "40px", fontSize: "12px" }}>
+                                <AccordionDetails sx={{ paddingLeft: "40px" }}>
                                     <Stack className={'checkbox-item'} key={card} direction={"row"}>
                                         <Checkbox
                                             id={card}
@@ -369,12 +382,12 @@ const ProductFilter = (props: ProductProps) => {
                         onMouseLeave={() => setShowMore4(false)}
                     >
                         <AccordionSummary expandIcon={<ExpandMore sx={{ color: "white" }} />} className="extra-list">
-                            <span style={{ marginLeft: "10px", fontWeight: "600" }}>GeForce RTX™ 30 Series</span>
+                            <span style={{ marginLeft: "10px", fontWeight: "600", fontSize: "14px" }}>GeForce RTX™ 30 Series</span>
                         </AccordionSummary>
                         {Object.values(GraphicsType).map((card: string) => {
                             if (card.includes("30")) return (
-                                <AccordionDetails sx={{ paddingLeft: "40px", fontSize: "12px" }}>
-                                    <Stack className={'checkbox-item'} key={card} direction={"row"}>
+                                <AccordionDetails sx={{ paddingLeft: "40px", fontSize: "10px" }}>
+                                    <Stack className={'checkbox-item'} key={card} direction={"row"} >
                                         <Checkbox
                                             id={card}
                                             className="checkbox"
@@ -399,7 +412,7 @@ const ProductFilter = (props: ProductProps) => {
                         onMouseLeave={() => setShowMore4(false)}
                     >
                         <AccordionSummary expandIcon={<ExpandMore sx={{ color: "white" }} />} className="extra-list">
-                            <span style={{ marginLeft: "10px", fontWeight: "600" }}>GeForce RTX™ 20 Series</span>
+                            <span style={{ marginLeft: "10px", fontWeight: "600", fontSize: "14px" }}>GeForce RTX™ 20 Series</span>
                         </AccordionSummary>
                         {Object.values(GraphicsType).map((card: string) => {
                             if (card.includes("20")) return (
@@ -429,10 +442,10 @@ const ProductFilter = (props: ProductProps) => {
                         onMouseLeave={() => setShowMore5(false)}
                     >
                         <AccordionSummary expandIcon={<ExpandMore sx={{ color: "white" }} />} className="extra-list">
-                            <span style={{ marginLeft: "10px", fontWeight: "600" }}>AMD Radeon™ 6000M Series</span>
+                            <span style={{ marginLeft: "10px", fontWeight: "600", fontSize: "13px" }}>AMD Radeon 6000M Series</span>
                         </AccordionSummary>
                         {Object.values(GraphicsType).map((card: string) => {
-                            if (card.includes("6000M")) return (
+                            if (card.includes("Radeon")) return (
                                 <AccordionDetails sx={{ paddingLeft: "40px", fontSize: "12px" }}>
                                     <Stack className={'checkbox-item'} key={card} direction={"row"}>
                                         <Checkbox
@@ -454,22 +467,36 @@ const ProductFilter = (props: ProductProps) => {
                     </Accordion>
                 </Stack>
             </Box>
-            <Accordion
-                sx={{ backgroundColor: "transparent", boxShadow: "none", borderRadius: "0" }}
-                expanded={showMore6}
-                onMouseEnter={() => setShowMore6(true)}
-                onMouseLeave={() => setShowMore6(false)}
-            >
-                <AccordionSummary expandIcon={<ExpandMore sx={{ color: "white" }} />} sx={{ color: "white" }}>
-                    <TabOutlined />
-                    <span style={{ marginLeft: "10px", fontWeight: "600" }}>Display</span>
-                </AccordionSummary>
-                {DisplayResolution.map((resolution: string) => (
-                    <AccordionDetails sx={{ paddingLeft: "40px", fontSize: "12px" }}>
-                        <FormControlLabel control={<Checkbox className={"checkbox"} />} className={"checkbox-item"} label={resolution} />
-                    </AccordionDetails>
-                ))}
-            </Accordion>
+            {
+                productsInquiry?.search?.productCategory === ProductCategory.LAPTOP ? (
+                    <Accordion
+                        sx={{ backgroundColor: "transparent", boxShadow: "none", borderRadius: "0" }}
+                        expanded={showMore6}
+                        onMouseEnter={() => setShowMore6(true)}
+                        onMouseLeave={() => setShowMore6(false)}
+                    >
+                        <AccordionSummary expandIcon={<ExpandMore sx={{ color: "white" }} />} sx={{ color: "white" }}>
+                            <TabOutlined />
+                            <span style={{ marginLeft: "10px", fontWeight: "600" }}>Display</span>
+                        </AccordionSummary>
+                        {DisplayResolution.map((resolution: string) => (
+                            <AccordionDetails sx={{ paddingLeft: "40px", fontSize: "12px" }}>
+                                <Stack>
+                                    <Checkbox
+                                        id={resolution}
+                                        className="checkbox"
+                                        color="default"
+                                        size="small"
+                                        value={resolution}
+                                        checked={(productsInquiry?.search?.displayList || []).includes(Number(resolution))}
+                                        onChange={handleSelectDisplayResolution}
+                                    />
+                                </Stack>
+                            </AccordionDetails>
+                        ))}
+                    </Accordion>
+                ) : null
+            }
             <Accordion
                 sx={{ backgroundColor: "transparent", boxShadow: "none", borderRadius: "0" }}
                 expanded={showMore7}

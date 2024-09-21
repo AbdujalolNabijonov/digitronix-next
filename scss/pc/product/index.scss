@@ -128,18 +128,24 @@
         }
         .checkbox-item {
           padding: 0 0px 0 25px;
-          font-size: 10px;
           color: white;
+          align-items: center;
+          gap: 5px;
           .checkbox {
             padding: 0px;
-            font-size: 10px;
             color: red;
+          }
+          label{
+            .property-type{
+              font-size: 13px;
+            }
           }
         }
       }
       .product-list {
         .item-box {
-          height: 380px;
+          height: 420px;
+          width: 30%;
           position: relative;
           background-color: transparent;
           padding: 20px 10px 0 10px;
@@ -182,13 +188,17 @@
             }
           }
           .title {
-            border-bottom: 1px solid white;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgb(135, 135, 135);
+            width: 70%;
+            text-align: center;
+            font-weight: 600;
           }
           .context {
             padding: 15px 0 10px 0;
+            text-align: center;
           }
           .item-footer {
-            border-top: 1px solid rgb(96, 93, 93);
             padding: 5px;
           }
         }
