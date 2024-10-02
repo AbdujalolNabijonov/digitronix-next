@@ -64,6 +64,6 @@ export const AmdCoreList = [
     "Ryzen 7000"
 ]
 
-export const DisplayResolution = ["14'", "15'", "16'", "17'", "18'"];
+export const DisplayResolution = ["14", "15", "16", "17", "18"];
 
 export const BrandsList = ["MSI", 'LENOVO', "ASUS", "ACER", 'LG', 'SAMSUNG']

@@ -32,15 +32,12 @@ const Products: NextPage = (props: any) => {
     //LifeCircle
     useEffect(() => {
         const query = router?.query?.input ? JSON.parse(router?.query?.input as string) : null
-        console.log(query)
-        if (!query) {
+        if (query && !query.search.productCategory) {
             router.push("/").then();
-        } else if (query && !query.search.productCategory) {
-            router.push("/").then();
-        } else {
+        }else{
             setProductsInquiry(query)
         }
-    }, [router.query.input])
+    }, [router.query?.input])
 
     //Apollo Request
     const {

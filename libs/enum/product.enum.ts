@@ -58,10 +58,16 @@ export enum ProductSeries {
     TRIDENT = "TIDENT",
     CODEX = "CODEX",
     META = "META",
+    AERO = "AERO"
+}
+
+export enum GraphicsSeries {
     SUPRIM = "SUPRIM",
+    EXPERT = "EXPERT",
     GAMING = "GAMING",
     VENTUS = "VENTUS",
-    SHADOW = "SHADOW"
+    SHADOW = "SHADOW",
+    AERO = "AERO"
 }
 
 export enum GraphicsType {

@@ -1,4 +1,4 @@
-import { GraphicsType, ProductCategory, ProductCore, ProductSeries } from "@/libs/enum/product.enum"
+import { GraphicsSeries, GraphicsType, ProductCategory, ProductCore, ProductSeries } from "@/libs/enum/product.enum"
 import { AmdCoreList, BrandsList, DisplayResolution, IntelCoreList } from "@/libs/types/product/product"
 import { ProductsInquiry } from "@/libs/types/product/product.input"
 import { CancelRounded, Computer, ExpandMore, HomeWorkOutlined, KeyboardDoubleArrowDownOutlined, KeyboardDoubleArrowUpOutlined, Memory, Refresh, Search, Tab, TabOutlined } from "@mui/icons-material"
@@ -37,29 +37,42 @@ const ProductFilter = (props: ProductProps) => {
                 `products/?input=${JSON.stringify({ ...productsInquiry, search: { ...productsInquiry.search } })}`,
                 { scroll: false }
             ).then()
-        } else if (productsInquiry?.search?.processorList?.length === 0) {
+        }
+        if (productsInquiry?.search?.processorList?.length === 0) {
             delete productsInquiry.search.processorList;
             router.push(
                 `products/?input=${JSON.stringify({ ...productsInquiry, search: { ...productsInquiry.search } })}`,
                 `products/?input=${JSON.stringify({ ...productsInquiry, search: { ...productsInquiry.search } })}`,
                 { scroll: false }
             ).then()
-        } else if (productsInquiry?.search?.graphicsList?.length === 0) {
+        }
+        if (productsInquiry?.search?.graphicsList?.length === 0) {
             delete productsInquiry.search.graphicsList;
             router.push(
                 `products/?input=${JSON.stringify({ ...productsInquiry, search: { ...productsInquiry.search } })}`,
                 `products/?input=${JSON.stringify({ ...productsInquiry, search: { ...productsInquiry.search } })}`,
                 { scroll: false }
             ).then()
-        } else if (productsInquiry && !productsInquiry.search.text) {
+        }
+        if (productsInquiry && !productsInquiry.search.text) {
             delete productsInquiry.search.text;
             router.push(
                 `products/?input=${JSON.stringify({ ...productsInquiry, search: { ...productsInquiry.search } })}`,
                 `products/?input=${JSON.stringify({ ...productsInquiry, search: { ...productsInquiry.search } })}`,
                 { scroll: false }
             ).then()
-        } else if (productsInquiry?.search?.displayList?.length == 0) {
+        }
+        if (productsInquiry?.search?.displayList?.length === 0) {
             delete productsInquiry.search.displayList;
+            router.push(
+                `products/?input=${JSON.stringify({ ...productsInquiry, search: { ...productsInquiry.search } })}`,
+                `products/?input=${JSON.stringify({ ...productsInquiry, search: { ...productsInquiry.search } })}`,
+                { scroll: false }
+            ).then()
+        }
+        if (productsInquiry?.search.brandList?.length === 0) {
+            delete productsInquiry.search.brandList;
+
             router.push(
                 `products/?input=${JSON.stringify({ ...productsInquiry, search: { ...productsInquiry.search } })}`,
                 `products/?input=${JSON.stringify({ ...productsInquiry, search: { ...productsInquiry.search } })}`,
@@ -142,9 +155,43 @@ const ProductFilter = (props: ProductProps) => {
     const handleSelectDisplayResolution = useCallback(async (e: any) => {
         try {
             const resolution = Number(e.target.value);
-
+            if (productsInquiry.search.displayList?.includes(resolution)) {
+                await router.push(
+                    `products/?input=${JSON.stringify({ ...productsInquiry, search: { ...productsInquiry.search, displayList: productsInquiry.search.displayList.filter((a) => a != resolution) } })}`,
+                    `products/?input=${JSON.stringify({ ...productsInquiry, search: { ...productsInquiry.search, displayList: productsInquiry.search.displayList.filter((a) => a != resolution) } })}`,
+                    { scroll: false }
+                )
+            } else {
+                await router.push(
+                    `products/?input=${JSON.stringify({ ...productsInquiry, search: { ...productsInquiry.search, displayList: [...productsInquiry.search.displayList || [], resolution] } })}`,
+                    `products/?input=${JSON.stringify({ ...productsInquiry, search: { ...productsInquiry.search, displayList: [...productsInquiry.search.displayList || [], resolution] } })}`,
+                    { scroll: false }
+                )
+            }
         } catch (err: any) {
             console.log(`Error, handleSelectDisplayResolution ${err.message}`)
+        }
+    }, [productsInquiry])
+
+
+    const handleSelectBrands = useCallback(async (e: any) => {
+        const brand = e.target.value;
+        try {
+            if (productsInquiry.search.brandList?.includes(brand)) {
+                await router.push(
+                    `products/?input=${JSON.stringify({ ...productsInquiry, search: { ...productsInquiry.search, brandList: productsInquiry.search.brandList.filter(ele => ele !== brand) } })}`,
+                    `products/?input=${JSON.stringify({ ...productsInquiry, search: { ...productsInquiry.search, brandList: productsInquiry.search.brandList.filter(ele => ele !== brand) } })}`,
+                    { scroll: false }
+                )
+            } else {
+                await router.push(
+                    `products/?input=${JSON.stringify({ ...productsInquiry, search: { ...productsInquiry.search, brandList: [...productsInquiry.search.brandList ?? [], brand] } })}`,
+                    `products/?input=${JSON.stringify({ ...productsInquiry, search: { ...productsInquiry.search, brandList: [...productsInquiry.search.brandList ?? [], brand] } })}`,
+                    { scroll: false }
+                )
+            }
+        } catch (err: any) {
+            console.log(`Error, handleSelectBrands ${err.message}`)
         }
     }, [productsInquiry])
 
@@ -275,70 +322,108 @@ const ProductFilter = (props: ProductProps) => {
                     })}
                 </Accordion>
             </Accordion>
-            <Box className="core-sec">
-                <Stack direction={"row"}>
-                    <><Memory /></>
-                    <>Proccessor</>
-                </Stack>
-                <Stack>
-                    <Accordion
-                        sx={{ backgroundColor: "transparent", boxShadow: "none", borderRadius: "0" }}
-                        expanded={showMore1}
-                        onMouseEnter={() => setShowMore1(true)}
-                        onMouseLeave={() => setShowMore1(false)}
-                    >
-                        <AccordionSummary expandIcon={<ExpandMore sx={{ color: "white" }} />} className="extra-list">
-                            <div style={{ marginLeft: "10px", fontWeight: "600" }}>Intel Platform</div>
-                        </AccordionSummary>
-                        {IntelCoreList.map((core: string) => (
-                            <AccordionDetails sx={{ paddingLeft: "40px", fontSize: "12px" }}>
-                                <Stack className={'checkbox-item'} key={core} direction={"row"}>
-                                    <Checkbox
-                                        id={core}
-                                        className="checkbox"
-                                        color="default"
-                                        size="small"
-                                        value={core}
-                                        checked={(productsInquiry?.search?.processorList || []).includes(core.split(" ").join("_").toUpperCase())}
-                                        onChange={handleSelectCore}
-                                    />
-                                    <label htmlFor={core} style={{ cursor: 'pointer' }}>
-                                        <Typography className="property-type">{core}</Typography>
-                                    </label>
+            {
+                productsInquiry?.search?.productCategory === ProductCategory.GRAPHICS ? (
+                    <Stack>
+                        <Accordion
+                            sx={{ backgroundColor: "transparent", boxShadow: "none", borderRadius: "0" }}
+                            expanded={showMore1}
+                            onMouseEnter={() => setShowMore1(true)}
+                            onMouseLeave={() => setShowMore1(false)}
+                        >
+                            <AccordionSummary expandIcon={<ExpandMore sx={{ color: "white" }} />}>
+                                <Stack>
+                                    
                                 </Stack>
-                            </AccordionDetails>
-                        ))}
-                    </Accordion>
-                    <Accordion
-                        sx={{ backgroundColor: "transparent", boxShadow: "none", borderRadius: "0" }}
-                        expanded={showMore2}
-                        onMouseEnter={() => setShowMore2(true)}
-                        onMouseLeave={() => setShowMore2(false)}
-                    >
-                        <AccordionSummary expandIcon={<ExpandMore sx={{ color: "white" }} />} className="extra-list">
-                            <span style={{ marginLeft: "10px", fontWeight: "600" }}>AMD Platform</span>
-                        </AccordionSummary>
-                        {AmdCoreList.map((core: string) => (
-                            <AccordionDetails sx={{ paddingLeft: "40px", fontSize: "12px" }}>
-                                <Stack className={'checkbox-item'} key={core} direction={"row"}>
-                                    <Checkbox
-                                        id={core}
-                                        className="checkbox"
-                                        color="default"
-                                        size="small"
-                                        value={core}
-                                        checked={(productsInquiry?.search?.processorList || []).includes(core.split(" ").join("_").toUpperCase())}
-                                        onChange={handleSelectCore}
-                                    />
-                                    <label htmlFor={core} style={{ cursor: 'pointer' }}>
-                                        <Typography className="property-type">{core}</Typography>
-                                    </label>
-                                </Stack>
-                            </AccordionDetails>
-                        ))}
-                    </Accordion>
-                </Stack>
-            </Box>
+                                <div style={{ marginLeft: "10px", fontWeight: "600", color:"white" }}>Intel Platform</div>
+                            </AccordionSummary>
+                            {[2, 4, 6, 8, 10, 12, 16, 20, 24].map((store: number) => (
+                                <AccordionDetails sx={{ paddingLeft: "40px", fontSize: "12px" }}>
+                                    <Stack className={'checkbox-item'} key={store} direction={"row"}>
+                                        <Checkbox
+                                            id={String(store)}
+                                            className="checkbox"
+                                            color="default"
+                                            size="small"
+                                            value={store}
+                                            checked={false}
+                                            onChange={handleSelectCore}
+                                        />
+                                        <label htmlFor={String(store)} style={{ cursor: 'pointer' }}>
+                                            <Typography className="property-type">{store}GB</Typography>
+                                        </label>
+                                    </Stack>
+                                </AccordionDetails>
+                            ))}
+                        </Accordion>
+                    </Stack>
+                ) : (
+                    <Box className="core-sec">
+                        <Stack direction={"row"}>
+                            <><Memory /></>
+                            <>Proccessor</>
+                        </Stack>
+                        <Stack>
+                            <Accordion
+                                sx={{ backgroundColor: "transparent", boxShadow: "none", borderRadius: "0" }}
+                                expanded={showMore1}
+                                onMouseEnter={() => setShowMore1(true)}
+                                onMouseLeave={() => setShowMore1(false)}
+                            >
+                                <AccordionSummary expandIcon={<ExpandMore sx={{ color: "white" }} />} className="extra-list">
+                                    <div style={{ marginLeft: "10px", fontWeight: "600" }}>Intel Platform</div>
+                                </AccordionSummary>
+                                {IntelCoreList.map((core: string) => (
+                                    <AccordionDetails sx={{ paddingLeft: "40px", fontSize: "12px" }}>
+                                        <Stack className={'checkbox-item'} key={core} direction={"row"}>
+                                            <Checkbox
+                                                id={core}
+                                                className="checkbox"
+                                                color="default"
+                                                size="small"
+                                                value={core}
+                                                checked={(productsInquiry?.search?.processorList || []).includes(core.split(" ").join("_").toUpperCase())}
+                                                onChange={handleSelectCore}
+                                            />
+                                            <label htmlFor={core} style={{ cursor: 'pointer' }}>
+                                                <Typography className="property-type">{core}</Typography>
+                                            </label>
+                                        </Stack>
+                                    </AccordionDetails>
+                                ))}
+                            </Accordion>
+                            <Accordion
+                                sx={{ backgroundColor: "transparent", boxShadow: "none", borderRadius: "0" }}
+                                expanded={showMore2}
+                                onMouseEnter={() => setShowMore2(true)}
+                                onMouseLeave={() => setShowMore2(false)}
+                            >
+                                <AccordionSummary expandIcon={<ExpandMore sx={{ color: "white" }} />} className="extra-list">
+                                    <span style={{ marginLeft: "10px", fontWeight: "600" }}>AMD Platform</span>
+                                </AccordionSummary>
+                                {AmdCoreList.map((core: string) => (
+                                    <AccordionDetails sx={{ paddingLeft: "40px", fontSize: "12px" }}>
+                                        <Stack className={'checkbox-item'} key={core} direction={"row"}>
+                                            <Checkbox
+                                                id={core}
+                                                className="checkbox"
+                                                color="default"
+                                                size="small"
+                                                value={core}
+                                                checked={(productsInquiry?.search?.processorList || []).includes(core.split(" ").join("_").toUpperCase())}
+                                                onChange={handleSelectCore}
+                                            />
+                                            <label htmlFor={core} style={{ cursor: 'pointer' }}>
+                                                <Typography className="property-type">{core}</Typography>
+                                            </label>
+                                        </Stack>
+                                    </AccordionDetails>
+                                ))}
+                            </Accordion>
+                        </Stack>
+                    </Box>
+                )
+            }
             <Box className="core-sec">
                 <Stack direction={"row"}>
                     <img src="/img/icons/graphics-card-white.svg" alt="" />
@@ -480,8 +565,8 @@ const ProductFilter = (props: ProductProps) => {
                             <span style={{ marginLeft: "10px", fontWeight: "600" }}>Display</span>
                         </AccordionSummary>
                         {DisplayResolution.map((resolution: string) => (
-                            <AccordionDetails sx={{ paddingLeft: "40px", fontSize: "12px" }}>
-                                <Stack>
+                            <AccordionDetails sx={{ paddingLeft: "40px", fontSize: "14px" }}>
+                                <Stack className={'checkbox-item'} key={resolution} direction={"row"}>
                                     <Checkbox
                                         id={resolution}
                                         className="checkbox"
@@ -491,6 +576,9 @@ const ProductFilter = (props: ProductProps) => {
                                         checked={(productsInquiry?.search?.displayList || []).includes(Number(resolution))}
                                         onChange={handleSelectDisplayResolution}
                                     />
+                                    <label htmlFor={resolution} style={{ cursor: 'pointer' }}>
+                                        <Typography className="property-type">{resolution}'</Typography>
+                                    </label>
                                 </Stack>
                             </AccordionDetails>
                         ))}
@@ -509,7 +597,20 @@ const ProductFilter = (props: ProductProps) => {
                 </AccordionSummary>
                 {BrandsList.map((brand: string) => (
                     <AccordionDetails sx={{ paddingLeft: "40px", fontSize: "12px" }}>
-                        <FormControlLabel control={<Checkbox className="checkbox" />} className="checkbox-item" label={brand} />
+                        <Stack className={'checkbox-item'} key={brand} direction={"row"}>
+                            <Checkbox
+                                id={brand}
+                                className="checkbox"
+                                color="default"
+                                size="small"
+                                value={brand}
+                                checked={(productsInquiry?.search?.brandList || []).includes(brand)}
+                                onChange={handleSelectBrands}
+                            />
+                            <label htmlFor={brand} style={{ cursor: 'pointer' }}>
+                                <Typography className="property-type">{brand}</Typography>
+                            </label>
+                        </Stack>
                     </AccordionDetails>
                 ))}
             </Accordion>
