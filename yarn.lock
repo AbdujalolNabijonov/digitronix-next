@@ -1679,10 +1679,15 @@ sweetalert2@11.7.27:
   resolved "https://registry.yarnpkg.com/sweetalert2/-/sweetalert2-11.7.27.tgz#de19294e1b5ae7991de27bb4ae34aff3570aaa0e"
   integrity sha512-QbRXGQn1sb7HEhzA/K2xtWIwQHh/qkSbb1w6jYcTql2xy17876lTREEt1D4X6Q0x2wHtfUjKJ+Cb8IVkRoq7DQ==
 
-swiper@*, swiper@^11.1.8:
+swiper@*:
   version "11.1.8"
   resolved "https://registry.yarnpkg.com/swiper/-/swiper-11.1.8.tgz#16a9ce0441a45cc8d754280361a100e530364583"
   integrity sha512-sBFp7fA+IfZ/7BMcg8/JSEqDD1qZXBUyliT76yk3zIYVu2fMwFVAghhAJ9vBM5tJUtHW5qcD0pmeEGQs1EK14w==
+
+swiper@^10.0.0:
+  version "10.3.1"
+  resolved "https://registry.yarnpkg.com/swiper/-/swiper-10.3.1.tgz#4d19d7e9d0bd184c30accf2c1b180cfe41b9f4af"
+  integrity sha512-24Wk3YUdZHxjc9faID97GTu6xnLNia+adMt6qMTZG/HgdSUt4fS0REsGUXJOgpTED0Amh/j+gRGQxsLayJUlBQ==
 
 symbol-observable@^1.0.4:
   version "1.2.0"
