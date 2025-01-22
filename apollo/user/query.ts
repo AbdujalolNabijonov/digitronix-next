@@ -34,42 +34,72 @@ query Login($input: LoginInput!) {
 `
 
 export const GET_PRODUCT = gql`
-query GetProductPc($input: String!) {
-    getProductPc(input: $input) {
-        memberId
-        productName
-        productCompany
-        productType
-        productStatus
-        productSerie
-        productProcessor
-        productPocessorGen
-        productGraphicsSerie
-        productGraphicsType
-        productDisplay
-        productColor
-        productCore
-        productMemory
-        productStorage
-        poductBattery
-        poductRgbType
-        productWebCam
-        productWeight
-        productImages
-        productDesc
-        productPrice
-        productRgbType
-        productConnectivity
-        productLikes
-        productViews
-        productComments
-        productRank
-        createdAt
-        updatedAt
-        deletedAt
-        soldAt
+    query GetProduct($input:String!){
+        getProduct(input: $input) {
+            _id
+            memberId
+            productName
+            productStatus
+            productLabel
+            productBrand
+            productCategory
+            productPrice
+            productColor
+            productCore
+            productSerie
+            productDisplay
+            productMemory
+            productStorage
+            productWeight
+            productGraphics
+            productConnectivity
+            productMaterial
+            productImages
+            productDesc
+            productViews
+            productLikes
+            productComments
+            productRank
+            soldAt
+            deletedAt
+            createdAt
+            updatedAt
+            meLiked {
+                memberId
+                likeTargetId
+                myFavorite
+            }
+            memberData {
+                _id
+                memberFullName
+                memberEmail
+                memberStatus
+                memberType
+                memberAuthType
+                memberPhone
+                memberNick
+                memberPassword
+                memberImage
+                memberAddress
+                memberDesc
+                memberProducts
+                memberArticles
+                memberFollowers
+                memberFollowings
+                memberPoints
+                memberLikes
+                memberViews
+                memberComments
+                memberRank
+                memberWarnings
+                memberBlocks
+                accessToken
+                deletedAt
+                createdAt
+                updatedAt
+            }
+        }
     }
-}
 `
 
 export const GET_ALL_PRODUCTS = gql`

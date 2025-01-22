@@ -27,6 +27,7 @@ export interface Product {
     productCategory: ProductCategory,
     productPrice: number,
     productColor: string,
+    productOS?: string,
     productCore?: ProductCore,
     productSerie?: ProductSeries,
     productDisplay?: number,
