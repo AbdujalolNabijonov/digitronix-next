@@ -50,7 +50,7 @@ export interface ProductsInquiry {
     page: number;
     limit: number,
     sort?: string,
-    direction?: string;
+    direction?: number;
     search: PISearch
 }
 

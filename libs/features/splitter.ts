@@ -15,5 +15,5 @@ export const stringSplitterHandler = (
     withChar: string = "_"
 ) => {
     const regex = new RegExp(withChar, "g")
-    return context.toString().replace(regex, " ");
+    return String(context).replace(regex, " ");
 }

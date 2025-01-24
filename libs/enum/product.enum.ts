@@ -36,7 +36,7 @@ export enum ProductCategory {
     DESKTOP = "DESKTOP",
     GRAPHICS = "GRAPHICS",
     KEYBOARD = "KEYBOARD",
-    MOUSE = "MOUSE",
+    MICE = "MICE",
     CHAIR = "CHAIR"
 }
 
@@ -71,24 +71,24 @@ export enum GraphicsSeries {
 }
 
 export enum GraphicsType {
-    GeForce_RTX_4090 = "GeForce RTX 4090",
-    GeForce_RTX_4080 = "GeForce RTX 4080",
-    GeForce_RTX_4070 = "GeForce RTX 4070",
-    GeForce_RTX_4060 = "GeForce RTX 4060",
-    GeForce_RTX_4050 = "GeForce RTX 4050",
-    GeForce_RTX_3070_TI = "GeForce RTX 3070 TI",
-    GeForce_RTX_3070 = "GeForce RTX 3070",
-    GeForce_RTX_3060 = "GeForce RTX 3060",
-    GeForce_RTX_3050_TI = "GeForce RTX 3050 TI",
-    GeForce_RTX_3050 = "GeForce RTX 3050",
-    GeForce_RTX_2080_SUPER = "GeForce RTX 2080 SUPER",
-    GeForce_RTX_2080 = "GeForce RTX 2080",
-    GeForce_RTX_2070_SUPER = "GeForce RTX 2070 SUPER",
-    GeForce_RTX_2070 = "GeForce RTX 2070",
-    GeForce_RTX_2060 = "GeForce RTX 2060",
-    GeForce_RTX_2050 = "GeForce RTX 2050",
-    GeForce_GTX_1660_TI = "GeForce GTX 1660 TI",
-    GeForce_GTX_1650 = "GeForce GTX 1650",
+    GeForce_RTX_4090 = "4090",
+    GeForce_RTX_4080 = "4080",
+    GeForce_RTX_4070 = "4070",
+    GeForce_RTX_4060 = "4060",
+    GeForce_RTX_4050 = "4050",
+    GeForce_RTX_3070_TI = "3070 TI",
+    GeForce_RTX_3070 = "3070",
+    GeForce_RTX_3060 = "3060",
+    GeForce_RTX_3050_TI = "3050 TI",
+    GeForce_RTX_3050 = "3050",
+    GeForce_RTX_2080_SUPER = "2080 SUPER",
+    GeForce_RTX_2080 = "2080",
+    GeForce_RTX_2070_SUPER = "2070 SUPER",
+    GeForce_RTX_2070 = "2070",
+    GeForce_RTX_2060 = "2060",
+    GeForce_RTX_2050 = "2050",
+    GeForce_GTX_1660_TI = "GTX 1660 TI",
+    GeForce_GTX_1650 = "GTX 1650",
     RADEON_RX_6550M = "Radeon RX 6550M"
 }
 

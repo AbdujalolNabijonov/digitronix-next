@@ -29,57 +29,57 @@ const ProductFilter = (props: ProductProps) => {
     const router = useRouter()
 
     //LifeCircle
-    useEffect(() => {
-        if (productsInquiry?.search?.serieList?.length === 0) {
-            delete productsInquiry.search.serieList;
-            router.push(
-                `products/?input=${JSON.stringify({ ...productsInquiry, search: { ...productsInquiry.search } })}`,
-                `products/?input=${JSON.stringify({ ...productsInquiry, search: { ...productsInquiry.search } })}`,
-                { scroll: false }
-            ).then()
-        }
-        if (productsInquiry?.search?.processorList?.length === 0) {
-            delete productsInquiry.search.processorList;
-            router.push(
-                `products/?input=${JSON.stringify({ ...productsInquiry, search: { ...productsInquiry.search } })}`,
-                `products/?input=${JSON.stringify({ ...productsInquiry, search: { ...productsInquiry.search } })}`,
-                { scroll: false }
-            ).then()
-        }
-        if (productsInquiry?.search?.graphicsList?.length === 0) {
-            delete productsInquiry.search.graphicsList;
-            router.push(
-                `products/?input=${JSON.stringify({ ...productsInquiry, search: { ...productsInquiry.search } })}`,
-                `products/?input=${JSON.stringify({ ...productsInquiry, search: { ...productsInquiry.search } })}`,
-                { scroll: false }
-            ).then()
-        }
-        if (productsInquiry && !productsInquiry.search.text) {
-            delete productsInquiry.search.text;
-            router.push(
-                `products/?input=${JSON.stringify({ ...productsInquiry, search: { ...productsInquiry.search } })}`,
-                `products/?input=${JSON.stringify({ ...productsInquiry, search: { ...productsInquiry.search } })}`,
-                { scroll: false }
-            ).then()
-        }
-        if (productsInquiry?.search?.displayList?.length === 0) {
-            delete productsInquiry.search.displayList;
-            router.push(
-                `products/?input=${JSON.stringify({ ...productsInquiry, search: { ...productsInquiry.search } })}`,
-                `products/?input=${JSON.stringify({ ...productsInquiry, search: { ...productsInquiry.search } })}`,
-                { scroll: false }
-            ).then()
-        }
-        if (productsInquiry?.search.brandList?.length === 0) {
-            delete productsInquiry.search.brandList;
+    // useEffect(() => {
+    //     if (productsInquiry?.search?.serieList?.length === 0) {
+    //         delete productsInquiry.search.serieList;
+    //         router.push(
+    //             `products/?input=${JSON.stringify({ ...productsInquiry, search: { ...productsInquiry.search } })}`,
+    //             `products/?input=${JSON.stringify({ ...productsInquiry, search: { ...productsInquiry.search } })}`,
+    //             { scroll: false }
+    //         ).then()
+    //     }
+    //     if (productsInquiry?.search?.processorList?.length === 0) {
+    //         delete productsInquiry.search.processorList;
+    //         router.push(
+    //             `products/?input=${JSON.stringify({ ...productsInquiry, search: { ...productsInquiry.search } })}`,
+    //             `products/?input=${JSON.stringify({ ...productsInquiry, search: { ...productsInquiry.search } })}`,
+    //             { scroll: false }
+    //         ).then()
+    //     }
+    //     if (productsInquiry?.search?.graphicsList?.length === 0) {
+    //         delete productsInquiry.search.graphicsList;
+    //         router.push(
+    //             `products/?input=${JSON.stringify({ ...productsInquiry, search: { ...productsInquiry.search } })}`,
+    //             `products/?input=${JSON.stringify({ ...productsInquiry, search: { ...productsInquiry.search } })}`,
+    //             { scroll: false }
+    //         ).then()
+    //     }
+    //     if (productsInquiry && !productsInquiry.search.text) {
+    //         delete productsInquiry.search.text;
+    //         router.push(
+    //             `products/?input=${JSON.stringify({ ...productsInquiry, search: { ...productsInquiry.search } })}`,
+    //             `products/?input=${JSON.stringify({ ...productsInquiry, search: { ...productsInquiry.search } })}`,
+    //             { scroll: false }
+    //         ).then()
+    //     }
+    //     if (productsInquiry?.search?.displayList?.length === 0) {
+    //         delete productsInquiry.search.displayList;
+    //         router.push(
+    //             `products/?input=${JSON.stringify({ ...productsInquiry, search: { ...productsInquiry.search } })}`,
+    //             `products/?input=${JSON.stringify({ ...productsInquiry, search: { ...productsInquiry.search } })}`,
+    //             { scroll: false }
+    //         ).then()
+    //     }
+    //     if (productsInquiry?.search.brandList?.length === 0) {
+    //         delete productsInquiry.search.brandList;
 
-            router.push(
-                `products/?input=${JSON.stringify({ ...productsInquiry, search: { ...productsInquiry.search } })}`,
-                `products/?input=${JSON.stringify({ ...productsInquiry, search: { ...productsInquiry.search } })}`,
-                { scroll: false }
-            ).then()
-        }
-    }, [productsInquiry])
+    //         router.push(
+    //             `products/?input=${JSON.stringify({ ...productsInquiry, search: { ...productsInquiry.search } })}`,
+    //             `products/?input=${JSON.stringify({ ...productsInquiry, search: { ...productsInquiry.search } })}`,
+    //             { scroll: false }
+    //         ).then()
+    //     }
+    // }, [productsInquiry])
 
     //handlers
 
@@ -113,14 +113,14 @@ const ProductFilter = (props: ProductProps) => {
             try {
                 if (isChecked) {
                     await router.push(
-                        `products/?input=${JSON.stringify({ ...productsInquiry, search: { ...productsInquiry.search, processorList: [...(productsInquiry?.search?.processorList || []), core.split(" ").join("_").toUpperCase()] } })}`,
-                        `products/?input=${JSON.stringify({ ...productsInquiry, search: { ...productsInquiry.search, processorList: [...(productsInquiry?.search?.processorList || []), core.split(" ").join("_").toUpperCase()] } })}`,
+                        `products/?input=${JSON.stringify({ ...productsInquiry, search: { ...productsInquiry.search, processorList: [...(productsInquiry?.search?.processorList || []), core] } })}`,
+                        `products/?input=${JSON.stringify({ ...productsInquiry, search: { ...productsInquiry.search, processorList: [...(productsInquiry?.search?.processorList || []), core] } })}`,
                         { scroll: false }
                     )
-                } else if (productsInquiry.search.processorList?.includes(core.split(" ").join("_").toUpperCase())) {
+                } else if (productsInquiry.search.processorList?.includes(core)) {
                     await router.push(
-                        `products/?input=${JSON.stringify({ ...productsInquiry, search: { ...productsInquiry.search, processorList: productsInquiry.search.processorList.filter(item => item !== core.split(" ").join("_").toUpperCase()) } })}`,
-                        `products/?input=${JSON.stringify({ ...productsInquiry, search: { ...productsInquiry.search, processorList: productsInquiry.search.processorList.filter(item => item !== core.split(" ").join("_").toUpperCase()) } })}`,
+                        `products/?input=${JSON.stringify({ ...productsInquiry, search: { ...productsInquiry.search, processorList: productsInquiry.search.processorList.filter(item => item !== core) } })}`,
+                        `products/?input=${JSON.stringify({ ...productsInquiry, search: { ...productsInquiry.search, processorList: productsInquiry.search.processorList.filter(item => item !== core) } })}`,
                         { scroll: false }
                     )
                 }
@@ -133,17 +133,18 @@ const ProductFilter = (props: ProductProps) => {
         async (e: any) => {
             const isChecked = e.target.checked;
             const card = e.target.value;
+            console.log("card", card)
             try {
                 if (isChecked) {
                     await router.push(
-                        `products/?input=${JSON.stringify({ ...productsInquiry, search: { ...productsInquiry.search, graphicsList: [...(productsInquiry?.search?.graphicsList || []), card.split(" ").join("_").toUpperCase()] } })}`,
-                        `products/?input=${JSON.stringify({ ...productsInquiry, search: { ...productsInquiry.search, graphicsList: [...(productsInquiry?.search?.graphicsList || []), card.split(" ").join("_").toUpperCase()] } })}`,
+                        `products/?input=${JSON.stringify({ ...productsInquiry, search: { ...productsInquiry.search, graphicsList: [...(productsInquiry?.search?.graphicsList || []), card] } })}`,
+                        `products/?input=${JSON.stringify({ ...productsInquiry, search: { ...productsInquiry.search, graphicsList: [...(productsInquiry?.search?.graphicsList || []), card] } })}`,
                         { scroll: false }
                     )
-                } else if (productsInquiry.search.graphicsList?.includes(card.split(" ").join("_").toUpperCase())) {
+                } else if (productsInquiry.search.graphicsList?.includes(card)) {
                     await router.push(
-                        `products/?input=${JSON.stringify({ ...productsInquiry, search: { ...productsInquiry.search, graphicsList: productsInquiry.search.graphicsList.filter(item => item !== card.split(" ").join("_").toUpperCase()) } })}`,
-                        `products/?input=${JSON.stringify({ ...productsInquiry, search: { ...productsInquiry.search, graphicsList: productsInquiry.search.graphicsList.filter(item => item !== card.split(" ").join("_").toUpperCase()) } })}`,
+                        `products/?input=${JSON.stringify({ ...productsInquiry, search: { ...productsInquiry.search, graphicsList: productsInquiry.search.graphicsList.filter(item => item !== card) } })}`,
+                        `products/?input=${JSON.stringify({ ...productsInquiry, search: { ...productsInquiry.search, graphicsList: productsInquiry.search.graphicsList.filter(item => item !== card) } })}`,
                         { scroll: false }
                     )
                 }
@@ -382,7 +383,7 @@ const ProductFilter = (props: ProductProps) => {
                                                 color="default"
                                                 size="small"
                                                 value={core}
-                                                checked={(productsInquiry?.search?.processorList || []).includes(core.split(" ").join("_").toUpperCase())}
+                                                checked={(productsInquiry?.search?.processorList || []).includes(core)}
                                                 onChange={handleSelectCore}
                                             />
                                             <label htmlFor={core} style={{ cursor: 'pointer' }}>
@@ -449,7 +450,7 @@ const ProductFilter = (props: ProductProps) => {
                                             color="default"
                                             size="small"
                                             value={card}
-                                            checked={(productsInquiry?.search?.graphicsList || []).includes(card.split(" ").join("_").toUpperCase())}
+                                            checked={(productsInquiry?.search?.graphicsList || []).includes(card)}
                                             onChange={handleSelectGraphicsCard}
                                         />
                                         <label htmlFor={card} style={{ cursor: 'pointer' }}>

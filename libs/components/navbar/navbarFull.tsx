@@ -21,6 +21,8 @@ import { userVar } from "@/apollo/store";
 import { getJwtToken, logOut, updateUserInfo } from "@/libs/auth";
 import { sweetTopSuccessAlert } from "@/libs/sweetAlert";
 import { Messages } from "@/libs/config";
+import { ProductCategory } from "@/libs/enum/product.enum";
+import { Direction } from "@/libs/enum/common.enum";
 
 
 const Navbar: NextPage = (props: any) => {
@@ -113,10 +115,6 @@ const Navbar: NextPage = (props: any) => {
     const closeProductList = (event: any) => {
         setAnchorEl3(null)
     }
-    const goToAddress = async (adrss: string) => {
-        setAnchorEl3(null)
-        await router.push(adrss,adrss,{scroll:false});
-    }
 
     const handleLogOut = async () => {
         logOut()
@@ -181,7 +179,10 @@ const Navbar: NextPage = (props: any) => {
                             >
                                 <Link
                                     href={"/"}
-                                    onClick={()=>goToAddress("/")}
+                                    onClick={() => {
+                                        router.push("/")
+                                        setAnchorEl3(null)
+                                    }}
                                     className={router.pathname === "/" ? "active" : ""}
                                 >
                                     Home
@@ -211,37 +212,73 @@ const Navbar: NextPage = (props: any) => {
                                                 backgroundColor: "#EEEEEE"
                                             }}>
                                             <MenuItem className="list-item">
-                                                <Stack onClick={() => goToAddress('/products?input={"page":1, "limit":6, "search":{"productCategory":"LAPTOP"}}')}>
+                                                <Stack onClick={() => {
+                                                    let link = "/products/?input="
+                                                    const jsonObj = JSON.stringify({ page: 1, limit: 6, search: { productCategory: ProductCategory.LAPTOP } })
+                                                    link += jsonObj
+                                                    router.push(link, link, { scroll: false })
+                                                    setAnchorEl3(null)
+                                                }}>
                                                     <LaptopOutlined style={{ fontSize: "50px" }} />
                                                     <div>Laptops</div>
                                                 </Stack>
                                             </MenuItem>
                                             <MenuItem className="list-item">
-                                                <Stack onClick={() => goToAddress('/products?input={"page":1, "limit":6, "search":{"productCategory":"DESKTOP"}}')}>
+                                                <Stack onClick={() => {
+                                                    let link = "/products/?input="
+                                                    const jsonObj = JSON.stringify({ page: 1, limit: 6, search: { productCategory: ProductCategory.DESKTOP } })
+                                                    link += jsonObj
+                                                    router.push(link, link, { scroll: false })
+                                                    setAnchorEl3(null)
+                                                }}>
                                                     <DesktopTower size={"50px"} />
                                                     <div>Desktops</div>
                                                 </Stack>
                                             </MenuItem>
                                             <MenuItem className="list-item">
-                                                <Stack onClick={() => goToAddress('/products?input={"page":1, "limit":6, "search":{"productCategory":"GRAPHICS"}}')}>
-                                                    <img src="/img/icons/graphics-card.svg" alt="graphics" style={{ width: "50px", fill:"gray" }} />
+                                                <Stack onClick={() => {
+                                                    let link = "/products/?input="
+                                                    const jsonObj = JSON.stringify({ page: 1, limit: 6, search: { productCategory: ProductCategory.GRAPHICS } })
+                                                    link += jsonObj
+                                                    router.push(link, link, { scroll: false })
+                                                    setAnchorEl3(null)
+                                                }}>
+                                                    <img src="/img/icons/graphics-card.svg" alt="graphics" style={{ width: "50px", fill: "gray" }} />
                                                     <div>Graphics</div>
                                                 </Stack>
                                             </MenuItem>
                                             <MenuItem className="list-item">
-                                                <Stack onClick={() => goToAddress('/products?input={"page":1, "limit":6, "search":{"productCategory":"MOUSE"}}')}>
+                                                <Stack onClick={() => {
+                                                    let link = "/products/?input="
+                                                    const jsonObj = JSON.stringify({ page: 1, limit: 6, search: { productCategory: ProductCategory.MICE } })
+                                                    link += jsonObj
+                                                    router.push(link, link, { scroll: false })
+                                                    setAnchorEl3(null)
+                                                }}>
                                                     <Mouse style={{ fontSize: "50px" }} />
-                                                    <div>Mouse</div>
+                                                    <div>Mice</div>
                                                 </Stack>
                                             </MenuItem>
                                             <MenuItem className="list-item">
-                                                <Stack onClick={() => goToAddress('/products?input={"page":1, "limit":6, "search":{"productCategory":"KEYBOARD"}}')}>
+                                                <Stack onClick={() => {
+                                                    let link = "/products/?input="
+                                                    const jsonObj = JSON.stringify({ page: 1, limit: 6, sort: "createdAt", search: { productCategory: ProductCategory.KEYBOARD } })
+                                                    link += jsonObj
+                                                    router.push(link, link, { scroll: false })
+                                                    setAnchorEl3(null)
+                                                }}>
                                                     <Keyboard style={{ fontSize: "50px" }} />
                                                     <div>Keyboard</div>
                                                 </Stack>
                                             </MenuItem>
                                             <MenuItem className="list-item">
-                                                <Stack alignItems={"center"} onClick={() => goToAddress('/products?input={"page":1, "limit":6, "search":{"productCategory":"CHAIR"}}')}>
+                                                <Stack alignItems={"center"} onClick={() => {
+                                                    let link = "/products/?input="
+                                                    const jsonObj = JSON.stringify({ page: 1, limit: 6, direction: Direction.DESC, search: { productCategory: ProductCategory.CHAIR } })
+                                                    link += jsonObj
+                                                    router.push(link, link, { scroll: false })
+                                                    setAnchorEl3(null)
+                                                }}>
                                                     <Chair style={{ fontSize: "50px" }} />
                                                     <div>Chair</div>
                                                 </Stack>

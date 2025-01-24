@@ -52,11 +52,12 @@ export interface Product {
 }
 
 export const IntelCoreList = [
-    'Intel 14th Gen',
-    'Intel 12th Gen',
-    'Intel 11th Gen',
-    'Intel 10th Gen',
-    'Intel 9th Gen'
+    "i9",
+    "i7",
+    "i5",
+    "i3",
+    "Pentium",
+    "Celeron"
 ]
 
 export const AmdCoreList = [

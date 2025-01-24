@@ -18,32 +18,31 @@ import { GET_ALL_PRODUCTS } from "@/apollo/user/query";
 import { ProductsInquiry } from "@/libs/types/product/product.input";
 import { Product } from "@/libs/types/product/product";
 import useDeviceDetect from "@/libs/hooks/useDeviceDetector";
+import { Direction } from "@/libs/enum/common.enum";
 
 
 
-const Products: NextPage = (props: any) => {
+const Products: NextPage = ({ initialProps, ...props }: any) => {
     const device = useDeviceDetect()
     const router = useRouter();
     const [currentPage, setCurrentPage] = useState<number>(1);
-    const [productsInquiry, setProductsInquiry] = useState<ProductsInquiry>(router?.query?.input ? JSON.parse(router?.query?.input as string) : null);
+    const [productsInquiry, setProductsInquiry] = useState<ProductsInquiry>(initialProps);
     const [products, setProducts] = useState<Product[]>([])
     const [totalProducts, setTotalProducts] = useState<number>(0)
+    const [value, setValue] = useState<string>("new")
 
     //LifeCircle
     useEffect(() => {
-        const query = router?.query?.input ? JSON.parse(router?.query?.input as string) : null
-        if (query && !query.search.productCategory) {
-            router.push("/").then();
-        }else{
-            setProductsInquiry(query)
-        }
-    }, [router.query?.input])
+        const query = router.query.input ? JSON.parse(router.query.input as string) : null
+        if (query) setProductsInquiry(query);
+        if(query?.sort==="createdAt"&&query?.direction===Direction.ASC) setValue("old")
+        else if(query?.sort==="createdAt"&&query?.direction===Direction.DESC) setValue("new")
+        else setValue(query?.sort)
+    }, [router])
+
 
     //Apollo Request
     const {
-        loading: getAllProductsLoading,
-        data: getAllProductsData,
-        error: getAllProductsError,
         refetch: getAllProductsRefetch
     } = useQuery(GET_ALL_PRODUCTS, {
         fetchPolicy: "network-only",
@@ -54,10 +53,36 @@ const Products: NextPage = (props: any) => {
             setTotalProducts(data?.getAllProducts.metaCounter[0].total ?? 0)
         }
     })
+    useEffect(() => {
+        console.log(productsInquiry)
+        getAllProductsRefetch({ input: productsInquiry })
+    }, [productsInquiry])
 
     //Handlers
     const handlePaginationChange = (e: any, newPage: number) => {
         setCurrentPage(newPage)
+        setProductsInquiry({ ...productsInquiry, page: newPage })
+    }
+    const handleSortChange = (e: any) => {
+        const value = e.target.value;
+        setValue(value)
+        switch (value) {
+            case "old":
+                const jsonObj=JSON.stringify({ ...productsInquiry, sort: "createdAt", direction: Direction.ASC })
+                router.push(`/products?input=${jsonObj}`,`/products?input=${jsonObj}`, { shallow: true })
+                setProductsInquiry({ ...productsInquiry, sort: "createdAt", direction: Direction.ASC })
+                break;
+            case "new":
+                const jsonObj2=JSON.stringify({ ...productsInquiry, sort: "createdAt", direction: Direction.DESC })
+                router.push(`/products?input=${jsonObj2}`,`/products?input=${jsonObj2}`, { shallow: true })
+                setProductsInquiry({ ...productsInquiry, sort: "createdAt", direction: Direction.DESC })
+                break;
+            default:
+                const jsonObj3=JSON.stringify({ ...productsInquiry, sort: value })
+                router.push(`/products?input=${jsonObj3}`,`/products?input=${jsonObj3}`, { shallow: true })
+                setProductsInquiry({ ...productsInquiry, sort: value })
+                break;
+        }
     }
     if (device === "mobile") {
         return <h1>PRODUCTS MOBILE</h1>;
@@ -87,8 +112,11 @@ const Products: NextPage = (props: any) => {
                                         <SwapVertOutlined />
                                         <div>Sort By</div>
                                     </Stack>
-                                    <Select value={"Desc"}>
-                                        <MenuItem value={"Desc"}>DESC</MenuItem>
+                                    <Select value={value} onChange={handleSortChange}>
+                                        <MenuItem value={"new"}>New</MenuItem>
+                                        <MenuItem value={"old"}>Old</MenuItem>
+                                        <MenuItem value={"productViews"}>Popular</MenuItem>
+                                        <MenuItem value={"productLikes"}>Trend</MenuItem>
                                     </Select>
                                 </Stack>
                             </Stack>
@@ -110,7 +138,6 @@ const Products: NextPage = (props: any) => {
                                                     <ProductCard product={product} key={product._id} />
                                                 )
                                             }
-
                                         </Stack>
                                     ) : (
                                         <Stack
@@ -126,7 +153,7 @@ const Products: NextPage = (props: any) => {
                                 <Stack className="pagination-box">
                                     <Pagination
                                         page={currentPage}
-                                        count={productsInquiry?.page > 3 ? productsInquiry.page + 1 : Math.ceil(3)}
+                                        count={Math.ceil(totalProducts / productsInquiry.limit)}
                                         onChange={handlePaginationChange}
                                         variant="outlined"
                                         shape="rounded"
@@ -139,6 +166,17 @@ const Products: NextPage = (props: any) => {
                 </Stack>
             </>
         )
+    }
+}
+Products.defaultProps = {
+    initialProps: {
+        page: 1,
+        limit: 9,
+        direction: Direction.DESC,
+        sort: "createdAt",
+        search: {
+            productCategory: "LAPTOP"
+        }
     }
 }
 
