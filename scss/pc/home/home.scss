@@ -92,51 +92,45 @@
                 color: white;
               }
             }
-            .swiper {
-              margin-top: 70px;
-              width: 100%;
-              padding: 40px 20px;
-              .product-card {
-                box-shadow: 0 0 10px rgb(53, 53, 53);
-                cursor: pointer;
-                height: auto;
-                width: 350px;
-                background-color: whitesmoke;
-                border-radius: 20px;
-                padding: 50px 0;
-                transition: all 0.3s ease-in-out;
-                &:hover {
-                  transform: scale(1.1);
-                }
-                .card-head {
-                  img {
-                    width: 80%;
+            .target-products {
+              margin-top: 20px;
+              height: 600px;
+              .swiper {
+                width: 100%;
+                padding: 40px 30px;
+                .product-card {
+                  justify-content: space-evenly;
+                  box-shadow: 0 0 10px rgb(53, 53, 53);
+                  cursor: pointer;
+                  height: 530px;
+                  width: 350px;
+                  background-color: whitesmoke;
+                  border-radius: 20px;
+                  padding: 20px 20px;
+                  transition: all 0.3s ease-in-out;
+                  &:hover {
+                    transform: scale(1.1);
                   }
-                  .color-list {
-                    .colr {
-                      height: 15px;
-                      width: 15px;
-                      border-radius: 50%;
-                      border: 1px solid black;
+                  .card-head {
+                    img {
+                      width: 100%;
                     }
                   }
-                }
-                .card-body {
-                  margin-top: 40px;
-                  padding: 0 30px;
-                  .name {
-                    font-size: 20px;
-                    font-weight: 600;
-                    letter-spacing: 1px;
+                  .card-body {
+                    margin: 10px 0;
+                    .name {
+                      font-size: 20px;
+                      font-weight: 600;
+                      letter-spacing: 1px;
+                    }
                   }
-                }
-                .card-footer {
-                  button {
-                    margin: 20px;
-                    padding: 10px 15px;
-                    background-color: #0071e3;
-                    color: white;
-                    font-weight: 600;
+                  .product-status {
+                    margin-top: 20px;
+                    flex-direction: row;
+                    gap: 10px;
+                    justify-content: end;
+                    align-items: center;
+                    font-size: 20px;
                   }
                 }
               }
@@ -236,6 +230,7 @@
         }
 
         .filter-search {
+          text-transform: uppercase;
           .search-box {
             position: relative;
             margin-top: 56px;
@@ -251,6 +246,8 @@
               display: flex;
               flex-direction: row;
               justify-content: space-between;
+              align-items: center;
+              gap: 5px;
               .box {
                 padding: 24px 22px;
                 width: 213px;
@@ -304,17 +301,20 @@
               }
               .search-btn {
                 cursor: pointer;
-                svg {
-                  width: 20px;
-                  height: 20px;
-                  color: #ffffff;
+                button {
+                  padding: 13px 15px;
+                  margin-left: 10px;
+                  background-color: #fabc93;
+                  box-shadow: 0 0 10px black;
+                  border-radius: 12px;
+                  font-weight: 700;
                 }
               }
             }
-            .filter-location {
+            .filter-brand {
               position: absolute;
               padding: 40px 60px;
-              width: 1094px;
+              width: 100%;
               min-height: 120px;
               height: auto;
               top: 96px;
@@ -335,7 +335,6 @@
                 background: #fffdfd;
               }
               div {
-                width: 295px;
                 display: flex;
                 flex-direction: row;
                 align-items: center;
@@ -363,7 +362,8 @@
             }
             .filter-type {
               position: absolute;
-              padding: 50px;
+              padding: 40px 20px;
+              gap: 10px;
               width: 1094px;
               min-height: 120px;
               height: auto;
@@ -385,11 +385,19 @@
               }
               div {
                 position: relative;
+                background-size: cover;
+                background-repeat: no-repeat;
+                background-position: center;
                 width: 272px;
                 height: 168px;
                 border-radius: 15px;
                 cursor: pointer;
                 background-size: cover;
+                transform: scale(1);
+                transition: transform 0.3s ease-in-out;
+                &:hover {
+                  transform: scale(1.1);
+                }
                 span {
                   position: absolute;
                   top: 13px;
@@ -412,17 +420,18 @@
                 }
               }
             }
-            .filter-rooms {
+            .filter-serie {
               position: absolute;
-              padding: 10px 92px;
-              width: 1094px;
+              padding: 10px;
+              width: 100%;
+              flex-wrap: wrap;
               min-height: 120px;
               height: auto;
               top: 96px;
               right: 0px;
               display: flex;
               flex-direction: row;
-              justify-content: space-between;
+              justify-content: space-evenly;
               align-items: center;
               visibility: hidden;
               border-radius: 12px;
@@ -497,10 +506,11 @@
             .card {
               position: relative;
               display: flex;
+              flex-direction: column;
               justify-content: center;
               align-items: center;
               cursor: pointer;
-              height: 400px;
+              height:500px;
               width: 330px;
               background-repeat: no-repeat;
               background-size: cover;
@@ -511,20 +521,31 @@
               &:hover {
                 transform: translateY(-20px);
               }
-              .title {
-                position: absolute;
-                top: 10px;
-                left: 15px;
-                font-size: 24px;
-              }
-              .context {
-                position: relative;
-                padding: 10px 15px;
-                opacity: 0.8;
+              .card-info {
                 background-color: whitesmoke;
-                border-radius: 10px 0 10px 0;
-                transition: opacity 0.3s ease-in-out;
-                &:hover {
+                opacity: 0.6;
+                margin: 10px;
+                border-radius: 10px;
+                .title {
+                  font-size: 24px;
+                  margin: 5px 10px;
+                  padding: 15px;
+                  border-radius: 10px 0 10px 0;
+                  color: #000;
+                  text-align: center;
+                }
+                .context {
+                  position: relative;
+                  padding: 10px 15px;
+                  margin: 10px;
+                  border-radius: 10px 0 10px 0;
+                  transition: opacity 0.3s ease-in-out;
+                }
+                .event-time{
+                  align-self: end;
+                  padding: 5px 10px;
+                }
+                &:hover{
                   opacity: 1;
                 }
               }

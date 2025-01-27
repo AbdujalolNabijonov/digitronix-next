@@ -78,22 +78,7 @@ const OurBrands = () => {
     //Initialization
     const [value, setValue] = useState<number>(1)
 
-    //Graphql Request
-    const {
-        loading: productLoading,
-        data: productData,
-        error: productError,
-        refetch: productReftch
-    } = useQuery(GET_PRODUCT, {
-        fetchPolicy: "cache-and-network",
-        variables: { input: "669b2b970e944b43fa4914c8" },
-        onCompleted: () => {
-
-        }
-    })
-
-    console.log("product", productData);
-    console.log("product error", productError)
+    
 
     //Handlers
     const handleValue = (event: any, num: number) => {

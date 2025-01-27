@@ -2,15 +2,12 @@
 export enum ProductCompany {
     MSI = 'MSI',
     APPLE = "APPLE",
-    LENOVO = "LENOVO",
-    AORUS = "AORUS",
-    HP = "HP"
 }
 
 export enum ProductSort {
-    LIKES = "LIKES",
-    VIEWS = "VIEWS",
-    PRODUCTRANK = "PRODUCTRANK"
+    LIKES = "productLikes",
+    VIEWS = "productViews",
+    PRODUCTRANK = "productRank"
 }
 export enum ProductStatus {
     ACTIVE = "ACTIVE",

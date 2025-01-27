@@ -106,6 +106,7 @@ export const GET_ALL_PRODUCTS = gql`
 query GetAllProducts($input: ProductInquiry!) {
     getAllProducts(input: $input) {
         list {
+            _id
             memberId
             productName
             productStatus

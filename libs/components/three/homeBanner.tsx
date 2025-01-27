@@ -1,6 +1,8 @@
+import { useRouter } from "next/router";
 import React, { useEffect } from "react";
 
 const HomeBanner = () => {
+    const router = useRouter()
     useEffect(() => {
         const accordionItems = document.querySelectorAll("#accordion > li");
 
@@ -43,26 +45,32 @@ const HomeBanner = () => {
                         <ul className="accordion-group" id="accordion">
                             <li
                                 style={{
-                                    backgroundImage: 'url("/img/banner/banner-2.jpeg")',
+                                    backgroundImage: 'url("/img/banner/chair.jpg")',
                                 }}
                             >
                                 <div className="accordion-overlay"></div>
-                                <h3>Pwerfull Processor</h3>
-                                <section className="hidden-xs">
+                                <h3>Well design & Comfort Chair</h3>
+                                <section className="hidden-xs" onClick={() => {
+                                    const url = `/products?input=${JSON.stringify({ "page": 1, "limit": 6, "direction": -1, "search": { "productCategory": "CHAIR" } })}`
+                                    router.push(url, url, { scroll: false })
+                                }}>
                                     <article>
-                                        <p>Gaming & Effordable</p>
+                                        <p>Gaming Chair</p>
                                     </article>
                                 </section>
                             </li>
                             <li
                                 className="out"
                                 style={{
-                                    backgroundImage: "url('/img/banner/banner-3.jpg')",
+                                    backgroundImage: "url('/img/banner/laptop.jpg')",
                                 }}
                             >
                                 <div className="accordion-overlay"></div>
                                 <h3>Gaming Laptops</h3>
-                                <section className="hidden-xs">
+                                <section className="hidden-xs" onClick={() => {
+                                    const url = `/products?input=${JSON.stringify({ "page": 1, "limit": 6, "direction": -1, "search": { "productCategory": "LAPTOP" } })}`
+                                    router.push(url, url, { scroll: false })
+                                }}>
                                     <article>
                                         <p>Powerful & Portable</p>
                                     </article>
@@ -70,12 +78,15 @@ const HomeBanner = () => {
                             </li>
                             <li
                                 style={{
-                                    backgroundImage: `url("/img/banner/banner-4.jpg")`,
+                                    backgroundImage: `url("/img/banner/graphics.jpg")`,
                                 }}
                             >
                                 <div className="accordion-overlay"></div>
                                 <h3>Latest Graphics Card</h3>
-                                <section className="hidden-xs">
+                                <section className="hidden-xs" onClick={() => {
+                                    const url = `/products?input=${JSON.stringify({ "page": 1, "limit": 6, "direction": -1, "search": { "productCategory": "GRAPHICS" } })}`
+                                    router.push(url, url, { scroll: false })
+                                }}>
                                     <article>
                                         <p>High-Performance & Ultra-Realistic & Advanced Visuals</p>
                                     </article>
@@ -83,12 +94,15 @@ const HomeBanner = () => {
                             </li>
                             <li
                                 style={{
-                                    backgroundImage: `url("/img/banner/banner-5.jpeg")`,
+                                    backgroundImage: `url("/img/banner/keyboard.jpg")`,
                                 }}
                             >
                                 <div className="accordion-overlay"></div>
                                 <h3>Comfort Peripheral</h3>
-                                <section className="hidden-xs">
+                                <section className="hidden-xs" onClick={() => {
+                                    const url = `/products?input=${JSON.stringify({ "page": 1, "limit": 6, "direction": -1, "search": { "productCategory": "KEYBOARD" } })}`
+                                    router.push(url, url, { scroll: false })
+                                }}>
                                     <article>
                                         <p>Responsive & Durable & Stylish</p>
                                     </article>

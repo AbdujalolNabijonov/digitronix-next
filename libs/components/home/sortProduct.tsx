@@ -1,18 +1,28 @@
+import { Direction } from "@/libs/enum/common.enum"
 import { ProductCategory, ProductSort } from "@/libs/enum/product.enum"
-import { Memory, SdCard } from "@mui/icons-material"
-import { Box, Button, Stack } from "@mui/material"
+import { ProductsInquiry } from "@/libs/types/product/product.input"
+import { Memory, RemoveRedEyeRounded, SdCard, ThumbUpAltRounded } from "@mui/icons-material"
+import { Box, Button, CircularProgress, Divider, Stack } from "@mui/material"
 import { NextPage } from "next"
-import { ArrowSquareOut, Laptop, Monitor } from "phosphor-react"
+import { ArrowSquareOut, Cpu, HardDrive, HardDrives, Laptop, Monitor } from "phosphor-react"
 import { useEffect, useState } from "react"
 import { Keyboard, Mousewheel, Navigation } from "swiper/modules"
 import { Swiper, SwiperSlide } from "swiper/react"
+import { useQuery } from "@apollo/client"
+import { GET_ALL_PRODUCTS } from "@/apollo/user/query"
+import { Product } from "@/libs/types/product/product"
+import { serverApi } from "@/libs/config"
+import { GraphicsCard } from "@phosphor-icons/react"
+import { useRouter } from "next/router"
 
-const SortProduct: NextPage = () => {
+const SortProduct: NextPage = ({ initialProps, ...props }: any) => {
     //Initialization
     const [type, setType] = useState<string>(ProductCategory.LAPTOP);
     const [sort, setSort] = useState<string>(ProductSort.LIKES)
     const [scroll, setScroll] = useState<boolean>(false)
-    const colors = ["red", "black", "gray", "yellow"]
+    const [searchObj, setSearchObj] = useState<ProductsInquiry>(initialProps)
+    const [targetProducts, setTargetProducts] = useState<Product[]>([])
+    const router = useRouter()
 
     //LifeCircle
     useEffect(() => {
@@ -22,12 +32,30 @@ const SortProduct: NextPage = () => {
         window.addEventListener("scroll", handleScroll)
     }, [])
 
+    const {
+        refetch: getTargetProductsRefetch,
+        loading: getTargetProductsLoading
+    } = useQuery(GET_ALL_PRODUCTS, {
+        fetchPolicy: "network-only",
+        notifyOnNetworkStatusChange: true,
+        variables: { input: searchObj },
+        onCompleted: (data) => {
+            setTargetProducts(data.getAllProducts.list)
+        }
+    })
+
     //Handlers
-    const handleType = (str: string) => {
+    const handleType = async (str: string) => {
         setType(str)
+        searchObj.search.productCategory = str;
+        setSearchObj({ ...searchObj })
+        await getTargetProductsRefetch({ input: searchObj })
     }
-    const handleSort = (str: string) => {
+    const handleSort = async (str: string) => {
         setSort(str)
+        searchObj.sort = str;
+        setSearchObj({ ...searchObj })
+        await getTargetProductsRefetch({ input: searchObj })
     }
     return (
         <>
@@ -93,76 +121,104 @@ const SortProduct: NextPage = () => {
                                 </Button>
                             </Stack>
                         </Stack>
-                        <Swiper
-                            slidesPerView={3}
-                            spaceBetween={30}
-                            pagination={{
-                                clickable: true,
-                            }}
-                            keyboard={true}
-                            modules={[Keyboard]}
-                            className="swiper"
-
-                        >
-                            {
-                                Array.from({ length: 7 }).map((ele: any, num: number) => (
-                                    <SwiperSlide>
-                                        <Stack data-aos="fade-up" data-aos-duration={`${3000 * num}`} className={scroll ? "product-card aos-animate" : "product-card"}>
-                                            <Stack className="card-head" alignItems={"center"}>
-                                                <img src="/img/products/laptop/400.png" alt="" />
-                                                <Stack
-                                                    direction={"row"}
-                                                    gap={2}
-                                                    justifyContent={"center"}
-                                                    className="color-list"
-                                                >
-                                                    {
-                                                        colors.map(colr => (
-                                                            <div className="colr" title={colr} style={{ backgroundColor: colr }}></div>
-                                                        ))
-                                                    }
+                        <Stack className="target-products">
+                            {getTargetProductsLoading ? <Box sx={{ alignSelf: "center" }}><CircularProgress size={"3rem"} /></Box> : targetProducts ? (
+                                <Swiper
+                                    slidesPerView={3}
+                                    spaceBetween={30}
+                                    pagination={{
+                                        clickable: true,
+                                    }}
+                                    keyboard={true}
+                                    modules={[Keyboard, Navigation]}
+                                    className="swiper"
+                                >
+                                    {targetProducts.map((product: Product, index: number) => {
+                                        const product_img = `${serverApi}/${product.productImages[0]}`
+                                        return (
+                                            <SwiperSlide key={product._id} onClick={() => {
+                                                const link = `/products/detail?id=${product._id}`
+                                                router.push(link, link, { scroll: false })
+                                            }}>
+                                                <Stack data-aos="fade-up" data-aos-duration={`${3000 * index}`} className={scroll ? "product-card aos-animate" : "product-card"}>
+                                                    <Stack className="card-head" alignItems={"center"}>
+                                                        <img src={product_img} alt="" />
+                                                    </Stack>
+                                                    <Box>
+                                                        <Divider variant="middle" sx={{ borderColor: "gray" }} />
+                                                        <Stack className="card-body" gap={"5px"}>
+                                                            <Stack direction={"row"} gap={"10px"} alignItems={"center"} className="name">
+                                                                <Laptop size={30} />
+                                                                <div>{product.productName}</div>
+                                                            </Stack>
+                                                            {
+                                                                product.productCategory === ProductCategory.DESKTOP || product.productCategory === ProductCategory.LAPTOP ? (
+                                                                    <>
+                                                                        <Stack direction={"row"} gap={"10px"} alignItems={"center"} className="cpu">
+                                                                            <Cpu size={30} />
+                                                                            <div>{product.productCore}</div>
+                                                                        </Stack>
+                                                                        <Stack direction={"row"} gap={"10px"} alignItems={"center"} className="graphics">
+                                                                            <GraphicsCard size={30} />
+                                                                            <div>{product.productGraphics}</div>
+                                                                        </Stack>
+                                                                    </>
+                                                                ) : null
+                                                            }
+                                                            {
+                                                                product.productDisplay ? (
+                                                                    <Stack direction={"row"} gap={"10px"} alignItems={"center"} className="display">
+                                                                        <Monitor size={30} />
+                                                                        <div>{product.productDisplay} inch</div>
+                                                                    </Stack>
+                                                                ) : null
+                                                            }
+                                                            {
+                                                                product.productCategory === ProductCategory.KEYBOARD || product.productCategory === ProductCategory.CHAIR ? null : (
+                                                                    <Stack direction={"row"} gap={"10px"} alignItems={"center"} className="storage">
+                                                                        <HardDrives size={30} />
+                                                                        <div>{product.productStorage} GB</div>
+                                                                    </Stack>
+                                                                )
+                                                            }
+                                                        </Stack>
+                                                        <Divider sx={{ borderColor: "gray" }} variant="middle" />
+                                                        <Stack className="product-status">
+                                                            <Stack direction={"row"} gap={"5px"} alignItems={"center"}>
+                                                                <RemoveRedEyeRounded />
+                                                                {product.productViews}
+                                                            </Stack>
+                                                            <Stack direction={"row"} gap={"5px"} alignItems={'center'}>
+                                                                <Button endIcon={<ThumbUpAltRounded />}></Button>
+                                                                {product.productViews}
+                                                            </Stack>
+                                                        </Stack>
+                                                    </Box>
                                                 </Stack>
-                                            </Stack>
-                                            <Stack className="card-body" gap={"5px"}>
-                                                <Stack direction={"row"} gap={"3px"} alignItems={"center"} className="name">
-                                                    <Laptop />
-                                                    <div>MSI HD-2301</div>
-                                                </Stack>
-                                                <Stack direction={"row"} gap={"3px"} alignItems={"center"} className="cpu">
-                                                    <Memory />
-                                                    <div>Intel Core processor 14 gen</div>
-                                                </Stack>
-                                                <Stack direction={"row"} gap={"3px"} alignItems={"center"} className="graphics">
-                                                    <img src="/img/icons/graphics-card.svg" alt="" width={"20px"} />
-                                                    <div>RTX 40 Series</div>
-                                                </Stack>
-                                                <Stack direction={"row"} gap={"3px"} alignItems={"center"} className="display">
-                                                    <Monitor />
-                                                    <div>13" OR 16"</div>
-                                                </Stack>
-                                                <Stack direction={"row"} gap={"3px"} alignItems={"center"} className="storage">
-                                                    <SdCard />
-                                                    <div>2 TB</div>
-                                                </Stack>
-                                            </Stack>
-                                            <Stack
-                                                className="card-footer"
-                                                alignItems={"end"}
-                                            >
-                                                <Button endIcon={<ArrowSquareOut size={20} />}>
-                                                    Take a look closer
-                                                </Button>
-                                            </Stack>
-                                        </Stack>
-                                    </SwiperSlide>
-                                ))
-                            }
-                        </Swiper>
+                                            </SwiperSlide>
+                                        )
+                                    })
+                                    }
+                                </Swiper>
+                            ) : "no"}
+                        </Stack>
                     </Stack>
                 </Box>
             </Stack>
         </>
     )
 }
+SortProduct.defaultProps = {
+    initialProps: {
+        page: 1,
+        limit: 6,
+        direction: Direction.DESC,
+        sort: "productLikes",
+        search: {
+            productCategory: ProductCategory.LAPTOP
+        }
+    }
+}
+
 
 export default SortProduct
