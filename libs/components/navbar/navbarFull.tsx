@@ -214,7 +214,7 @@ const Navbar: NextPage = (props: any) => {
                                             <MenuItem className="list-item">
                                                 <Stack onClick={() => {
                                                     let link = "/products/?input="
-                                                    const jsonObj = JSON.stringify({ page: 1, limit: 6, search: { productCategory: ProductCategory.LAPTOP } })
+                                                    const jsonObj = JSON.stringify({ page: 1, limit: 6, sort: "createdAt", search: { productCategory: ProductCategory.LAPTOP } })
                                                     link += jsonObj
                                                     router.push(link, link, { scroll: false })
                                                     setAnchorEl3(null)
@@ -226,7 +226,7 @@ const Navbar: NextPage = (props: any) => {
                                             <MenuItem className="list-item">
                                                 <Stack onClick={() => {
                                                     let link = "/products/?input="
-                                                    const jsonObj = JSON.stringify({ page: 1, limit: 6, search: { productCategory: ProductCategory.DESKTOP } })
+                                                    const jsonObj = JSON.stringify({ page: 1, limit: 6, sort: "createdAt", search: { productCategory: ProductCategory.DESKTOP } })
                                                     link += jsonObj
                                                     router.push(link, link, { scroll: false })
                                                     setAnchorEl3(null)
@@ -238,7 +238,7 @@ const Navbar: NextPage = (props: any) => {
                                             <MenuItem className="list-item">
                                                 <Stack onClick={() => {
                                                     let link = "/products/?input="
-                                                    const jsonObj = JSON.stringify({ page: 1, limit: 6, search: { productCategory: ProductCategory.GRAPHICS } })
+                                                    const jsonObj = JSON.stringify({ page: 1, limit: 6, sort: "createdAt", search: { productCategory: ProductCategory.GRAPHICS } })
                                                     link += jsonObj
                                                     router.push(link, link, { scroll: false })
                                                     setAnchorEl3(null)
@@ -250,7 +250,7 @@ const Navbar: NextPage = (props: any) => {
                                             <MenuItem className="list-item">
                                                 <Stack onClick={() => {
                                                     let link = "/products/?input="
-                                                    const jsonObj = JSON.stringify({ page: 1, limit: 6, search: { productCategory: ProductCategory.MICE } })
+                                                    const jsonObj = JSON.stringify({ page: 1, limit: 6, sort: "createdAt", search: { productCategory: ProductCategory.MICE } })
                                                     link += jsonObj
                                                     router.push(link, link, { scroll: false })
                                                     setAnchorEl3(null)
@@ -274,7 +274,7 @@ const Navbar: NextPage = (props: any) => {
                                             <MenuItem className="list-item">
                                                 <Stack alignItems={"center"} onClick={() => {
                                                     let link = "/products/?input="
-                                                    const jsonObj = JSON.stringify({ page: 1, limit: 6, direction: Direction.DESC, search: { productCategory: ProductCategory.CHAIR } })
+                                                    const jsonObj = JSON.stringify({ page: 1, limit: 6, sort: "createdAt", direction: Direction.DESC, search: { productCategory: ProductCategory.CHAIR } })
                                                     link += jsonObj
                                                     router.push(link, link, { scroll: false })
                                                     setAnchorEl3(null)

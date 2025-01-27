@@ -2,6 +2,7 @@ import { stringSplitterHandler } from "@/libs/features/splitter"
 import { Product } from "@/libs/types/product/product"
 import { FavoriteOutlined, VisibilityOutlined } from "@mui/icons-material"
 import { Button, IconButton, Stack } from "@mui/material"
+import { useRouter } from "next/router"
 
 interface propsData {
     product: Product
@@ -9,8 +10,14 @@ interface propsData {
 const ProductCard = (props: propsData) => {
     const { product } = props
     const prod_img = `${process.env.REACT_APP_API_URL}/${product.productImages[0]}`
+    const router = useRouter()
+
     return (
-        <Stack className="item-box" justifyContent={"space-between"}>
+        <Stack className="item-box" justifyContent={"space-between"} onClick={() => {
+            const link = `/products/detail/?id=${product._id}`
+            router.push(link, link, { scroll: false })
+        }
+        }>
             <div className="item-img">
                 <img src={prod_img} alt="" />
             </div>

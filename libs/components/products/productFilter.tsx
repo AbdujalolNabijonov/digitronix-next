@@ -22,64 +22,73 @@ const ProductFilter = (props: ProductProps) => {
     const [showMore5, setShowMore5] = useState<boolean>(false)
     const [showMore6, setShowMore6] = useState<boolean>(false)
     const [showMore7, setShowMore7] = useState<boolean>(false)
+    const [showMore8, setShowMore8] = useState<boolean>(false)
     const [extraMore, setExtraMore] = useState<boolean>(false)
     const [searchText, setSearchText] = useState<string>("")
+    const [rebuild, setRebuild] = useState(new Date())
 
     const { setProductsInquiry, productsInquiry } = props
     const router = useRouter()
 
     //LifeCircle
-    // useEffect(() => {
-    //     if (productsInquiry?.search?.serieList?.length === 0) {
-    //         delete productsInquiry.search.serieList;
-    //         router.push(
-    //             `products/?input=${JSON.stringify({ ...productsInquiry, search: { ...productsInquiry.search } })}`,
-    //             `products/?input=${JSON.stringify({ ...productsInquiry, search: { ...productsInquiry.search } })}`,
-    //             { scroll: false }
-    //         ).then()
-    //     }
-    //     if (productsInquiry?.search?.processorList?.length === 0) {
-    //         delete productsInquiry.search.processorList;
-    //         router.push(
-    //             `products/?input=${JSON.stringify({ ...productsInquiry, search: { ...productsInquiry.search } })}`,
-    //             `products/?input=${JSON.stringify({ ...productsInquiry, search: { ...productsInquiry.search } })}`,
-    //             { scroll: false }
-    //         ).then()
-    //     }
-    //     if (productsInquiry?.search?.graphicsList?.length === 0) {
-    //         delete productsInquiry.search.graphicsList;
-    //         router.push(
-    //             `products/?input=${JSON.stringify({ ...productsInquiry, search: { ...productsInquiry.search } })}`,
-    //             `products/?input=${JSON.stringify({ ...productsInquiry, search: { ...productsInquiry.search } })}`,
-    //             { scroll: false }
-    //         ).then()
-    //     }
-    //     if (productsInquiry && !productsInquiry.search.text) {
-    //         delete productsInquiry.search.text;
-    //         router.push(
-    //             `products/?input=${JSON.stringify({ ...productsInquiry, search: { ...productsInquiry.search } })}`,
-    //             `products/?input=${JSON.stringify({ ...productsInquiry, search: { ...productsInquiry.search } })}`,
-    //             { scroll: false }
-    //         ).then()
-    //     }
-    //     if (productsInquiry?.search?.displayList?.length === 0) {
-    //         delete productsInquiry.search.displayList;
-    //         router.push(
-    //             `products/?input=${JSON.stringify({ ...productsInquiry, search: { ...productsInquiry.search } })}`,
-    //             `products/?input=${JSON.stringify({ ...productsInquiry, search: { ...productsInquiry.search } })}`,
-    //             { scroll: false }
-    //         ).then()
-    //     }
-    //     if (productsInquiry?.search.brandList?.length === 0) {
-    //         delete productsInquiry.search.brandList;
-
-    //         router.push(
-    //             `products/?input=${JSON.stringify({ ...productsInquiry, search: { ...productsInquiry.search } })}`,
-    //             `products/?input=${JSON.stringify({ ...productsInquiry, search: { ...productsInquiry.search } })}`,
-    //             { scroll: false }
-    //         ).then()
-    //     }
-    // }, [productsInquiry])
+    useEffect(() => {
+        if (productsInquiry?.search?.serieList && productsInquiry?.search?.serieList?.length === 0) {
+            delete productsInquiry.search.serieList;
+            router.push(
+                `/products/?input=${JSON.stringify({ ...productsInquiry, search: { ...productsInquiry.search } })}`,
+                `/products/?input=${JSON.stringify({ ...productsInquiry, search: { ...productsInquiry.search } })}`,
+                { scroll: false }
+            ).then()
+        }
+        if (productsInquiry?.search?.processorList && productsInquiry?.search?.processorList?.length === 0) {
+            delete productsInquiry.search.processorList;
+            router.push(
+                `/products/?input=${JSON.stringify({ ...productsInquiry, search: { ...productsInquiry.search } })}`,
+                `/products/?input=${JSON.stringify({ ...productsInquiry, search: { ...productsInquiry.search } })}`,
+                { scroll: false }
+            ).then()
+        }
+        if (productsInquiry?.search?.processorList && productsInquiry?.search?.graphicsList?.length === 0) {
+            delete productsInquiry.search.graphicsList;
+            router.push(
+                `/products/?input=${JSON.stringify({ ...productsInquiry, search: { ...productsInquiry.search } })}`,
+                `/products/?input=${JSON.stringify({ ...productsInquiry, search: { ...productsInquiry.search } })}`,
+                { scroll: false }
+            ).then()
+        }
+        if (!productsInquiry.search.text && !productsInquiry.search.text) {
+            delete productsInquiry.search.text;
+            router.push(
+                `/products/?input=${JSON.stringify({ ...productsInquiry, search: { ...productsInquiry.search } })}`,
+                `/products/?input=${JSON.stringify({ ...productsInquiry, search: { ...productsInquiry.search } })}`,
+                { scroll: false }
+            ).then()
+        }
+        if (productsInquiry?.search?.displayList && productsInquiry?.search?.displayList?.length === 0) {
+            delete productsInquiry.search.displayList;
+            router.push(
+                `/products/?input=${JSON.stringify({ ...productsInquiry, search: { ...productsInquiry.search } })}`,
+                `/products/?input=${JSON.stringify({ ...productsInquiry, search: { ...productsInquiry.search } })}`,
+                { scroll: false }
+            ).then()
+        }
+        if (productsInquiry?.search?.graphicsList && productsInquiry?.search?.graphicsList?.length === 0) {
+            delete productsInquiry.search.graphicsList;
+            router.push(
+                `/products/?input=${JSON.stringify({ ...productsInquiry, search: { ...productsInquiry.search } })}`,
+                `/products/?input=${JSON.stringify({ ...productsInquiry, search: { ...productsInquiry.search } })}`,
+                { scroll: false }
+            ).then()
+        }
+        if (productsInquiry?.search.brandList && productsInquiry?.search.brandList?.length === 0) {
+            delete productsInquiry.search.brandList;
+            router.push(
+                `/products/?input=${JSON.stringify({ ...productsInquiry, search: { ...productsInquiry.search } })}`,
+                `/products/?input=${JSON.stringify({ ...productsInquiry, search: { ...productsInquiry.search } })}`,
+                { scroll: false }
+            ).then()
+        }
+    }, [rebuild])
 
     //handlers
 
@@ -90,17 +99,18 @@ const ProductFilter = (props: ProductProps) => {
             try {
                 if (isChecked) {
                     await router.push(
-                        `products/?input=${JSON.stringify({ ...productsInquiry, search: { ...productsInquiry.search, serieList: [...(productsInquiry.search.serieList || []), serie] } })}`,
-                        `products/?input=${JSON.stringify({ ...productsInquiry, search: { ...productsInquiry.search, serieList: [...(productsInquiry.search.serieList || []), serie] } })}`,
+                        `/products/?input=${JSON.stringify({ ...productsInquiry, search: { ...productsInquiry.search, serieList: [...(productsInquiry.search.serieList || []), serie] } })}`,
+                        `/products/?input=${JSON.stringify({ ...productsInquiry, search: { ...productsInquiry.search, serieList: [...(productsInquiry.search.serieList || []), serie] } })}`,
                         { scroll: false }
                     )
                 } else if (productsInquiry.search.serieList?.includes(serie)) {
                     await router.push(
-                        `products/?input=${JSON.stringify({ ...productsInquiry, search: { ...productsInquiry.search, serieList: productsInquiry.search.serieList.filter(item => item !== serie) } })}`,
-                        `products/?input=${JSON.stringify({ ...productsInquiry, search: { ...productsInquiry.search, serieList: productsInquiry.search.serieList.filter(item => item !== serie) } })}`,
+                        `/products/?input=${JSON.stringify({ ...productsInquiry, search: { ...productsInquiry.search, serieList: productsInquiry.search.serieList.filter(item => item !== serie) } })}`,
+                        `/products/?input=${JSON.stringify({ ...productsInquiry, search: { ...productsInquiry.search, serieList: productsInquiry.search.serieList.filter(item => item !== serie) } })}`,
                         { scroll: false }
                     )
                 }
+                setRebuild(new Date())
             } catch (err: any) {
                 console.log(`Error, handleSelectSerie ${err.message}`)
             }
@@ -109,7 +119,7 @@ const ProductFilter = (props: ProductProps) => {
     const handleSelectCore = useCallback(
         async (e: any) => {
             const isChecked = e.target.checked;
-            const core = e.target.value;
+            const core = e.target.value.replace(/ /g, "_");
             try {
                 if (isChecked) {
                     await router.push(
@@ -124,6 +134,7 @@ const ProductFilter = (props: ProductProps) => {
                         { scroll: false }
                     )
                 }
+                setRebuild(new Date())
             } catch (err: any) {
                 console.log(`Error, handleSelectCore ${err.message}`)
             }
@@ -132,8 +143,7 @@ const ProductFilter = (props: ProductProps) => {
     const handleSelectGraphicsCard = useCallback(
         async (e: any) => {
             const isChecked = e.target.checked;
-            const card = e.target.value;
-            console.log("card", card)
+            const card = e.target.value.replace(/ /g, "_");
             try {
                 if (isChecked) {
                     await router.push(
@@ -148,6 +158,7 @@ const ProductFilter = (props: ProductProps) => {
                         { scroll: false }
                     )
                 }
+                setRebuild(new Date())
             } catch (err: any) {
                 console.log(`Error, handleSelectGraphicsCard ${err.message}`)
             }
@@ -169,6 +180,7 @@ const ProductFilter = (props: ProductProps) => {
                     { scroll: false }
                 )
             }
+            setRebuild(new Date())
         } catch (err: any) {
             console.log(`Error, handleSelectDisplayResolution ${err.message}`)
         }
@@ -191,6 +203,7 @@ const ProductFilter = (props: ProductProps) => {
                     { scroll: false }
                 )
             }
+            setRebuild(new Date())
         } catch (err: any) {
             console.log(`Error, handleSelectBrands ${err.message}`)
         }
@@ -224,6 +237,7 @@ const ProductFilter = (props: ProductProps) => {
             `products/?input=${JSON.stringify({ ...productsInquiry, search: { ...productsInquiry.search, text: value } })}`,
             { scroll: false }
         )
+        setRebuild(new Date())
     }
     return (
         <Stack className="control-panel">
@@ -239,6 +253,7 @@ const ProductFilter = (props: ProductProps) => {
                         onKeyDown={(event: any) => {
                             if (event.key == 'Enter') {
                                 setProductsInquiry({ ...productsInquiry, search: { ...productsInquiry.search, text: searchText } });
+                                setRebuild(new Date())
                             }
                         }}
                         endAdornment={
@@ -248,6 +263,7 @@ const ProductFilter = (props: ProductProps) => {
                                     onClick={() => {
                                         setSearchText('');
                                         setProductsInquiry({ ...productsInquiry, search: { ...productsInquiry.search, text: "" } });
+                                        setRebuild(new Date())
                                     }}
                                 />
                             </>
@@ -273,8 +289,8 @@ const ProductFilter = (props: ProductProps) => {
                 </AccordionSummary>
                 {Object.values(ProductSeries).map((serie: string, num: number) => {
                     if ([1, 2, 3].includes(num)) return (
-                        <AccordionDetails>
-                            <Stack className={'checkbox-item'} key={serie} direction={"row"}>
+                        <AccordionDetails key={num}>
+                            <Stack className={'checkbox-item'} direction={"row"}>
                                 <Checkbox
                                     id={serie}
                                     className="checkbox"
@@ -303,8 +319,8 @@ const ProductFilter = (props: ProductProps) => {
                     </AccordionSummary>
                     {Object.values(ProductSeries).map((serie: string, num: number) => {
                         if (![1, 2, 3, 4].includes(num)) return (
-                            <AccordionDetails>
-                                <Stack className={'checkbox-item'} key={serie} direction={"row"}>
+                            <AccordionDetails key={serie}>
+                                <Stack className={'checkbox-item'} direction={"row"}>
                                     <Checkbox
                                         id={serie}
                                         className="checkbox"
@@ -329,17 +345,15 @@ const ProductFilter = (props: ProductProps) => {
                         <Accordion
                             sx={{ backgroundColor: "transparent", boxShadow: "none", borderRadius: "0" }}
                             expanded={showMore1}
-                            onMouseEnter={() => setShowMore1(true)}
-                            onMouseLeave={() => setShowMore1(false)}
                         >
-                            <AccordionSummary expandIcon={<ExpandMore sx={{ color: "white" }} />}>
-                                <Stack>
-                                    
-                                </Stack>
-                                <div style={{ marginLeft: "10px", fontWeight: "600", color:"white" }}>Intel Platform</div>
+                            <AccordionSummary
+                                expandIcon={<ExpandMore sx={{ color: "white" }} />}
+                                onClick={() => { showMore1 ? setShowMore1(false) : setShowMore1(true) }}
+                            >
+                                <div style={{ marginLeft: "10px", fontWeight: "600", color: "white" }}>Intel Platform</div>
                             </AccordionSummary>
-                            {[2, 4, 6, 8, 10, 12, 16, 20, 24].map((store: number) => (
-                                <AccordionDetails sx={{ paddingLeft: "40px", fontSize: "12px" }}>
+                            {[2, 4, 6, 8, 10, 12, 16, 20, 24].map((store: number, index: number) => (
+                                <AccordionDetails sx={{ paddingLeft: "40px", fontSize: "12px" }} key={index}>
                                     <Stack className={'checkbox-item'} key={store} direction={"row"}>
                                         <Checkbox
                                             id={String(store)}
@@ -368,14 +382,16 @@ const ProductFilter = (props: ProductProps) => {
                             <Accordion
                                 sx={{ backgroundColor: "transparent", boxShadow: "none", borderRadius: "0" }}
                                 expanded={showMore1}
-                                onMouseEnter={() => setShowMore1(true)}
-                                onMouseLeave={() => setShowMore1(false)}
                             >
-                                <AccordionSummary expandIcon={<ExpandMore sx={{ color: "white" }} />} className="extra-list">
+                                <AccordionSummary
+                                    expandIcon={<ExpandMore sx={{ color: "white" }} />}
+                                    className="extra-list"
+                                    onClick={() => { showMore1 ? setShowMore1(false) : setShowMore1(true) }}
+                                >
                                     <div style={{ marginLeft: "10px", fontWeight: "600" }}>Intel Platform</div>
                                 </AccordionSummary>
-                                {IntelCoreList.map((core: string) => (
-                                    <AccordionDetails sx={{ paddingLeft: "40px", fontSize: "12px" }}>
+                                {IntelCoreList.map((core: string, index: number) => (
+                                    <AccordionDetails sx={{ paddingLeft: "40px", fontSize: "12px" }} key={index}>
                                         <Stack className={'checkbox-item'} key={core} direction={"row"}>
                                             <Checkbox
                                                 id={core}
@@ -396,22 +412,24 @@ const ProductFilter = (props: ProductProps) => {
                             <Accordion
                                 sx={{ backgroundColor: "transparent", boxShadow: "none", borderRadius: "0" }}
                                 expanded={showMore2}
-                                onMouseEnter={() => setShowMore2(true)}
-                                onMouseLeave={() => setShowMore2(false)}
                             >
-                                <AccordionSummary expandIcon={<ExpandMore sx={{ color: "white" }} />} className="extra-list">
+                                <AccordionSummary
+                                    expandIcon={<ExpandMore sx={{ color: "white" }} />}
+                                    className="extra-list"
+                                    onClick={() => { showMore2 ? setShowMore2(false) : setShowMore2(true) }}
+                                >
                                     <span style={{ marginLeft: "10px", fontWeight: "600" }}>AMD Platform</span>
                                 </AccordionSummary>
-                                {AmdCoreList.map((core: string) => (
-                                    <AccordionDetails sx={{ paddingLeft: "40px", fontSize: "12px" }}>
-                                        <Stack className={'checkbox-item'} key={core} direction={"row"}>
+                                {AmdCoreList.map((core: string, index: number) => (
+                                    <AccordionDetails sx={{ paddingLeft: "40px", fontSize: "12px" }} key={index}>
+                                        <Stack className={'checkbox-item'} direction={"row"}>
                                             <Checkbox
                                                 id={core}
                                                 className="checkbox"
                                                 color="default"
                                                 size="small"
                                                 value={core}
-                                                checked={(productsInquiry?.search?.processorList || []).includes(core.split(" ").join("_").toUpperCase())}
+                                                checked={(productsInquiry?.search?.processorList?.includes(core.replace(/ /g, "_")))}
                                                 onChange={handleSelectCore}
                                             />
                                             <label htmlFor={core} style={{ cursor: 'pointer' }}>
@@ -434,15 +452,17 @@ const ProductFilter = (props: ProductProps) => {
                     <Accordion
                         sx={{ backgroundColor: "transparent", boxShadow: "none", borderRadius: "0" }}
                         expanded={showMore3}
-                        onMouseEnter={() => setShowMore3(true)}
-                        onMouseLeave={() => setShowMore3(false)}
                     >
-                        <AccordionSummary expandIcon={<ExpandMore sx={{ color: "white" }} />} className="extra-list">
+                        <AccordionSummary
+                            expandIcon={<ExpandMore sx={{ color: "white" }} />}
+                            className="extra-list"
+                            onClick={() => { showMore3 ? setShowMore3(false) : setShowMore3(true) }}
+                        >
                             <span style={{ marginLeft: "10px", fontWeight: "600", fontSize: "14px" }}>GeForce RTX™ 40 Series</span>
                         </AccordionSummary>
-                        {Object.values(GraphicsType).map((card: string) => {
+                        {Object.values(GraphicsType).map((card: string, index: number) => {
                             if (card.includes("40")) return (
-                                <AccordionDetails sx={{ paddingLeft: "40px" }}>
+                                <AccordionDetails sx={{ paddingLeft: "40px" }} key={index}>
                                     <Stack className={'checkbox-item'} key={card} direction={"row"}>
                                         <Checkbox
                                             id={card}
@@ -450,7 +470,7 @@ const ProductFilter = (props: ProductProps) => {
                                             color="default"
                                             size="small"
                                             value={card}
-                                            checked={(productsInquiry?.search?.graphicsList || []).includes(card)}
+                                            checked={(productsInquiry?.search?.graphicsList || []).includes(card.replace(/ /g, "_"))}
                                             onChange={handleSelectGraphicsCard}
                                         />
                                         <label htmlFor={card} style={{ cursor: 'pointer' }}>
@@ -464,15 +484,17 @@ const ProductFilter = (props: ProductProps) => {
                     <Accordion
                         sx={{ backgroundColor: "transparent", boxShadow: "none", borderRadius: "0" }}
                         expanded={showMore4}
-                        onMouseEnter={() => setShowMore4(true)}
-                        onMouseLeave={() => setShowMore4(false)}
                     >
-                        <AccordionSummary expandIcon={<ExpandMore sx={{ color: "white" }} />} className="extra-list">
+                        <AccordionSummary
+                            expandIcon={<ExpandMore sx={{ color: "white" }} />}
+                            className="extra-list"
+                            onClick={() => { showMore4 ? setShowMore4(false) : setShowMore4(true) }}
+                        >
                             <span style={{ marginLeft: "10px", fontWeight: "600", fontSize: "14px" }}>GeForce RTX™ 30 Series</span>
                         </AccordionSummary>
-                        {Object.values(GraphicsType).map((card: string) => {
+                        {Object.values(GraphicsType).map((card: string, index: number) => {
                             if (card.includes("30")) return (
-                                <AccordionDetails sx={{ paddingLeft: "40px", fontSize: "10px" }}>
+                                <AccordionDetails sx={{ paddingLeft: "40px", fontSize: "10px" }} key={index}>
                                     <Stack className={'checkbox-item'} key={card} direction={"row"} >
                                         <Checkbox
                                             id={card}
@@ -480,7 +502,7 @@ const ProductFilter = (props: ProductProps) => {
                                             color="default"
                                             size="small"
                                             value={card}
-                                            checked={(productsInquiry?.search?.graphicsList || []).includes(card.split(" ").join("_").toUpperCase())}
+                                            checked={(productsInquiry?.search?.graphicsList || []).includes(card.replace(/ /g, "_"))}
                                             onChange={handleSelectGraphicsCard}
                                         />
                                         <label htmlFor={card} style={{ cursor: 'pointer' }}>
@@ -493,11 +515,13 @@ const ProductFilter = (props: ProductProps) => {
                     </Accordion>
                     <Accordion
                         sx={{ backgroundColor: "transparent", boxShadow: "none", borderRadius: "0" }}
-                        expanded={showMore4}
-                        onMouseEnter={() => setShowMore4(true)}
-                        onMouseLeave={() => setShowMore4(false)}
+                        expanded={showMore8}
                     >
-                        <AccordionSummary expandIcon={<ExpandMore sx={{ color: "white" }} />} className="extra-list">
+                        <AccordionSummary
+                            expandIcon={<ExpandMore sx={{ color: "white" }} />}
+                            className="extra-list"
+                            onClick={() => { showMore8 ? setShowMore8(false) : setShowMore8(true) }}
+                        >
                             <span style={{ marginLeft: "10px", fontWeight: "600", fontSize: "14px" }}>GeForce RTX™ 20 Series</span>
                         </AccordionSummary>
                         {Object.values(GraphicsType).map((card: string) => {
@@ -510,7 +534,7 @@ const ProductFilter = (props: ProductProps) => {
                                             color="default"
                                             size="small"
                                             value={card}
-                                            checked={(productsInquiry?.search?.graphicsList || []).includes(card.split(" ").join("_").toUpperCase())}
+                                            checked={(productsInquiry?.search?.graphicsList || []).includes(card.replace(/ /g, "_"))}
                                             onChange={handleSelectGraphicsCard}
                                         />
                                         <label htmlFor={card} style={{ cursor: 'pointer' }}>
@@ -524,10 +548,12 @@ const ProductFilter = (props: ProductProps) => {
                     <Accordion
                         sx={{ backgroundColor: "transparent", boxShadow: "none", borderRadius: "0" }}
                         expanded={showMore5}
-                        onMouseEnter={() => setShowMore5(true)}
-                        onMouseLeave={() => setShowMore5(false)}
                     >
-                        <AccordionSummary expandIcon={<ExpandMore sx={{ color: "white" }} />} className="extra-list">
+                        <AccordionSummary
+                            expandIcon={<ExpandMore sx={{ color: "white" }} />}
+                            className="extra-list"
+                            onClick={() => { showMore5 ? setShowMore5(false) : setShowMore5(true) }}
+                        >
                             <span style={{ marginLeft: "10px", fontWeight: "600", fontSize: "13px" }}>AMD Radeon 6000M Series</span>
                         </AccordionSummary>
                         {Object.values(GraphicsType).map((card: string) => {
@@ -540,7 +566,7 @@ const ProductFilter = (props: ProductProps) => {
                                             color="default"
                                             size="small"
                                             value={card}
-                                            checked={(productsInquiry?.search?.graphicsList || []).includes(card.split(" ").join("_").toUpperCase())}
+                                            checked={(productsInquiry?.search?.graphicsList || []).includes(card.replace(/ /g, "_"))}
                                             onChange={handleSelectGraphicsCard}
                                         />
                                         <label htmlFor={card} style={{ cursor: 'pointer' }}>
@@ -558,10 +584,12 @@ const ProductFilter = (props: ProductProps) => {
                     <Accordion
                         sx={{ backgroundColor: "transparent", boxShadow: "none", borderRadius: "0" }}
                         expanded={showMore6}
-                        onMouseEnter={() => setShowMore6(true)}
-                        onMouseLeave={() => setShowMore6(false)}
                     >
-                        <AccordionSummary expandIcon={<ExpandMore sx={{ color: "white" }} />} sx={{ color: "white" }}>
+                        <AccordionSummary
+                            expandIcon={<ExpandMore sx={{ color: "white" }} />}
+                            sx={{ color: "white" }}
+                            onClick={() => { showMore6 ? setShowMore6(false) : setShowMore6(true) }}
+                        >
                             <TabOutlined />
                             <span style={{ marginLeft: "10px", fontWeight: "600" }}>Display</span>
                         </AccordionSummary>
@@ -589,10 +617,12 @@ const ProductFilter = (props: ProductProps) => {
             <Accordion
                 sx={{ backgroundColor: "transparent", boxShadow: "none", borderRadius: "0" }}
                 expanded={showMore7}
-                onMouseEnter={() => setShowMore7(true)}
-                onMouseLeave={() => setShowMore7(false)}
             >
-                <AccordionSummary expandIcon={<ExpandMore sx={{ color: "white" }} />} sx={{ color: "white" }}>
+                <AccordionSummary
+                    expandIcon={<ExpandMore sx={{ color: "white" }} />}
+                    sx={{ color: "white" }}
+                    onClick={() => { showMore7 ? setShowMore7(false) : setShowMore7(true) }}
+                >
                     <HomeWorkOutlined />
                     <span style={{ marginLeft: "10px", fontWeight: "600" }}>Brand</span>
                 </AccordionSummary>
@@ -600,6 +630,7 @@ const ProductFilter = (props: ProductProps) => {
                     <AccordionDetails sx={{ paddingLeft: "40px", fontSize: "12px" }}>
                         <Stack className={'checkbox-item'} key={brand} direction={"row"}>
                             <Checkbox
+                                onClick={(e) => { e.defaultPrevented }}
                                 id={brand}
                                 className="checkbox"
                                 color="default"

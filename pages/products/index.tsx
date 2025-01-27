@@ -31,15 +31,6 @@ const Products: NextPage = ({ initialProps, ...props }: any) => {
     const [totalProducts, setTotalProducts] = useState<number>(0)
     const [value, setValue] = useState<string>("new")
 
-    //LifeCircle
-    useEffect(() => {
-        const query = router.query.input ? JSON.parse(router.query.input as string) : null
-        if (query) setProductsInquiry(query);
-        if(query?.sort==="createdAt"&&query?.direction===Direction.ASC) setValue("old")
-        else if(query?.sort==="createdAt"&&query?.direction===Direction.DESC) setValue("new")
-        else setValue(query?.sort)
-    }, [router])
-
 
     //Apollo Request
     const {
@@ -49,14 +40,17 @@ const Products: NextPage = ({ initialProps, ...props }: any) => {
         notifyOnNetworkStatusChange: true,
         variables: { input: productsInquiry },
         onCompleted: (data: any) => {
-            setProducts(data?.getAllProducts.list)
+            setProducts(data?.getAllProducts ? data?.getAllProducts.list : [])
             setTotalProducts(data?.getAllProducts.metaCounter[0].total ?? 0)
         }
     })
     useEffect(() => {
-        console.log(productsInquiry)
-        getAllProductsRefetch({ input: productsInquiry })
-    }, [productsInquiry])
+        if (router.query.input) {
+            const query = JSON.parse(router.query.input as string)
+            setProductsInquiry(query);
+            getAllProductsRefetch({ input: query }).then();
+        }
+    }, [router])
 
     //Handlers
     const handlePaginationChange = (e: any, newPage: number) => {
@@ -68,18 +62,18 @@ const Products: NextPage = ({ initialProps, ...props }: any) => {
         setValue(value)
         switch (value) {
             case "old":
-                const jsonObj=JSON.stringify({ ...productsInquiry, sort: "createdAt", direction: Direction.ASC })
-                router.push(`/products?input=${jsonObj}`,`/products?input=${jsonObj}`, { shallow: true })
+                const jsonObj = JSON.stringify({ ...productsInquiry, sort: "createdAt", direction: Direction.ASC })
+                router.push(`/products?input=${jsonObj}`, `/products?input=${jsonObj}`, { shallow: true })
                 setProductsInquiry({ ...productsInquiry, sort: "createdAt", direction: Direction.ASC })
                 break;
             case "new":
-                const jsonObj2=JSON.stringify({ ...productsInquiry, sort: "createdAt", direction: Direction.DESC })
-                router.push(`/products?input=${jsonObj2}`,`/products?input=${jsonObj2}`, { shallow: true })
+                const jsonObj2 = JSON.stringify({ ...productsInquiry, sort: "createdAt", direction: Direction.DESC })
+                router.push(`/products?input=${jsonObj2}`, `/products?input=${jsonObj2}`, { shallow: true })
                 setProductsInquiry({ ...productsInquiry, sort: "createdAt", direction: Direction.DESC })
                 break;
             default:
-                const jsonObj3=JSON.stringify({ ...productsInquiry, sort: value })
-                router.push(`/products?input=${jsonObj3}`,`/products?input=${jsonObj3}`, { shallow: true })
+                const jsonObj3 = JSON.stringify({ ...productsInquiry, sort: value })
+                router.push(`/products?input=${jsonObj3}`, `/products?input=${jsonObj3}`, { shallow: true })
                 setProductsInquiry({ ...productsInquiry, sort: value })
                 break;
         }
@@ -112,9 +106,8 @@ const Products: NextPage = ({ initialProps, ...props }: any) => {
                                         <SwapVertOutlined />
                                         <div>Sort By</div>
                                     </Stack>
-                                    <Select value={value} onChange={handleSortChange}>
-                                        <MenuItem value={"new"}>New</MenuItem>
-                                        <MenuItem value={"old"}>Old</MenuItem>
+                                    <Select value={productsInquiry.sort} onChange={handleSortChange}>
+                                        <MenuItem value={"createdAt"}>New</MenuItem>
                                         <MenuItem value={"productViews"}>Popular</MenuItem>
                                         <MenuItem value={"productLikes"}>Trend</MenuItem>
                                     </Select>
@@ -175,7 +168,6 @@ Products.defaultProps = {
         direction: Direction.DESC,
         sort: "createdAt",
         search: {
-            productCategory: "LAPTOP"
         }
     }
 }
