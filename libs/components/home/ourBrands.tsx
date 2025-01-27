@@ -8,7 +8,9 @@ import {
 } from "@mui/material"
 import { useState } from "react";
 import { useQuery } from "@apollo/client";
-import { GET_PRODUCT } from "@/apollo/user/query";
+import { GET_MEMBERS } from "@/apollo/user/query";
+import { Member, MemberType } from "@/libs/types/member/member";
+import { serverApi } from "@/libs/config";
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -22,30 +24,6 @@ interface Brand {
     img: string,
     address: string
 }
-const allBrands: Brand[] = [
-    {
-        _id: "1",
-        name: "MSI",
-        desc: "MSI's gaming laptops are celebrated for their powerful performance, advanced cooling solutions, and stunning displays, making them a top choice for gamers seeking a competitive edge. Their motherboards and graphics cards are engineered to provide exceptional stability, efficiency, and overclocking capabilities, catering to both enthusiasts and professional users. Additionally, MSI's desktop PCs combine robust hardware with sleek designs, offering reliable and high-performance solutions for various computing needs.",
-        img: "adsadsa",
-        address: "South Korea buk-gu 120-3"
-    },
-    {
-        _id: "2",
-        name: "Apple",
-        desc: "MSI's gaming laptops are celebrated for their powerful performance, advanced cooling solutions, and stunning displays, making them a top choice for gamers seeking a competitive edge. Their motherboards and graphics cards are engineered to provide exceptional stability, efficiency, and overclocking capabilities, catering to both enthusiasts and professional users. Additionally, MSI's desktop PCs combine robust hardware with sleek designs, offering reliable and high-performance solutions for various computing needs.",
-        img: "adsadsa",
-        address: "South Korea buk-gu 120-3"
-    },
-    {
-        _id: "3",
-        name: "lenove",
-        desc: "MSI's gaming laptops are celebrated for their powerful performance, advanced cooling solutions, and stunning displays, making them a top choice for gamers seeking a competitive edge. Their motherboards and graphics cards are engineered to provide exceptional stability, efficiency, and overclocking capabilities, catering to both enthusiasts and professional users. Additionally, MSI's desktop PCs combine robust hardware with sleek designs, offering reliable and high-performance solutions for various computing needs.",
-        img: "adsadsa",
-        address: "South Korea buk-gu 120-3"
-    },
-
-]
 
 function TabPanel(props: TabPanelProps) {
     const { children, value, index, ...other } = props;
@@ -77,8 +55,25 @@ function a11yProps(index: number) {
 const OurBrands = () => {
     //Initialization
     const [value, setValue] = useState<number>(1)
+    const [retailers, setRetailers] = useState([])
 
-    
+    const { } = useQuery(GET_MEMBERS, {
+        fetchPolicy: "cache-and-network",
+        notifyOnNetworkStatusChange: true,
+        variables: {
+            input: {
+                page: 1,
+                limit: 5,
+                sort: "createdAt",
+                search: {
+                    memberType: MemberType.RETAILER
+                }
+            }
+        },
+        onCompleted: ({ getMembers }) => {
+            setRetailers(getMembers.list)
+        }
+    })
 
     //Handlers
     const handleValue = (event: any, num: number) => {
@@ -89,7 +84,7 @@ const OurBrands = () => {
             <Stack className={"brands"}>
                 <Stack className="container">
                     <Stack className="info" alignItems={"center"}>
-                        <div className="title">Our Brands</div>
+                        <div className="title">Our Retailers</div>
                         <div className="subtitle">Trusted Computer Brands Delivering Quality, Performance, and Cutting-Edge Technology</div>
                     </Stack>
                     <Stack direction={"row"} className="brand-list">
@@ -103,36 +98,39 @@ const OurBrands = () => {
                             className={"control-panel"}
                         >
                             {
-                                allBrands.map((ele: any, num: number) => (
-                                    <Tab disableRipple label={ele.name} {...a11yProps(num)} style={value === num ? { color: "white", fontWeight: "bold" } : { color: "gray", fontWeight: "bold" }} />
+                                retailers.map((member: Member, num: number) => (
+                                    <Tab disableRipple label={member.memberNick} {...a11yProps(num)} style={value === num ? { color: "white", fontWeight: "bold" } : { color: "gray", fontWeight: "bold" }} />
                                 ))
                             }
                         </Tabs>
                         {
-                            allBrands.map((ele: any, num: number) => (
-                                <TabPanel value={value} index={num}>
-                                    <Stack className="brand-info" direction={"row"}>
-                                        <Stack>
-                                            <div className="title">
-                                                {ele.name}
-                                            </div>
-                                            <div className="desc">
-                                                {ele.desc}
-                                            </div>
-                                            <Stack className={"address"} direction={"row"}>
-                                                <Place />
-                                                <div>{ele.address}</div>
+                            retailers.map((member: Member, num: number) => {
+                                const memberImage = member.memberImage?`${serverApi}/${member.memberImage}`:"/img/profile/image.svg"
+                                return (
+                                    <TabPanel value={value} index={num}>
+                                        <Stack className="brand-info" direction={"row"}>
+                                            <Stack>
+                                                <div className="title">
+                                                    {member.memberNick}
+                                                </div>
+                                                <div className="desc">
+                                                    {member.memberDesc}
+                                                </div>
+                                                <Stack className={"address"} direction={"row"}>
+                                                    <Place />
+                                                    <div>{member.memberAddress}</div>
+                                                </Stack>
+                                                <Button>
+                                                    View Retailer
+                                                </Button>
                                             </Stack>
-                                            <Button>
-                                                View Brand
-                                            </Button>
+                                            <Stack className={"brand-img"}>
+                                                <img src={memberImage} alt="" />
+                                            </Stack>
                                         </Stack>
-                                        <Stack className={"brand-img"}>
-                                            <img src="/img/banner/banner-1.jpeg" alt="" />
-                                        </Stack>
-                                    </Stack>
-                                </TabPanel>
-                            ))
+                                    </TabPanel>
+                                )
+                            })
                         }
                     </Stack>
                 </Stack>

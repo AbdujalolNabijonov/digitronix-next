@@ -1,22 +1,28 @@
+import { serverApi } from "@/libs/config"
+import { Article } from "@/libs/types/article/article"
 import { AccountCircleRounded, ArrowOutward } from "@mui/icons-material"
-import { Box, Stack } from "@mui/material"
+import { Avatar, Box, Stack } from "@mui/material"
+import moment from "moment"
 import Link from "next/link"
 
-const VerticalCard = (props: any) => {
+const VerticalCard = (props: { article: Article }) => {
+    const { article } = props
+    const memberImage = article.memberData?.memberImage ? `${serverApi}/${article.memberData?.memberImage}` : "/img/profile/defaultUser.svg"
+    const articleImage = article.articleImage ? `${serverApi}/${article.articleImage}` : ""
     return <>
         <Stack className="vertical-card">
             <div className="card-head">
-                <img src="/img/banner/banner-1.jpeg" alt="" />
+                <img src={articleImage} alt="" />
             </div>
             <Box className="card-body">
                 <div className="category">
-                    News
+                    {article.articleCategory}
                 </div>
                 <div className="title">
-                    Trump fenalty for $2mln
+                    {article.articleTitle}
                 </div>
                 <div className="context">
-                    Also, His two children finalty for $2mln each.
+                    {article.articleContext}
                 </div>
             </Box>
             <Stack
@@ -31,11 +37,11 @@ const VerticalCard = (props: any) => {
                     alignItems={"center"}
                 >
                     <div className="user-img">
-                        <AccountCircleRounded />
+                        <Avatar src={memberImage}/>
                     </div>
                     <div className="user-info">
-                        <div className="name">By John</div>
-                        <div className="date">June 2, 2024</div>
+                        <div className="name">{article.memberData.memberNick}</div>
+                        <div className="date">{moment(article.createdAt).format("YYYY-MM-DD")}</div>
                     </div>
                 </Stack>
                 <Box className={"link"}>

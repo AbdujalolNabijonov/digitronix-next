@@ -1,21 +1,27 @@
+import { serverApi } from "@/libs/config"
+import { Article } from "@/libs/types/article/article"
 import { AccountCircleRounded, ArrowOutward } from "@mui/icons-material"
-import { Box, Stack } from "@mui/material"
+import { Avatar, Box, Stack } from "@mui/material"
+import moment from "moment"
 
-const HorizontalCard = () => {
+const HorizontalCard = (props: { article: Article }) => {
+    const { article } = props
+    const memberImage = article.memberData?.memberImage ? `${serverApi}/${article.memberData?.memberImage}` : "/img/profile/defaultUser.svg"
+    const articleImage = article.articleImage ? `${serverApi}/${article.articleImage}` : ""
     return (
         <Stack className="horizontal-card" direction={"row"} alignItems={"center"}>
             <div className="card-img">
-                <img src="/img/banner/banner-1.jpeg" alt="" />
+                <img src={articleImage} alt="" />
             </div>
             <Box className="card-body">
                 <div className="category">
-                    Humor
+                    {article.articleCategory}
                 </div>
                 <div className="title">
-                    MacBook is not for gaming at all.
+                    {article.articleTitle}
                 </div>
                 <div className="context">
-                    Macbook does not have board that support to play games.
+                    {article.articleContext}
                 </div>
                 <Stack
                     alignItems={"center"}
@@ -29,11 +35,11 @@ const HorizontalCard = () => {
                         alignItems={"center"}
                     >
                         <div className="user-img">
-                            <AccountCircleRounded />
+                            <Avatar src={memberImage} />
                         </div>
                         <Stack>
-                            <div className="name">Shawn</div>
-                            <div className="old">3h</div>
+                            <div className="name">{article.memberData.memberNick}</div>
+                            <div className="old">{moment(article.createdAt).format("YYYY-MM-DD")}</div>
                         </Stack>
                     </Stack>
                     <Box className="link">

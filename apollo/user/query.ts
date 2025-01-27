@@ -32,7 +32,46 @@ query Login($input: LoginInput!) {
     }
 }
 `
+export const GET_MEMBERS = gql`
+    query GetMembers($input: MemberInquiry!) {
+    getMembers(input: $input) {
+        list {
+            _id
+            memberFullName
+            memberStatus
+            memberType
+            memberAuthType
+            memberPhone
+            memberNick
+            memberPassword
+            memberImage
+            memberAddress
+            memberDesc
+            memberProducts
+            memberArticles
+            memberFollowers
+            memberFollowings
+            memberPoints
+            memberLikes
+            memberViews
+            memberComments
+            memberRank
+            memberWarnings
+            memberBlocks
+            accessToken
+            deletedAt
+            createdAt
+            updatedAt
+            memberEmail
+        }
+        metaCounter {
+            total
+        }
+    }
+}
+`
 
+//pRODUCT
 export const GET_PRODUCT = gql`
     query GetProduct($input:String!){
         getProduct(input: $input) {
@@ -173,5 +212,62 @@ query GetAllProducts($input: ProductInquiry!) {
         }
     }
 }
-
+`
+//ARTICLE
+export const GET_ALL_ARTICLES = gql`
+    query GetAllArticles($input:ArticlesInquiry!) {
+        getAllArticles(input: $input) {
+            list {
+                _id
+                memberId
+                articleCategory
+                articleStatus
+                articleTitle
+                articleContext
+                articleImage
+                articleLikes
+                articleViews
+                articleComments
+                updatedAt
+                createdAt
+                meLiked {
+                    memberId
+                    likeTargetId
+                    myFavorite
+                }
+                memberData {
+                    _id
+                    memberFullName
+                    memberEmail
+                    memberStatus
+                    memberType
+                    memberAuthType
+                    memberPhone
+                    memberNick
+                    memberPassword
+                    memberImage
+                    memberAddress
+                    memberDesc
+                    memberProducts
+                    memberArticles
+                    memberFollowers
+                    memberFollowings
+                    memberPoints
+                    memberLikes
+                    memberViews
+                    memberComments
+                    memberRank
+                    memberWarnings
+                    memberBlocks
+                    accessToken
+                    deletedAt
+                    createdAt
+                    updatedAt
+                }
+            }
+            metaCounter {
+                total
+            }
+        }
+    }
 `
