@@ -10,4 +10,7 @@ export const Messages = {
 	error6: "Successfully log out!",
 	warn1: "You are blocked, Contact with admin",
 	success1: "Youa are successfully log in!",
+	success2:"Sucessfully commented!",
+	comment_err1: "Insert comment input!",
+	comment_err2: "Choose rank you like!"
 };

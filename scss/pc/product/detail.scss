@@ -187,6 +187,31 @@
                 height: 400px;
               }
             }
+            .comments{
+              height: 350px;
+              background-color: #343434;
+              border-radius: 20px;
+              margin: 20px 0;
+              color: white;
+              padding: 10px 20px;
+              justify-content: space-between;
+              .comment-rate{
+                flex-direction: row;
+                gap: 10px;
+                margin-bottom:20px;
+              }
+              .comment-info{
+                .comment-member{
+                  flex-direction: row;
+                  gap: 10px;
+                  align-items: center;
+                  margin: 10px;
+                }
+                .comment-context{
+                  margin: 5px 20px;
+                }
+              }
+            }
             .product-review {
               background-color: #343434;
               border-radius: 20px;
@@ -223,6 +248,10 @@
               border-radius: 20px;
               margin: 20px 0;
               padding: 20px;
+              .swiper-related{
+                width: 1020px;
+                padding: 20px;
+              }
             }
           }
           .product-owner {

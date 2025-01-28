@@ -271,3 +271,64 @@ export const GET_ALL_ARTICLES = gql`
         }
     }
 `
+
+//COMMENT
+export const GET_COMMENTS = gql`
+    query GetAllComments($input: CommentInquiry!) {
+    getAllComments(input: $input) {
+        list {
+            _id
+            commentStatus
+            commentGroup
+            commentContent
+            commentTargetId
+            memberId
+            commentRank
+            createdAt
+            updatedAt
+            memberData {
+                _id
+                memberFullName
+                memberStatus
+                memberType
+                memberAuthType
+                memberPhone
+                memberNick
+                memberPassword
+                memberImage
+                memberAddress
+                memberDesc
+                memberProducts
+                memberArticles
+                memberFollowers
+                memberFollowings
+                memberPoints
+                memberLikes
+                memberViews
+                memberComments
+                memberRank
+                memberWarnings
+                memberBlocks
+                accessToken
+                deletedAt
+                createdAt
+                updatedAt
+                meLiked {
+                    memberId
+                    likeTargetId
+                    myFavorite
+                }
+            }
+            meLiked {
+                memberId
+                likeTargetId
+                myFavorite
+            }
+        }
+        metaCounter {
+            total
+        }
+    }
+}
+
+`

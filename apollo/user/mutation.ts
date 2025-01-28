@@ -29,3 +29,19 @@ mutation Signup($input: MemberInput!) {
     }
 }
 `
+//COMMENT
+export const CREATE_COMMENT = gql`
+    mutation CreateComment($input: CommentInput!) {
+        createComment(input: $input) {
+            _id
+            commentStatus
+            commentGroup
+            commentContent
+            commentTargetId
+            memberId
+            createdAt
+            updatedAt
+            commentRank
+        }
+    }
+`

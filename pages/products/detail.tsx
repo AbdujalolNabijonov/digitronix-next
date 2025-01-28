@@ -2,42 +2,54 @@ import { NextPage } from "next"
 import { useState } from "react"
 import { useRouter } from "next/router"
 import LayoutFull from "@/libs/components/layouts/LayoutFull"
-import { Avatar, Box, Button, Divider, Rating, Stack, } from "@mui/material"
+import { Avatar, Box, Button, Divider, IconButton, IconContainerProps, Pagination, Rating, Stack, styled, } from "@mui/material"
 import { Swiper, SwiperSlide } from "swiper/react"
 import { Swiper as SwiperType } from "swiper"
 import { FreeMode, Navigation, Thumbs } from "swiper/modules"
-import { AccountBoxRounded, LaunchRounded, LocalShippingRounded, PhoneAndroid, RemoveRedEyeRounded, RestartAltRounded, ThumbUpAltRounded } from "@mui/icons-material"
+import { AccountBoxRounded, LaunchRounded, LocalShippingRounded, PhoneAndroid, RemoveRedEyeRounded, RestartAltRounded, Star, ThumbUpAltRounded } from "@mui/icons-material"
 import ProductCard from "@/libs/components/products/productCard"
 import ProductSpecBoardPc from "@/libs/components/products/ProductSpecBoard"
 import { Circuitry, CurrencyKrw, HandCoins, PaintBrushHousehold } from "@phosphor-icons/react"
-import { useQuery } from "@apollo/client"
-import { GET_PRODUCT } from "@/apollo/user/query"
+import { useMutation, useQuery, useReactiveVar } from "@apollo/client"
+import { GET_ALL_PRODUCTS, GET_COMMENTS, GET_PRODUCT } from "@/apollo/user/query"
 import { Product } from "@/libs/types/product/product"
-import { serverApi } from "@/libs/config"
+import { Messages, serverApi } from "@/libs/config"
 import { Calendar, ClipboardText, Factory } from "phosphor-react"
-import { numberSplitterHandler, stringSplitterHandler } from "@/libs/features/splitter"
+import { numberSplitterHandler } from "@/libs/features/splitter"
+import Zoom from 'react-medium-image-zoom'
+import { CommentGroup } from "@/libs/enum/comment.enum"
+import { Comment } from "@/libs/types/comment/comment"
+import { sweetErrorHandling, sweetTopSmallSuccessAlert } from "@/libs/sweetAlert"
+import { CREATE_COMMENT } from "@/apollo/user/mutation"
+import { userVar } from "@/apollo/store"
+import 'react-medium-image-zoom/dist/styles.css'
+import SmileRatingSelect from "@/libs/components/others/smileRateSelect"
+import moment from "moment"
 
-const products: any = {
-    _id: "66ca5f3e58983c128c6ad2b3",
-    memberId: "66ca561318af3640a59ebc47",
-    productName: "MAG Infinite S3",
-    productPrice: 1230000,
-    productColor: "BLACK",
-    productMemory: 24,
-    productStorage: 2048,
-    productImages: ["uploads/product/cd5a4e87-cb16-4d53-ad5b-1b7bf6d683c4.png", "uploads/product/cd5a4e87-cb16-4d53-ad5b-1b7bf6d683c4.png"],
-    productDesc: [],
-    productViews: 0,
-    productLikes: 0,
-    productComments: 0,
-    productRank: 0,
-};
 
 const Detail: NextPage = () => {
     const router = useRouter()
     const productId = router.query.id;
     const [thumbsSwiper, setThumbsSwiper] = useState<SwiperType | null>(null);
     const [product, setProduct] = useState<Product | null>(null)
+    const [relatedProducts, setRelatedProducts] = useState([])
+    const [rating, setRating] = useState<number>(0)
+    const [commentObj, setCommentObj] = useState({
+        commentGroup: CommentGroup.PRODUCT,
+        commentRank: 0,
+        commentContent: "",
+        commentTargetId: "",
+    })
+    const [commentSearchObj, setCommentSearchObj] = useState({
+        page: 1,
+        limit: 2,
+        search: {
+            commentTargetId: ""
+        }
+    })
+    const [comments, setComments] = useState<Comment[]>([])
+    const [totalComments, setTotalComments] = useState(0)
+    const user = useReactiveVar(userVar)
     //LifeCircle
 
     const { } = useQuery(GET_PRODUCT, {
@@ -49,12 +61,69 @@ const Detail: NextPage = () => {
         notifyOnNetworkStatusChange: true,
         onCompleted: (data) => {
             setProduct(data.getProduct)
+            commentObj.commentTargetId = data.getProduct._id
+            commentSearchObj.search.commentTargetId = data.getProduct._id
+            setCommentSearchObj({ ...commentSearchObj })
+            setCommentObj({ ...commentObj })
         },
     })
+
+    const { } = useQuery(GET_ALL_PRODUCTS, {
+        fetchPolicy: "network-only",
+        notifyOnNetworkStatusChange: true,
+        variables: {
+            input: {
+                page: 1,
+                limit: 5,
+                sort: "createdAt",
+                search: {
+                    productCategory: product?.productCategory
+                }
+            }
+        },
+        skip: !product?.productCategory,
+        onCompleted: ({ getAllProducts }) => {
+            setRelatedProducts(getAllProducts.list)
+        }
+    })
+
+    const {
+        refetch: getAllCommentsRefetch
+    } = useQuery(GET_COMMENTS, {
+        fetchPolicy: "cache-and-network",
+        notifyOnNetworkStatusChange: true,
+        skip: !product?._id,
+        variables: {
+            input: commentSearchObj
+        },
+        onCompleted: ({ getAllComments }) => {
+            setComments(getAllComments.list);
+            setTotalComments(getAllComments.metaCounter[0].total)
+        }
+    })
+
+    const [createComment] = useMutation(CREATE_COMMENT)
 
     //handlers
     function contactInfo() {
         window.scrollTo(400, 650)
+    }
+
+    async function submitCommentHandler() {
+        try {
+            if (!user._id) throw Error(Messages.error2)
+            if (!commentObj.commentContent) throw new Error(Messages.comment_err1);
+            if (!rating) throw new Error(Messages.comment_err2)
+            commentObj.commentRank = rating
+            await createComment({ variables: { input: commentObj } })
+            await sweetTopSmallSuccessAlert(Messages.success2);
+            commentObj.commentRank = 0;
+            commentObj.commentContent = ""
+            setCommentObj({ ...commentObj })
+            await getAllCommentsRefetch({ input: commentSearchObj })
+        } catch (err: any) {
+            await sweetErrorHandling(err)
+        }
     }
     return (
         <>
@@ -73,7 +142,13 @@ const Detail: NextPage = () => {
                                     product?.productImages.map((image: string, index: number) => {
                                         return (
                                             <SwiperSlide className="image-slide" key={index}>
-                                                <img src={`${serverApi}/${image}`} />
+                                                <Zoom>
+                                                    <img
+                                                        alt="That Wanaka Tree, New Zealand by Laura Smetsers"
+                                                        src={`${serverApi}/${image}`}
+                                                        width="500"
+                                                    />
+                                                </Zoom>
                                             </SwiperSlide>
                                         )
                                     })
@@ -213,16 +288,84 @@ const Detail: NextPage = () => {
                                     loading="lazy">
                                 </iframe>
                             </Stack>
+                            {
+                                comments && comments.length > 0 ? (
+                                    <Stack>
+                                        <Stack className="comments">
+                                            <Stack className="comment-rate">
+                                                <Star />
+                                                <Box>Reviews {totalComments}</Box>
+                                            </Stack>
+                                            <Stack sx={{ overflow: "auto", maxHeight: "300px" }}>
+                                                {comments.map((comment: Comment, index: number) => {
+                                                    const memberImage = comment.memberData?.memberImage ? `${serverApi}/${comment.memberData?.memberImage}` : "/img/profile/defaultUser.svg"
+                                                    return (
+                                                        <Stack className="comment-info" key={index}>
+                                                            <Stack flexDirection={"row"} justifyContent={"space-between"} alignItems={"center"}>
+                                                                <Stack className="comment-member">
+                                                                    <Avatar src={memberImage} />
+                                                                    <Stack>
+                                                                        <Box><strong>{comment.memberData.memberNick}</strong></Box>
+                                                                        <Box>{moment(comment.createdAt).format("YYYY-MM-DD")}</Box>
+                                                                    </Stack>
+                                                                </Stack>
+                                                                <IconButton><ThumbUpAltRounded /></IconButton>
+                                                            </Stack>
+                                                            <Box className="comment-context">
+                                                                {comment.commentContent}
+                                                            </Box>
+                                                            <Divider />
+                                                        </Stack>
+                                                    )
+                                                })}
+                                            </Stack>
+                                            <Stack alignItems={"center"} margin={"20px"}>
+                                                <Pagination
+                                                    page={commentSearchObj.page}
+                                                    count={Math.ceil(totalComments / 2)}
+                                                    onChange={(e, value) => {
+                                                        commentSearchObj.page = value;
+                                                        setCommentSearchObj({ ...commentSearchObj })
+                                                        getAllCommentsRefetch({ input: commentSearchObj }).then()
+                                                    }}
+                                                    shape="rounded"
+                                                    color="primary"
+                                                />
+                                            </Stack>
+                                        </Stack>
+                                    </Stack>
+                                ) : null
+                            }
                             <Stack className="product-review">
                                 <Box className="title">Leave Review</Box>
-                                <Box className="subtitle">Review</Box>
-                                <textarea className="review-content" rows={10} placeholder="Write a review" ></textarea>
-                                <Button variant="contained">Submit</Button>
+                                <Stack direction={"row"} gap={"10px"}>
+                                    <Box className="subtitle">Review</Box>
+                                    <SmileRatingSelect setValue={setRating} />
+                                </Stack>
+                                <textarea
+                                    className="review-content"
+                                    rows={10}
+                                    value={commentObj.commentContent}
+                                    placeholder="Write a review"
+                                    onChange={(e) => {
+                                        commentObj.commentContent = e.target.value;
+                                        setCommentObj({ ...commentObj })
+                                    }}
+                                ></textarea>
+                                <Button variant="contained" onClick={submitCommentHandler}>Submit</Button>
                             </Stack>
-                            <Stack direction={"row"} className="product-related" justifyContent={"space-evenly"}>
-                                {Array.from({ length: 3 }).map((_, index) => (
-                                    <ProductCard key={index} product={products} />
-                                ))}
+                            <Stack className="product-related">
+                                <Swiper
+                                    spaceBetween={10}
+                                    slidesPerView={1}
+                                    className="swiper-related"
+                                >
+                                    {relatedProducts.map((product: Product, index: number) => (
+                                        <SwiperSlide>
+                                            <ProductCard product={product} key={index} />
+                                        </SwiperSlide>
+                                    ))}
+                                </Swiper>
                             </Stack>
                         </Stack>
                         <Stack className="product-owner" id="contact">
