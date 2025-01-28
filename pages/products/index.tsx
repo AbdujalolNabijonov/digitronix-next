@@ -19,6 +19,7 @@ import { ProductsInquiry } from "@/libs/types/product/product.input";
 import { Product } from "@/libs/types/product/product";
 import useDeviceDetect from "@/libs/hooks/useDeviceDetector";
 import { Direction } from "@/libs/enum/common.enum";
+import { ProductCategory } from "@/libs/enum/product.enum";
 
 
 
@@ -168,6 +169,7 @@ Products.defaultProps = {
         direction: Direction.DESC,
         sort: "createdAt",
         search: {
+            productCategory: ProductCategory.LAPTOP
         }
     }
 }

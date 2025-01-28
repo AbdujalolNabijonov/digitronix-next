@@ -29,6 +29,43 @@ mutation Signup($input: MemberInput!) {
     }
 }
 `
+//PRODUCT
+export const LIKE_TARGET_PRODUCT = gql`
+    mutation LikeTargetProduct($input: String!) {
+    likeTargetProduct(input: $input) {
+        _id
+        memberId
+        productName
+        productStatus
+        productLabel
+        productBrand
+        productCategory
+        productPrice
+        productColor
+        productCore
+        productSerie
+        productDisplay
+        productOS
+        productMemory
+        productStorage
+        productWeight
+        productGraphics
+        productConnectivity
+        productMaterial
+        productImages
+        productDesc
+        productViews
+        productLikes
+        productComments
+        productRank
+        soldAt
+        deletedAt
+        createdAt
+        updatedAt
+    }
+}
+`
+
 //COMMENT
 export const CREATE_COMMENT = gql`
     mutation CreateComment($input: CommentInput!) {

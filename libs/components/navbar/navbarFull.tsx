@@ -188,7 +188,7 @@ const Navbar: NextPage = (props: any) => {
                                     Home
                                 </Link>
                                 <a
-                                    className={router.pathname === "/products" ? "active" : ""}
+                                    className={router.pathname.includes('/products') ? "active" : ""}
                                 >
                                     <Button
                                         disableRipple

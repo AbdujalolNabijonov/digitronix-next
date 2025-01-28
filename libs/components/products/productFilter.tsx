@@ -56,7 +56,7 @@ const ProductFilter = (props: ProductProps) => {
                 { scroll: false }
             ).then()
         }
-        if (!productsInquiry.search.text && !productsInquiry.search.text) {
+        if (productsInquiry.search.text === "") {
             delete productsInquiry.search.text;
             router.push(
                 `/products/?input=${JSON.stringify({ ...productsInquiry, search: { ...productsInquiry.search } })}`,
