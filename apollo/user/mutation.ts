@@ -82,3 +82,20 @@ export const CREATE_COMMENT = gql`
         }
     }
 `
+
+export const LIKE_TARGET_COMMENT = gql`
+    mutation LikeTargetComment($input:String!) {
+    likeTargetComment(input: $input) {
+        _id
+        commentStatus
+        commentGroup
+        commentContent
+        commentTargetId
+        memberId
+        commentRank
+        commentLikes
+        createdAt
+        updatedAt
+    }
+}
+`

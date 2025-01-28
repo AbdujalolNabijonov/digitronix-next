@@ -23,6 +23,7 @@ import { sweetTopSuccessAlert } from "@/libs/sweetAlert";
 import { Messages } from "@/libs/config";
 import { ProductCategory } from "@/libs/enum/product.enum";
 import { Direction } from "@/libs/enum/common.enum";
+import { GraphicsCard } from "@phosphor-icons/react";
 
 
 const Navbar: NextPage = (props: any) => {
@@ -243,7 +244,7 @@ const Navbar: NextPage = (props: any) => {
                                                     router.push(link, link, { scroll: false })
                                                     setAnchorEl3(null)
                                                 }}>
-                                                    <img src="/img/icons/graphics-card.svg" alt="graphics" style={{ width: "50px", fill: "gray" }} />
+                                                    <GraphicsCard size={"50px"}/>
                                                     <div>Graphics</div>
                                                 </Stack>
                                             </MenuItem>

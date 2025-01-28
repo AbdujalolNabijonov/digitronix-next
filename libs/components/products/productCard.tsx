@@ -1,14 +1,15 @@
 import { stringSplitterHandler } from "@/libs/features/splitter"
 import { Product } from "@/libs/types/product/product"
-import { FavoriteOutlined, VisibilityOutlined } from "@mui/icons-material"
+import { FavoriteOutlined, ThumbUpAltRounded, VisibilityOutlined } from "@mui/icons-material"
 import { Button, IconButton, Stack } from "@mui/material"
 import { useRouter } from "next/router"
 
 interface propsData {
-    product: Product
+    product: Product;
+    likeTargetProductHandler: any
 }
 const ProductCard = (props: propsData) => {
-    const { product } = props
+    const { product, likeTargetProductHandler } = props
     const prod_img = `${process.env.REACT_APP_API_URL}/${product.productImages[0]}`
     const router = useRouter()
 
@@ -31,19 +32,25 @@ const ProductCard = (props: propsData) => {
                 <div className="title">
                     {product.productName}
                 </div>
-                <div className="context">
-                    {stringSplitterHandler(product.productCore, "_")} / {stringSplitterHandler(product.productGraphics, "_")}
-                </div>
+                {
+                    ["LAPTOP", "DESKTOP"].includes(product.productCategory) ? (
+                        <div className="context">
+                            {stringSplitterHandler(product.productCore, "_")} / {stringSplitterHandler(product.productGraphics, "_")}
+                        </div>
+                    ) : null
+                }
             </Stack>
             <Stack className="item-footer">
                 <Stack direction={"row"} gap={"5px"} alignItems={"center"} justifyContent={"end"}>
                     <Stack direction={"row"} alignItems={"center"} gap={"5px"}>
-                        <VisibilityOutlined sx={{ color: "white" }} />
+                        <IconButton disableRipple onClick={(e) => { e.stopPropagation() }}>
+                            <VisibilityOutlined sx={{ fill: "gray" }} />
+                        </IconButton>
                         <div>{product.productViews}</div>
                     </Stack>
                     <Stack direction={"row"} alignItems={"center"}>
-                        <IconButton >
-                            <FavoriteOutlined sx={{ color: "white" }} />
+                        <IconButton onClick={(e) => { likeTargetProductHandler(e, product._id) }}>
+                            <ThumbUpAltRounded sx={product.meLiked && product.meLiked[0]?.myFavorite ? { fill: "#f44336" } : { fill: "gray" }} />
                         </IconButton>
                         <div>{product.productLikes}</div>
                     </Stack>

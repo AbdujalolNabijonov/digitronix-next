@@ -20,7 +20,7 @@ import Zoom from 'react-medium-image-zoom'
 import { CommentGroup } from "@/libs/enum/comment.enum"
 import { Comment } from "@/libs/types/comment/comment"
 import { sweetErrorHandling, sweetTopSmallSuccessAlert } from "@/libs/sweetAlert"
-import { CREATE_COMMENT } from "@/apollo/user/mutation"
+import { CREATE_COMMENT, LIKE_TARGET_COMMENT, LIKE_TARGET_PRODUCT } from "@/apollo/user/mutation"
 import { userVar } from "@/apollo/store"
 import 'react-medium-image-zoom/dist/styles.css'
 import SmileRatingSelect from "@/libs/components/others/smileRateSelect"
@@ -52,13 +52,14 @@ const Detail: NextPage = () => {
     const user = useReactiveVar(userVar)
     //LifeCircle
 
-    const { } = useQuery(GET_PRODUCT, {
+    const { refetch: getProductRefetch } = useQuery(GET_PRODUCT, {
         fetchPolicy: "cache-and-network",
         variables: {
             input: productId
 
         },
         notifyOnNetworkStatusChange: true,
+        skip: !productId,
         onCompleted: (data) => {
             setProduct(data.getProduct)
             commentObj.commentTargetId = data.getProduct._id
@@ -68,7 +69,9 @@ const Detail: NextPage = () => {
         },
     })
 
-    const { } = useQuery(GET_ALL_PRODUCTS, {
+    const {
+        refetch: getAllProductRefetch
+    } = useQuery(GET_ALL_PRODUCTS, {
         fetchPolicy: "network-only",
         notifyOnNetworkStatusChange: true,
         variables: {
@@ -103,6 +106,8 @@ const Detail: NextPage = () => {
     })
 
     const [createComment] = useMutation(CREATE_COMMENT)
+    const [likeTargetProduct] = useMutation(LIKE_TARGET_PRODUCT)
+    const [likeTargetComment] = useMutation(LIKE_TARGET_COMMENT)
 
     //handlers
     function contactInfo() {
@@ -122,6 +127,40 @@ const Detail: NextPage = () => {
             setCommentObj({ ...commentObj })
             await getAllCommentsRefetch({ input: commentSearchObj })
         } catch (err: any) {
+            await sweetErrorHandling(err)
+        }
+    }
+    const likeTargetProductHandler = async (e: any, productId: any) => {
+        try {
+            e.stopPropagation()
+            if (!user._id) throw new Error(Messages.error2);
+            if (!productId) throw new Error(Messages.error1);
+            await likeTargetProduct({ variables: { input: productId } });
+            await getProductRefetch({ input: productId })
+            await getAllProductRefetch({
+                input: {
+                    page: 1,
+                    limit: 5,
+                    sort: "createdAt",
+                    search: {
+                        productCategory: product?.productCategory
+                    }
+                }
+            })
+        } catch (err: any) {
+            console.log(`Error: likeTargetProductHandler, ${err.message}`);
+            await sweetErrorHandling(err)
+        }
+    }
+
+    const likeTargetCommentHandler = async (e: any, commentId: string) => {
+        try {
+            if (!user._id) throw new Error(Messages.error2);
+            if (!commentId) throw new Error(Messages.error1);
+            await likeTargetComment({ variables: { input: commentId } });
+            await getAllCommentsRefetch({ input: commentSearchObj })
+        } catch (err: any) {
+            console.log(`Error: likeTargetCommentHandler, ${err.message}`);
             await sweetErrorHandling(err)
         }
     }
@@ -206,11 +245,15 @@ const Detail: NextPage = () => {
                             </Swiper>
                             <Box className="product-feedback">
                                 <Stack direction={"row"} alignItems={"center"} gap={"10px"}>
-                                    <Button disableRipple endIcon={<RemoveRedEyeRounded sx={{ height: "40px", width: "40px", fill: "white" }} />}></Button>
+                                    <IconButton disableRipple>
+                                        <RemoveRedEyeRounded sx={{ fill: "gray" }} />
+                                    </IconButton>
                                     <Box>{product?.productViews}</Box>
                                 </Stack>
                                 <Stack direction={"row"} alignItems={"center"} gap={"10px"}>
-                                    <Button endIcon={<ThumbUpAltRounded sx={{ height: "40px", width: "40px", fill: "white" }} />}></Button>
+                                    <IconButton onClick={(e) => likeTargetProductHandler(e, product?._id)}>
+                                        <ThumbUpAltRounded sx={product?.meLiked && product.meLiked[0]?.myFavorite ? { fill: "#f44336" } : { fill: "gray" }} />
+                                    </IconButton>
                                     <Box>{product?.productLikes}</Box>
                                 </Stack>
                             </Box>
@@ -309,7 +352,12 @@ const Detail: NextPage = () => {
                                                                         <Box>{moment(comment.createdAt).format("YYYY-MM-DD")}</Box>
                                                                     </Stack>
                                                                 </Stack>
-                                                                <IconButton><ThumbUpAltRounded /></IconButton>
+                                                                <Stack flexDirection={"row"} alignItems={"center"}>
+                                                                    <IconButton onClick={(e) => { likeTargetCommentHandler(e, comment._id) }}>
+                                                                        <ThumbUpAltRounded sx={comment.meLiked && comment.meLiked[0]?.myFavorite ? { fill: "#f44336" } : { fill: "gray" }} />
+                                                                    </IconButton>
+                                                                    {comment.commentLikes}
+                                                                </Stack>
                                                             </Stack>
                                                             <Box className="comment-context">
                                                                 {comment.commentContent}
@@ -362,7 +410,7 @@ const Detail: NextPage = () => {
                                 >
                                     {relatedProducts.map((product: Product, index: number) => (
                                         <SwiperSlide>
-                                            <ProductCard product={product} key={index} />
+                                            <ProductCard product={product} key={index} likeTargetProductHandler={likeTargetProductHandler} />
                                         </SwiperSlide>
                                     ))}
                                 </Swiper>

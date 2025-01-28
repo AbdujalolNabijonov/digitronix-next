@@ -10,7 +10,7 @@ import { useCallback, useEffect, useState } from "react"
 
 interface ProductProps {
     setProductsInquiry: any,
-    productsInquiry: ProductsInquiry
+    productsInquiry: ProductsInquiry;
 }
 
 const ProductFilter = (props: ProductProps) => {

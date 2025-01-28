@@ -13,13 +13,17 @@ import { NextPage } from "next";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { useQuery } from "@apollo/client"
+import { useMutation, useQuery, useReactiveVar } from "@apollo/client"
 import { GET_ALL_PRODUCTS } from "@/apollo/user/query";
 import { ProductsInquiry } from "@/libs/types/product/product.input";
 import { Product } from "@/libs/types/product/product";
 import useDeviceDetect from "@/libs/hooks/useDeviceDetector";
 import { Direction } from "@/libs/enum/common.enum";
 import { ProductCategory } from "@/libs/enum/product.enum";
+import { LIKE_TARGET_PRODUCT } from "@/apollo/user/mutation";
+import { sweetErrorHandling } from "@/libs/sweetAlert";
+import { userVar } from "@/apollo/store";
+import { Messages } from "@/libs/config";
 
 
 
@@ -31,6 +35,7 @@ const Products: NextPage = ({ initialProps, ...props }: any) => {
     const [products, setProducts] = useState<Product[]>([])
     const [totalProducts, setTotalProducts] = useState<number>(0)
     const [value, setValue] = useState<string>("new")
+    const user = useReactiveVar(userVar)
 
 
     //Apollo Request
@@ -52,6 +57,9 @@ const Products: NextPage = ({ initialProps, ...props }: any) => {
             getAllProductsRefetch({ input: query }).then();
         }
     }, [router])
+
+    const [likeTargetProduct] = useMutation(LIKE_TARGET_PRODUCT)
+
 
     //Handlers
     const handlePaginationChange = (e: any, newPage: number) => {
@@ -77,6 +85,19 @@ const Products: NextPage = ({ initialProps, ...props }: any) => {
                 router.push(`/products?input=${jsonObj3}`, `/products?input=${jsonObj3}`, { shallow: true })
                 setProductsInquiry({ ...productsInquiry, sort: value })
                 break;
+        }
+    }
+
+    const likeTargetProductHandler = async (e: any, productId: string) => {
+        try {
+            e.stopPropagation()
+            if (!user._id) throw new Error(Messages.error2);
+            if (!productId) throw new Error(Messages.error1);
+            await likeTargetProduct({ variables: { input: productId } });
+            await getAllProductsRefetch({ input: productsInquiry })
+        } catch (err: any) {
+            console.log(`Error: likeTargetProductHandler, ${err.message}`);
+            await sweetErrorHandling(err)
         }
     }
     if (device === "mobile") {
@@ -129,7 +150,7 @@ const Products: NextPage = ({ initialProps, ...props }: any) => {
                                         >
                                             {
                                                 products.map((product: Product) =>
-                                                    <ProductCard product={product} key={product._id} />
+                                                    <ProductCard product={product} key={product._id} likeTargetProductHandler={likeTargetProductHandler}/>
                                                 )
                                             }
                                         </Stack>

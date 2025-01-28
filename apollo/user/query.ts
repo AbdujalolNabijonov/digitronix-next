@@ -282,6 +282,7 @@ export const GET_COMMENTS = gql`
             commentGroup
             commentContent
             commentTargetId
+            commentLikes
             memberId
             commentRank
             createdAt
