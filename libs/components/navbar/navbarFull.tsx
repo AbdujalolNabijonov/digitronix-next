@@ -20,7 +20,7 @@ import { useReactiveVar } from "@apollo/client";
 import { userVar } from "@/apollo/store";
 import { getJwtToken, logOut, updateUserInfo } from "@/libs/auth";
 import { sweetTopSuccessAlert } from "@/libs/sweetAlert";
-import { Messages } from "@/libs/config";
+import { Messages, serverApi } from "@/libs/config";
 import { ProductCategory } from "@/libs/enum/product.enum";
 import { Direction } from "@/libs/enum/common.enum";
 import { GraphicsCard } from "@phosphor-icons/react";
@@ -147,14 +147,14 @@ const Navbar: NextPage = (props: any) => {
             </>
         )
     } else if (device === "desktop") {
-        const imageUrl = user?.memberImage ? `${"http://localhost:3005"}/${user.memberImage}` : "/img/profile/defaultUser.svg"
+        const imageUrl = user?.memberImage ? `${serverApi}/${user.memberImage}` : "/img/profile/defaultUser.svg"
         return (
             <>
                 <Stack
+                    style={!scrolled && router.pathname.includes("/products/detail") ? { backgroundColor: "#343434", position: "relative" } : {}}
                     justifyContent={"space-between"}
                     direction={"row"}
                     className={scrolled ? "navbar-container scrolled" : "navbar-container"}
-
                 >
                     <Stack
                         className="container"
@@ -210,7 +210,7 @@ const Navbar: NextPage = (props: any) => {
                                             style={{
                                                 width: "50vw",
                                                 padding: "30px 0",
-                                                backgroundColor: "#EEEEEE"
+                                                backgroundColor: "#c8c2c2"
                                             }}>
                                             <MenuItem className="list-item">
                                                 <Stack onClick={() => {
@@ -244,7 +244,7 @@ const Navbar: NextPage = (props: any) => {
                                                     router.push(link, link, { scroll: false })
                                                     setAnchorEl3(null)
                                                 }}>
-                                                    <GraphicsCard size={"50px"}/>
+                                                    <GraphicsCard size={"50px"} />
                                                     <div>Graphics</div>
                                                 </Stack>
                                             </MenuItem>
@@ -289,8 +289,8 @@ const Navbar: NextPage = (props: any) => {
                                 </a>
 
                                 <Link
-                                    href={"/agents"}
-                                    className={router.pathname === "/retailers" ? "active" : ""}
+                                    href={"/retailers"}
+                                    className={router.pathname.includes("/retailers") ? "active" : ""}
                                 >
                                     Retailers
                                 </Link>
@@ -347,17 +347,17 @@ const Navbar: NextPage = (props: any) => {
                                             :
                                             (
                                                 <Button className={"register-btn"} onClick={() => router.push("/account/join")}>
-                                                    <AccountCircleRounded style={{ fontSize: "45px" }} />
+                                                    <AccountCircleRounded style={{ fontSize: "45px", fill: "white" }} />
                                                     <p>Login / Register</p>
                                                 </Button>
                                             )}
 
                                 </div>
                                 <Button>
-                                    <YoutubeSearchedForRounded />
+                                    <YoutubeSearchedForRounded sx={{ fill: "white" }} />
                                 </Button>
                                 <Button className="notify-ring">
-                                    <NotificationsOutlined style={{ fontSize: "25px" }} />
+                                    <NotificationsOutlined style={{ fontSize: "25px", fill: "white" }} />
                                     <div className="badge">7</div>
                                 </Button>
                                 <div className="lang-box">

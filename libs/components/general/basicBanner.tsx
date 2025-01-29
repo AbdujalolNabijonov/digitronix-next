@@ -13,10 +13,10 @@ const Banner: NextPage = (props: any) => {
             bgImg = ""
         switch (pathname) {
 
-            case "/agents":
+            case "/retailers":
                 title = "Agents"
                 desc = "We are trustfull partner all time"
-                bgImg = "/img/banner/agent.png"
+                bgImg = "/img/banner/agent.jpg"
                 break;
 
             case "/community":

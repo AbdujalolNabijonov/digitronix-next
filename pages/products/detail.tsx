@@ -203,7 +203,7 @@ const Detail: NextPage = () => {
                                 <Stack>
                                     <Stack className="rating">
                                         <Rating name="half-rating-read" defaultValue={2.5} precision={0.5} readOnly />
-                                        <Box>172 views</Box>
+                                        <Box>{totalComments} views</Box>
                                     </Stack>
                                     <Stack className="product-shipping">
                                         <Stack>
