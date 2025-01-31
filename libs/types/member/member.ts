@@ -1,3 +1,5 @@
+import { MeLiked } from "../comment/comment";
+
 export enum MemberStatus {
     ACTIVE = "ACTIVE",
     BLOCK = "BLOCK",
@@ -38,5 +40,6 @@ export interface Member {
     memberComments: number,
     memberRank: number,
     memberWarnings: number,
-    memberBlocks: number
+    memberBlocks: number,
+    meLiked: MeLiked[]
 }

@@ -25,14 +25,14 @@
         .retailers {
           margin: 60px 0 20px 0;
           flex-direction: row;
-          gap: 30px;
+          gap: 40px;
           flex-wrap: wrap;
-          justify-content: center;
+          justify-content: start;
           .retailer-card {
             position: relative;
             display: flex;
             height: 350px;
-            width: 280px;
+            width: 290px;
             margin-bottom: 30px;
             background-color: white;
             border-radius: 20px;
@@ -40,7 +40,7 @@
             .card-head {
               position: absolute;
               top: -40px;
-              height: 190px;
+              height: 200px;
               align-self: center;
               border-radius: 10px;
               overflow: hidden;
@@ -54,14 +54,15 @@
                 position: absolute;
                 bottom: 10px;
                 right: 10px;
+                gap: 7px;
                 flex-direction: row;
                 align-items: center;
-                color: white;
+                color: rgb(123, 121, 121);
                 font-size: 14px;
               }
             }
             .card-body {
-              margin-top: 150px;
+              margin-top: 160px;
               padding: 10px;
               .card-title {
                 text-align: center;
@@ -103,12 +104,10 @@
                 font-family: "Franklin Gothic Medium", "Arial Narrow", Arial,
                   sans-serif;
                 letter-spacing: 1px;
-                font-size: 16px;
+                font-size: 18px;
                 color: white;
                 font-weight: 500;
-              }
-              button:nth-child(2) {
-                background-color: gray;
+                background-color: #D67B3D;
               }
             }
           }

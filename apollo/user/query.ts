@@ -32,6 +32,44 @@ query Login($input: LoginInput!) {
     }
 }
 `
+export const GET_MEMBER = gql`
+    query GetMember ($input:String!){
+    getMember(input: $input) {
+        _id
+        memberFullName
+        memberEmail
+        memberStatus
+        memberType
+        memberAuthType
+        memberPhone
+        memberNick
+        memberPassword
+        memberImage
+        memberAddress
+        memberDesc
+        memberProducts
+        memberArticles
+        memberFollowers
+        memberFollowings
+        memberPoints
+        memberLikes
+        memberViews
+        memberComments
+        memberRank
+        memberWarnings
+        memberBlocks
+        accessToken
+        deletedAt
+        createdAt
+        updatedAt
+        meLiked {
+            memberId
+            likeTargetId
+            myFavorite
+        }
+    }
+}
+`
 export const GET_MEMBERS = gql`
     query GetMembers($input: MemberInquiry!) {
     getMembers(input: $input) {
@@ -63,6 +101,11 @@ export const GET_MEMBERS = gql`
             createdAt
             updatedAt
             memberEmail
+            meLiked {
+                memberId
+                likeTargetId
+                myFavorite
+            }
         }
         metaCounter {
             total

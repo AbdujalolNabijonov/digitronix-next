@@ -12,13 +12,16 @@ const Banner: NextPage = (props: any) => {
             desc = "",
             bgImg = ""
         switch (pathname) {
-
             case "/retailers":
-                title = "Agents"
+                title = "Retailers"
                 desc = "We are trustfull partner all time"
                 bgImg = "/img/banner/agent.jpg"
                 break;
-
+            case "/retailers/detail":
+                title = "Retail"
+                desc = "We are trustfull partner all time"
+                bgImg = "/img/banner/pxfuel.jpg"
+                break;
             case "/community":
                 title = "Community"
                 desc = "Home / Community"

@@ -18,3 +18,10 @@ export interface MeLiked {
     likeTargetId: string;
     myFavorite: boolean;
 }
+
+export interface CommentObj{
+    commentGroup: CommentGroup;
+    commentRank: number;
+    commentContent: string,
+    commentTargetId: string,
+}

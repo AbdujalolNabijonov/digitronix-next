@@ -2,7 +2,7 @@ import { NextPage } from "next"
 import { useState } from "react"
 import { useRouter } from "next/router"
 import LayoutFull from "@/libs/components/layouts/LayoutFull"
-import { Avatar, Box, Button, Divider, IconButton, IconContainerProps, Pagination, Rating, Stack, styled, } from "@mui/material"
+import { Avatar, Box, Button, Divider, IconButton, Pagination, Rating, Stack, } from "@mui/material"
 import { Swiper, SwiperSlide } from "swiper/react"
 import { Swiper as SwiperType } from "swiper"
 import { FreeMode, Navigation, Thumbs } from "swiper/modules"
@@ -23,8 +23,9 @@ import { sweetErrorHandling, sweetTopSmallSuccessAlert } from "@/libs/sweetAlert
 import { CREATE_COMMENT, LIKE_TARGET_COMMENT, LIKE_TARGET_PRODUCT } from "@/apollo/user/mutation"
 import { userVar } from "@/apollo/store"
 import 'react-medium-image-zoom/dist/styles.css'
-import SmileRatingSelect from "@/libs/components/others/smileRateSelect"
 import moment from "moment"
+import CommentWrite from "@/libs/components/others/commentWrite"
+import CommentRead from "@/libs/components/others/commentRead"
 
 
 const Detail: NextPage = () => {
@@ -333,75 +334,22 @@ const Detail: NextPage = () => {
                             </Stack>
                             {
                                 comments && comments.length > 0 ? (
-                                    <Stack>
-                                        <Stack className="comments">
-                                            <Stack className="comment-rate">
-                                                <Star />
-                                                <Box>Reviews {totalComments}</Box>
-                                            </Stack>
-                                            <Stack sx={{ overflow: "auto", maxHeight: "300px" }}>
-                                                {comments.map((comment: Comment, index: number) => {
-                                                    const memberImage = comment.memberData?.memberImage ? `${serverApi}/${comment.memberData?.memberImage}` : "/img/profile/defaultUser.svg"
-                                                    return (
-                                                        <Stack className="comment-info" key={index}>
-                                                            <Stack flexDirection={"row"} justifyContent={"space-between"} alignItems={"center"}>
-                                                                <Stack className="comment-member">
-                                                                    <Avatar src={memberImage} />
-                                                                    <Stack>
-                                                                        <Box><strong>{comment.memberData.memberNick}</strong></Box>
-                                                                        <Box>{moment(comment.createdAt).format("YYYY-MM-DD")}</Box>
-                                                                    </Stack>
-                                                                </Stack>
-                                                                <Stack flexDirection={"row"} alignItems={"center"}>
-                                                                    <IconButton onClick={(e) => { likeTargetCommentHandler(e, comment._id) }}>
-                                                                        <ThumbUpAltRounded sx={comment.meLiked && comment.meLiked[0]?.myFavorite ? { fill: "#f44336" } : { fill: "gray" }} />
-                                                                    </IconButton>
-                                                                    {comment.commentLikes}
-                                                                </Stack>
-                                                            </Stack>
-                                                            <Box className="comment-context">
-                                                                {comment.commentContent}
-                                                            </Box>
-                                                            <Divider />
-                                                        </Stack>
-                                                    )
-                                                })}
-                                            </Stack>
-                                            <Stack alignItems={"center"} margin={"20px"}>
-                                                <Pagination
-                                                    page={commentSearchObj.page}
-                                                    count={Math.ceil(totalComments / 2)}
-                                                    onChange={(e, value) => {
-                                                        commentSearchObj.page = value;
-                                                        setCommentSearchObj({ ...commentSearchObj })
-                                                        getAllCommentsRefetch({ input: commentSearchObj }).then()
-                                                    }}
-                                                    shape="rounded"
-                                                    color="primary"
-                                                />
-                                            </Stack>
-                                        </Stack>
-                                    </Stack>
+                                    <CommentRead
+                                        comments={comments}
+                                        commentSearchObj={commentSearchObj}
+                                        setCommentSearchObj={setCommentSearchObj}
+                                        totalComments={totalComments}
+                                        likeTargetCommentHandler={likeTargetCommentHandler}
+                                        getAllCommentsRefetch={getAllCommentsRefetch}
+                                    />
                                 ) : null
                             }
-                            <Stack className="product-review">
-                                <Box className="title">Leave Review</Box>
-                                <Stack direction={"row"} gap={"10px"}>
-                                    <Box className="subtitle">Review</Box>
-                                    <SmileRatingSelect setValue={setRating} />
-                                </Stack>
-                                <textarea
-                                    className="review-content"
-                                    rows={10}
-                                    value={commentObj.commentContent}
-                                    placeholder="Write a review"
-                                    onChange={(e) => {
-                                        commentObj.commentContent = e.target.value;
-                                        setCommentObj({ ...commentObj })
-                                    }}
-                                ></textarea>
-                                <Button variant="contained" onClick={submitCommentHandler}>Submit</Button>
-                            </Stack>
+                            <CommentWrite
+                                commentObj={commentObj}
+                                setCommentObj={setCommentObj}
+                                setRating={setRating}
+                                submitCommentHandler={submitCommentHandler}
+                            />
                             <Stack className="product-related">
                                 <Swiper
                                     spaceBetween={10}
