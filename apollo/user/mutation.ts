@@ -29,6 +29,39 @@ mutation Signup($input: MemberInput!) {
     }
 }
 `
+export const LIKE_TARGET_MEMBER=gql`
+    mutation LikeTargetMember($input:String!) {
+    likeTargetMember(input: $input) {
+        _id
+        memberFullName
+        memberEmail
+        memberStatus
+        memberType
+        memberAuthType
+        memberPhone
+        memberNick
+        memberPassword
+        memberImage
+        memberAddress
+        memberDesc
+        memberProducts
+        memberArticles
+        memberFollowers
+        memberFollowings
+        memberPoints
+        memberLikes
+        memberViews
+        memberComments
+        memberRank
+        memberWarnings
+        memberBlocks
+        accessToken
+        deletedAt
+        createdAt
+        updatedAt
+    }
+}
+`
 //PRODUCT
 export const LIKE_TARGET_PRODUCT = gql`
     mutation LikeTargetProduct($input: String!) {

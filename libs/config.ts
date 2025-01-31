@@ -8,9 +8,10 @@ export const Messages = {
 	error4: 'Message is empty!',
 	error5: 'Only images with jpeg, jpg, png format allowed!',
 	error6: "Successfully log out!",
+	error7:"You can not like yourself",
 	warn1: "You are blocked, Contact with admin",
 	success1: "Youa are successfully log in!",
 	success2:"Sucessfully commented!",
 	comment_err1: "Insert comment input!",
-	comment_err2: "Choose rank you like!"
+	comment_err2: "Choose rank you like!",
 };

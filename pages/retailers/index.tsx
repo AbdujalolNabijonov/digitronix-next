@@ -14,17 +14,21 @@ import {
 import { Eye, ThumbsUp } from "phosphor-react";
 import { SearchRetailer } from "@/libs/types/retailer/retailer";
 import { Direction } from "@/libs/enum/common.enum";
-import { ErrorOutline } from "@mui/icons-material";
+import { ErrorOutline, RemoveRedEyeRounded, ThumbUpAltRounded } from "@mui/icons-material";
 import { useRouter } from "next/router";
-import { useQuery } from "@apollo/client"
+import { useMutation, useQuery, useReactiveVar } from "@apollo/client"
 import { GET_MEMBERS } from "@/apollo/user/query";
 import { Member, MemberType } from "@/libs/types/member/member";
-import { serverApi } from "@/libs/config";
+import { Messages, serverApi } from "@/libs/config";
+import { sweetErrorHandling } from "@/libs/sweetAlert";
+import { userVar } from "@/apollo/store";
+import { LIKE_TARGET_MEMBER } from "@/apollo/user/mutation";
 
 const Retailers: NextPage = (props: any) => {
     const [totalRetailers, setTotalRetailer] = useState<number>(10)
     const [retailers, setRetailers] = useState<Member[]>([])
     const router = useRouter()
+    const user = useReactiveVar(userVar)
     const [searchObj, setSearchObj] = useState<SearchRetailer>({
         page: 1,
         limit: 8,
@@ -43,6 +47,7 @@ const Retailers: NextPage = (props: any) => {
             setTotalRetailer(getMembers.metaCounter[0].total ?? 0)
         }
     })
+    const [likeTargetMember]=useMutation(LIKE_TARGET_MEMBER)
     useEffect(() => {
         if (!router.query.input) {
             const url = `/retailers?input=${JSON.stringify(searchObj)}`
@@ -94,6 +99,20 @@ const Retailers: NextPage = (props: any) => {
                 console.log(`Error: textSearchHandler: ${err.message}`)
             }
         }, [searchObj])
+
+    const likeTargetHandler = async(e:any, memberId:string)=>{
+        try{
+            e.stopPropagation()
+            if(user._id===memberId) throw new Error(Messages.error7)
+            if(!user._id) throw new Error(Messages.error2);
+            if(!memberId) throw new Error(Messages.error1);
+            await likeTargetMember({variables:{input:memberId}});
+            await getMembersRefetch({input:searchObj})
+        }catch(err:any){
+            console.log(`ERROR: likeTargetHandler: ${err}`);
+            await sweetErrorHandling(err)
+        }
+    }
     return (
         <Box className="container">
             <Stack className="retailer-page">
@@ -130,14 +149,14 @@ const Retailers: NextPage = (props: any) => {
                                                 <img src={imageUrl} alt="" />
                                                 <Stack className={"card-head-items"}>
                                                     <Stack direction={"row"} alignItems={"center"} gap={"2px"}>
-                                                        <IconButton disableRipple sx={{ backgroundColor: "gray" }}>
-                                                            <Eye size={19} color="white" />
+                                                        <IconButton disableRipple onClick={(e)=>{e.stopPropagation()}}>
+                                                            <RemoveRedEyeRounded />
                                                         </IconButton>
                                                         <Box>{member.memberViews}</Box>
                                                     </Stack>
                                                     <Stack direction={"row"} alignItems={"center"} gap={"2px"}>
-                                                        <IconButton sx={{ backgroundColor: "gray" }}>
-                                                            <ThumbsUp size={19} color="white" style={member.meLiked[0]?.myFavorite ? { fill: "red" } : {}} />
+                                                        <IconButton onClick={(e)=>{likeTargetHandler(e, member._id)}}>
+                                                            <ThumbUpAltRounded  sx={member.meLiked && member.meLiked[0]?.myFavorite ? { fill: "#f44336" } : { fill: "gray" }}/>
                                                         </IconButton>
                                                         <Box>{member.memberLikes}</Box>
                                                     </Stack>

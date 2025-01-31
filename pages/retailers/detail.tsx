@@ -2,19 +2,19 @@ import { useEffect, useState } from "react"
 import LayoutBasic from "@/libs/components/layouts/LayoutBasic"
 import ProductCard from "@/libs/components/products/productCard"
 import { Product } from "@/libs/types/product/product"
-import { Box, Pagination, Stack } from "@mui/material"
+import { Box, Divider, IconButton, Pagination, Stack } from "@mui/material"
 import { Devices, Mailbox } from "@phosphor-icons/react"
 import { useRouter } from "next/router"
 import { MapPin, Phone } from "phosphor-react"
 import { useMutation, useQuery, useReactiveVar } from "@apollo/client"
 import { GET_ALL_PRODUCTS, GET_COMMENTS, GET_MEMBER } from "@/apollo/user/query"
-import { ErrorOutline } from "@mui/icons-material"
+import { ErrorOutline, RemoveRedEyeRounded, ThumbUpAltRounded } from "@mui/icons-material"
 import { Member } from "@/libs/types/member/member"
 import { Comment, CommentObj } from "@/libs/types/comment/comment"
 import CommentRead from "@/libs/components/others/commentRead"
 import CommentWrite from "@/libs/components/others/commentWrite"
 import { CommentGroup } from "@/libs/enum/comment.enum"
-import { CREATE_COMMENT, LIKE_TARGET_COMMENT, LIKE_TARGET_PRODUCT } from "@/apollo/user/mutation"
+import { CREATE_COMMENT, LIKE_TARGET_COMMENT, LIKE_TARGET_MEMBER, LIKE_TARGET_PRODUCT } from "@/apollo/user/mutation"
 import { sweetErrorHandling, sweetTopSmallSuccessAlert } from "@/libs/sweetAlert"
 import { userVar } from "@/apollo/store"
 import { Messages, serverApi } from "@/libs/config"
@@ -61,10 +61,10 @@ const Detail = (props: any) => {
             setMember(data.getMember)
             searchObj.search.memberId = data.getMember._id
             searchCommentObj.search.commentTargetId = data.getMember._id
-            commentObj.commentTargetId=data.getMember._id
+            commentObj.commentTargetId = data.getMember._id
             setSearchObj({ ...searchObj })
             setSearchCommentObj({ ...searchCommentObj })
-            setCommentObj({...commentObj})
+            setCommentObj({ ...commentObj })
         }
     })
     const { refetch: getTargetProductsRefetch } = useQuery(GET_ALL_PRODUCTS,
@@ -93,6 +93,7 @@ const Detail = (props: any) => {
     const [likeTargetProduct] = useMutation(LIKE_TARGET_PRODUCT)
     const [likeTargetComment] = useMutation(LIKE_TARGET_COMMENT)
     const [createComment] = useMutation(CREATE_COMMENT)
+    const [likeTargetMember] = useMutation(LIKE_TARGET_MEMBER)
 
     useEffect(() => {
         getTargetProductsRefetch({ input: searchObj }).then()
@@ -134,6 +135,19 @@ const Detail = (props: any) => {
             await getAllCommentsRefetch({ input: searchCommentObj })
         } catch (err: any) {
             console.log(`ERROR: submitCommentHandler: ${err.message}`)
+            await sweetErrorHandling(err)
+        }
+    }
+    const likeTargetHandler = async (e: any, memberId: string) => {
+        try {
+            e.stopPropagation()
+            if (user._id === memberId) throw new Error(Messages.error7)
+            if (!user._id) throw new Error(Messages.error2);
+            if (!memberId) throw new Error(Messages.error1);
+            await likeTargetMember({ variables: { input: memberId } });
+            await getMemberRefetch({ input: searchObj.search.memberId })
+        } catch (err: any) {
+            console.log(`ERROR: likeTargetHandler: ${err}`);
             await sweetErrorHandling(err)
         }
     }
@@ -195,7 +209,7 @@ const Detail = (props: any) => {
                     />
                 </Stack>
                 <Stack className="retailer-info">
-                    <img src={member?.memberImage?`${serverApi}/${member.memberImage}`:"/img/profile/noUser.jpg"} alt="" />
+                    <img src={member?.memberImage ? `${serverApi}/${member.memberImage}` : "/img/profile/noUser.jpg"} alt="" />
                     <Stack className="info-body">
                         <Box className="title">{member?.memberFullName ?? member?.memberNick}</Box>
                         <Stack className="contact-info">
@@ -214,6 +228,21 @@ const Detail = (props: any) => {
                             <Stack className={"contact-info-item"}>
                                 <Mailbox size={32} style={{ fill: "rgb(48, 47, 47)" }} />
                                 <Box>{member?.memberEmail ?? "No email Provided"}</Box>
+                            </Stack>
+                        </Stack>
+                        <Divider sx={{ borderBottomWidth: "2px" }} />
+                        <Stack direction={"row"} alignItems={"center"} justifyContent={"end"} fontSize={"20px"} padding={"2px"}>
+                            <Stack direction={"row"} alignItems={"center"} gap={"2px"}>
+                                <IconButton disableRipple >
+                                    <RemoveRedEyeRounded />
+                                </IconButton>
+                                <Box>{member?.memberViews}</Box>
+                            </Stack>
+                            <Stack direction={"row"} alignItems={"center"} gap={"2px"}>
+                                <IconButton onClick={(e) => { likeTargetHandler(e, member?._id as string) }}>
+                                    <ThumbUpAltRounded sx={member?.meLiked && member?.meLiked[0]?.myFavorite ? { fill: "#f44336" } : { fill: "gray" }} />
+                                </IconButton>
+                                <Box>{member?.memberLikes}</Box>
                             </Stack>
                         </Stack>
                     </Stack>
