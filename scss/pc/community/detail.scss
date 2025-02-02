@@ -1,0 +1,58 @@
+.pc-wrapper {
+  .main {
+    .article-detail {
+      .container {
+        .article-main {
+          .title {
+            flex-direction: row;
+            justify-content: space-between;
+            color: white;
+            margin: 40px 0;
+            div:nth-child(1) {
+              font-size: 20px;
+              font-weight: 700;
+              letter-spacing: 1px;
+            }
+            div:nth-child(2) {
+              font-weight: 500;
+              font-size: 18px;
+              color: aliceblue;
+            }
+            button {
+              background-color: #d77b3d;
+              color: white;
+              font-size: 16px;
+              padding: 0px 15px;
+            }
+          }
+          .article {
+            background-color: #6a6868;
+            height: auto;
+            padding: 10px;
+            .article-title {
+              font-size: 35px;
+              font-weight: 700;
+              color: white;
+              margin-top: 10px;
+            }
+            .owner-info {
+              flex-direction: row;
+              justify-content: space-between;
+              color: white;
+              .article-owner{
+                flex-direction: row;
+                align-items: center;
+                gap: 5px;
+                margin: 20px 0;
+                img{
+                    height: 40px;
+                    width: 40px;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

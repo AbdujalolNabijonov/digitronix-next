@@ -1,0 +1,120 @@
+.pc-wrapper {
+  .main {
+    .community-page {
+      .container {
+        padding: 40px 0;
+        .tabs {
+          .tab-item {
+            background-color: #d67b3d;
+            margin: 0 5px;
+            border-radius: 5px;
+            color: white;
+            font-weight: 600;
+            font-size: 18px;
+            letter-spacing: 1px;
+          }
+          .css-1e698e-MuiTabs-indicator {
+            background-color: white;
+            height: 3px;
+            border-radius: 0 0 5px 5px;
+          }
+        }
+        .info {
+          flex-direction: row;
+          justify-content: space-between;
+          color: white;
+          margin: 40px 0;
+          align-items: center;
+          .title {
+            justify-content: center;
+            justify-content: start;
+            div:nth-child(1) {
+              font-weight: 600;
+              font-size: 22px;
+              letter-spacing: 1px;
+            }
+            div:nth-child(2) {
+              font-size: 18px;
+              letter-spacing: 1px;
+              color: rgb(203, 204, 204);
+            }
+          }
+          button {
+            color: white;
+            font-weight: 600;
+            letter-spacing: 1px;
+            background-color: #d67b3d;
+            font-size: 18px;
+          }
+        }
+        .articles {
+          display: flex;
+          flex-direction: row;
+          gap: 20px;
+          .article-card {
+            background-color: aliceblue;
+            width: 300px;
+            height: auto;
+            border-radius: 10px;
+            overflow: hidden;
+            .article-image {
+              position: relative;
+              width: 100%;
+              .article-date {
+                position: absolute;
+                top: 10px;
+                right: 10px;
+                color: white;
+                background-color: #d67b3d;
+                height: 55px;
+                width: 55px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                font-size: 14px;
+                font-weight: 700;
+                border-radius: 50%;
+              }
+            }
+            .article-card-body {
+              padding: 10px;
+              .article-title {
+                font-size: 20px;
+                font-weight: 700;
+                margin: 5px 0;
+              }
+              .article-context {
+                font-size: 16px;
+                font-weight: 500;
+                color: rgb(86, 85, 85);
+              }
+            }
+            .article-card-footer {
+              flex-direction: row;
+              justify-content: space-between;
+              padding: 10px;
+              .article-owner {
+                flex-direction: row;
+                align-items: center;
+                gap: 5px;
+              }
+            }
+          }
+        }
+        .article-avb{
+          text-align: center;
+          color: white;
+          margin: 20px 0;
+        }
+        .pagination-box {
+          align-items: center;
+          margin-top: 30px;
+          .css-15k5uk4-MuiButtonBase-root-MuiPaginationItem-root {
+            color: rgb(212, 206, 206);
+            border-color: rgb(78, 75, 75);
+          }
+        }
+      }
+    }
+  }
+}

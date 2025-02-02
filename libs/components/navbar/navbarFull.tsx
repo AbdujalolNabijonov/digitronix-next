@@ -296,7 +296,7 @@ const Navbar: NextPage = (props: any) => {
                                 </Link>
                                 <Link
                                     href={"/community"}
-                                    className={router.pathname === "/community" ? "active" : ""}
+                                    className={router.pathname.includes("/community") ? "active" : ""}
                                 >
                                     Society
                                 </Link>

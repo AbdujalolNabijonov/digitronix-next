@@ -27,6 +27,11 @@ const Banner: NextPage = (props: any) => {
                 desc = "Home / Community"
                 bgImg = "/img/banner/community.png"
                 break;
+            case "/community/detail":
+                title = "Community"
+                desc = "Home / Community"
+                bgImg = "/img/banner/communityD.jpg"
+                break;
             case "/mypage":
                 title = "MyPage"
                 desc = "Home / MyPage"

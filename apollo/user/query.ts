@@ -376,3 +376,56 @@ export const GET_COMMENTS = gql`
 }
 
 `
+//Article
+export const GET_ARTICLE = gql`
+    query GetArticle($input:String!) {
+    getArticle(input: $input) {
+        _id
+        memberId
+        articleCategory
+        articleStatus
+        articleTitle
+        articleContext
+        articleImage
+        articleLikes
+        articleViews
+        articleComments
+        updatedAt
+        createdAt
+        meLiked {
+            memberId
+            likeTargetId
+            myFavorite
+        }
+        memberData {
+            _id
+            memberFullName
+            memberEmail
+            memberStatus
+            memberType
+            memberAuthType
+            memberPhone
+            memberNick
+            memberPassword
+            memberImage
+            memberAddress
+            memberDesc
+            memberProducts
+            memberArticles
+            memberFollowers
+            memberFollowings
+            memberPoints
+            memberLikes
+            memberViews
+            memberComments
+            memberRank
+            memberWarnings
+            memberBlocks
+            accessToken
+            deletedAt
+            createdAt
+            updatedAt
+        }
+    }
+}
+`
