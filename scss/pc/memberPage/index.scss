@@ -1,0 +1,92 @@
+.pc-wrapper {
+  .main {
+    .my-page {
+      .container {
+        .tab-panel {
+          flex: 1;
+          .favority {
+            .favority-title {
+              color: white;
+              .title {
+                font-weight: 700;
+                font-size: 25px;
+                margin: 5px 0;
+                letter-spacing: 1px;
+              }
+              .subtitle {
+                font-weight: 600;
+                font-size: 16px;
+                color: #7d7a7a;
+              }
+            }
+            .favority-products {
+              margin-top: 30px;
+              flex-direction: row;
+              gap: 20px;
+              flex-wrap: wrap;
+            }
+            .pagination-box {
+              align-items: center;
+              margin-top: 30px;
+              .css-15k5uk4-MuiButtonBase-root-MuiPaginationItem-root {
+                color: rgb(212, 206, 206);
+                border-color: rgb(78, 75, 75);
+              }
+            }
+          }
+        }
+        .account-nav {
+          background-color: #595656;
+          border-radius: 10px;
+          height: auto;
+          width: 300px;
+          padding: 20px;
+          .account-info {
+            flex-direction: row;
+            gap: 20px;
+            align-items: center;
+            color: white;
+            margin-bottom: 10px;
+            .account-item {
+              flex-direction: row;
+              gap: 5px;
+              align-items: center;
+              font-size: 18px;
+              letter-spacing: 1px;
+              .account-type {
+                color: rgb(230, 133, 7);
+                font-weight: 600;
+              }
+            }
+          }
+          .account-manage {
+            margin: 15px 0;
+            .title {
+              letter-spacing: 1px;
+              font-size: 20px;
+              color: white;
+            }
+            .tab-list {
+              margin: 5px 10px;
+              .tab-list-item {
+                justify-content: start;
+                width: 100%;
+                color: white;
+                font-weight: 600;
+                letter-spacing: 1px;
+                padding: 10px;
+                font-size: 16px;
+              }
+              .on {
+                background-color: #d77b3d;
+              }
+              .off {
+                background-color: transparent;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

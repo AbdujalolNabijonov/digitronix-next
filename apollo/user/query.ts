@@ -256,6 +256,155 @@ query GetAllProducts($input: ProductInquiry!) {
     }
 }
 `
+export const GET_FAVORITY_PRODUCTS = gql`
+    query FavorityProducts ($input:ProductInquiry!){
+    favorityProducts(input: $input) {
+        list {
+            _id
+            memberId
+            productName
+            productStatus
+            productLabel
+            productBrand
+            productCategory
+            productPrice
+            productColor
+            productCore
+            productSerie
+            productDisplay
+            productOS
+            productMemory
+            productStorage
+            productWeight
+            productGraphics
+            productConnectivity
+            productMaterial
+            productImages
+            productDesc
+            productViews
+            productLikes
+            productComments
+            productRank
+            soldAt
+            deletedAt
+            createdAt
+            updatedAt
+            memberData {
+                _id
+                memberFullName
+                memberEmail
+                memberStatus
+                memberType
+                memberAuthType
+                memberPhone
+                memberNick
+                memberPassword
+                memberImage
+                memberAddress
+                memberDesc
+                memberProducts
+                memberArticles
+                memberFollowers
+                memberFollowings
+                memberPoints
+                memberLikes
+                memberViews
+                memberComments
+                memberRank
+                memberWarnings
+                memberBlocks
+                accessToken
+                deletedAt
+                createdAt
+                updatedAt
+            }
+            meLiked {
+                memberId
+                likeTargetId
+                myFavorite
+            }
+        }
+        metaCounter {
+            total
+        }
+    }
+}
+`
+
+export const GET_VISITED_PRODUCTS = gql`
+    query VisitedProducts($input:ProductInquiry!) {
+    visitedProducts(input: $input) {
+        list {
+            _id
+            memberId
+            productName
+            productStatus
+            productLabel
+            productBrand
+            productCategory
+            productPrice
+            productColor
+            productCore
+            productSerie
+            productDisplay
+            productOS
+            productMemory
+            productStorage
+            productWeight
+            productGraphics
+            productConnectivity
+            productMaterial
+            productImages
+            productDesc
+            productViews
+            productLikes
+            productComments
+            productRank
+            soldAt
+            deletedAt
+            createdAt
+            updatedAt
+            memberData {
+                _id
+                memberFullName
+                memberEmail
+                memberStatus
+                memberType
+                memberAuthType
+                memberPhone
+                memberNick
+                memberPassword
+                memberImage
+                memberAddress
+                memberDesc
+                memberProducts
+                memberArticles
+                memberFollowers
+                memberFollowings
+                memberPoints
+                memberLikes
+                memberViews
+                memberComments
+                memberRank
+                memberWarnings
+                memberBlocks
+                accessToken
+                deletedAt
+                createdAt
+                updatedAt
+            }
+            meLiked {
+                memberId
+                likeTargetId
+                myFavorite
+            }
+        }
+        metaCounter {
+            total
+        }
+    }
+}
+`
 //ARTICLE
 export const GET_ALL_ARTICLES = gql`
     query GetAllArticles($input:ArticlesInquiry!) {

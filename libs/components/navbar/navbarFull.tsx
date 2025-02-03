@@ -138,7 +138,7 @@ const Navbar: NextPage = (props: any) => {
                 <Link href={"/community"}>
                     Society
                 </Link>
-                <Link href={"/mypage"}>
+                <Link href={"/memberPage"}>
                     My Profile
                 </Link>
                 <Link href={"/cs"}>
@@ -301,8 +301,8 @@ const Navbar: NextPage = (props: any) => {
                                     Society
                                 </Link>
                                 <Link
-                                    href={"/mypage"}
-                                    className={router.pathname === "/mypage" ? "active" : ""}
+                                    href={"/memberPage?stage=1"}
+                                    className={router.pathname.includes("memberPage") ? "active" : ""}
                                 >
                                     My Profile
                                 </Link>
