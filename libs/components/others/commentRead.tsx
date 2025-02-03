@@ -1,12 +1,20 @@
 import { serverApi } from "@/libs/config"
-import { Comment } from "@/libs/types/comment/comment"
+import { Comment, CommentSearch } from "@/libs/types/comment/comment"
 import { ThumbUpAltRounded } from "@mui/icons-material"
 import { Avatar, Box, Divider, IconButton, Pagination, Stack } from "@mui/material"
 import moment from "moment"
 import { Star } from "phosphor-react"
 
+interface CommentReadProps {
+    comments: Comment[],
+    totalComments: number,
+    likeTargetCommentHandler: any,
+    commentSearchObj: CommentSearch,
+    setCommentSearchObj: any,
+    getAllCommentsRefetch: any
+}
 
-const CommentRead = (props: any) => {
+const CommentRead = (props: CommentReadProps) => {
     const {
         comments,
         totalComments,
@@ -49,7 +57,7 @@ const CommentRead = (props: any) => {
                         )
                     })}
                 </Stack>
-                <Stack alignItems={"center"} margin={"20px"}>
+                <Stack className="pagination-box">
                     <Pagination
                         page={commentSearchObj.page}
                         count={Math.ceil(totalComments / 2)}
@@ -58,8 +66,9 @@ const CommentRead = (props: any) => {
                             setCommentSearchObj({ ...commentSearchObj })
                             getAllCommentsRefetch({ input: commentSearchObj }).then()
                         }}
+                        variant="outlined"
                         shape="rounded"
-                        color="primary"
+                        color="secondary"
                     />
                 </Stack>
             </Stack>

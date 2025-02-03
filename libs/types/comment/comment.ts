@@ -1,5 +1,6 @@
 import { CommentGroup } from "@/libs/enum/comment.enum";
 import { Member } from "../member/member";
+import { Direction } from "@mui/material";
 
 export interface Comment {
     _id: string;
@@ -8,7 +9,7 @@ export interface Comment {
     commentTargetId: string,
     commentContent: string;
     memberData: Member;
-    commentLikes:number;
+    commentLikes: number;
     meLiked: MeLiked[];
     createdAt: Date
 }
@@ -19,9 +20,21 @@ export interface MeLiked {
     myFavorite: boolean;
 }
 
-export interface CommentObj{
+export interface CommentObj {
     commentGroup: CommentGroup;
     commentRank: number;
     commentContent: string,
     commentTargetId: string,
+}
+
+export interface CommentSearch {
+    page: number;
+    limit: number;
+    sort?: string;
+    direction?: Direction;
+    search: CSSearch
+}
+
+interface CSSearch {
+    commentTargetId?: string
 }

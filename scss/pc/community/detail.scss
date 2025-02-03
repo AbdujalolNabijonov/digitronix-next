@@ -2,7 +2,10 @@
   .main {
     .article-detail {
       .container {
+        flex-direction: row;
+        gap: 20px;
         .article-main {
+          flex: 1;
           .title {
             flex-direction: row;
             justify-content: space-between;
@@ -26,9 +29,10 @@
             }
           }
           .article {
-            background-color: #6a6868;
+            background-color: #343434;
             height: auto;
-            padding: 10px;
+            padding: 15px;
+            border-radius: 5px;
             .article-title {
               font-size: 35px;
               font-weight: 700;
@@ -39,17 +43,62 @@
               flex-direction: row;
               justify-content: space-between;
               color: white;
-              .article-owner{
+              .article-owner {
                 flex-direction: row;
                 align-items: center;
                 gap: 5px;
                 margin: 20px 0;
-                img{
-                    height: 40px;
-                    width: 40px;
+                img {
+                  height: 40px;
+                  width: 40px;
                 }
               }
             }
+            .article-context {
+              button {
+                align-self: center;
+                width: 100px;
+                margin: 20px 0;
+                background-color: #d77b3d;
+                border-radius: 5px;
+                font-size: 20px;
+                color: white;
+              }
+            }
+          }
+          .comment{
+            margin: 0px 0px 30px 0;
+          }
+        }
+        .community-board {
+          width: 300px;
+          height: 450px;
+          margin-top: 140px;
+          background-color: #343434;
+          padding: 30px 20px;
+          align-items: center;
+          border-radius: 10px;
+          .title {
+            font-weight: 600;
+            font-size: 25px;
+            letter-spacing: 1px;
+            color: aliceblue;
+            margin-bottom: 20px;
+          }
+          button {
+            padding: 15px;
+            width: 200px;
+            color: white;
+            font-weight: 600;
+            font-size: 18px;
+            letter-spacing: 1px;
+            margin: 10px 0;
+          }
+          .on{
+            background-color: #d77b3d;
+          }
+          .off{
+            background-color: gray;
           }
         }
       }

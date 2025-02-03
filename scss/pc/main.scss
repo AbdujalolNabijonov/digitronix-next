@@ -247,7 +247,7 @@
 }
 
 .comments {
-  height: 350px;
+  height: 450px;
   background-color: #343434;
   border-radius: 20px;
   margin: 20px 0;
@@ -257,7 +257,6 @@
   .comment-rate {
     flex-direction: row;
     gap: 10px;
-    margin-bottom: 20px;
   }
   .comment-info {
     padding: 10px;
@@ -269,6 +268,14 @@
     }
     .comment-context {
       margin: 5px 20px;
+    }
+  }
+  .pagination-box{
+    align-items: center;
+    margin: 10px;
+    .css-15k5uk4-MuiButtonBase-root-MuiPaginationItem-root{
+      color: rgb(212, 206, 206);
+      border-color: rgb(78, 75, 75);
     }
   }
 }
@@ -288,18 +295,52 @@
   }
   textarea {
     padding: 20px 10px;
-    font-size: 20px;
-    border-radius: 10px;
+    font-size: 18px;
+    border-radius: 5px;
     color: rgb(82, 81, 81);
   }
   button {
     width: 200px;
     align-self: flex-end;
-    border-radius: 15px;
+    border-radius: 5px;
     margin-top: 15px;
     padding: 10px 20px;
     font-size: 20px;
     color: white;
     background-color: #eb6753;
+  }
+  .comment-input {
+    input {
+      padding: 10px 5px;
+      outline: none;
+    }
+    .comment-submit {
+      flex-direction: row;
+      height: 40px;
+      div {
+        flex: 1;
+        border-bottom-width: 1px;
+        border-left-width: 1px;
+        border-right-width: 1px;
+        border-top-width: 0;
+        border-style: solid;
+        border-color: rgb(156, 151, 151);
+        box-sizing: border-box;
+        padding: 3px;
+      }
+      button {
+        height: 100%;
+        width: 100px;
+        background-color: #d77b3d;
+        color: white;
+        border-radius: 0;
+      }
+    }
+    p{
+      color: #ff3744;
+      font-size: 14px;
+      font-family: 'Times New Roman', Times, serif;
+      margin: 4px 0px 0px 5px;
+    }
   }
 }

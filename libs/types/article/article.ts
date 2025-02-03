@@ -1,5 +1,6 @@
-import { ArticleCategory, ArticleStatus } from "@/libs/enum/article.enu"
+import { ArticleCategory, ArticleStatus } from "@/libs/enum/article.enum"
 import { Member } from "../member/member"
+import { MeLiked } from "../comment/comment"
 
 export interface Article {
     _id: string,
@@ -12,6 +13,7 @@ export interface Article {
     articleLikes: number,
     articleViews: number,
     articleComments: number,
+    meLiked:MeLiked[]
     updatedAt: Date,
     createdAt: Date,
     memberData: Member

@@ -29,7 +29,7 @@ mutation Signup($input: MemberInput!) {
     }
 }
 `
-export const LIKE_TARGET_MEMBER=gql`
+export const LIKE_TARGET_MEMBER = gql`
     mutation LikeTargetMember($input:String!) {
     likeTargetMember(input: $input) {
         _id
@@ -131,4 +131,25 @@ export const LIKE_TARGET_COMMENT = gql`
         updatedAt
     }
 }
+`
+
+//ARTICLE
+export const LIKE_TARGET_ARTICLE = gql`
+    mutation LikeTargetArticle($input: String!) {
+    likeTargetArticle(input: $input) {
+        _id
+        memberId
+        articleCategory
+        articleStatus
+        articleTitle
+        articleContext
+        articleImage
+        articleLikes
+        articleViews
+        articleComments
+        updatedAt
+        createdAt
+    }
+}
+
 `
