@@ -1,18 +1,17 @@
 .authMain {
   position: relative;
   width: 1000px;
-  border-radius: 20px;
+  border-radius: 10px;
   background-color: transparent;
   input {
-    border-radius: 10px;
+    border-radius: 5px;
     padding: 5px 10px;
-    font-size: 19px;
+    font-size: 17px;
   }
   .auth-overlay {
     position: absolute;
     height: 100%;
     width: 100%;
-    border-radius: 20px;
     opacity: 0.9;
   }
   .auth_container {
@@ -25,12 +24,13 @@
         .login-btn {
           width: 100%;
           cursor: pointer;
-          padding: 5px 15px;
+          padding: 10px 15px;
           font-size: 17px;
-          border-radius: 10px;
+          border-radius: 5px;
           background-color: #eb6753;
           border: none;
           color: white;
+          letter-spacing: 1px;
         }
       }
     }
@@ -50,9 +50,10 @@
         button {
           width: 100%;
           cursor: pointer;
-          padding: 5px 15px;
+          padding: 10px 15px;
+          letter-spacing: 1px;
           font-size: 17px;
-          border-radius: 10px;
+          border-radius: 5px;
           background-color: #eb6753;
           border: none;
           color: white;
@@ -176,7 +177,7 @@
         button {
           padding: 5px 15px;
           background-color: #929090;
-          border-radius: 10px;
+          border-radius: 5px;
           color: white;
           font-size: 20px;
           margin-top: 10px;
@@ -218,7 +219,7 @@
         button {
           padding: 5px 15px;
           background-color: #929090;
-          border-radius: 10px;
+          border-radius: 5px;
           color: white;
           font-size: 20px;
           margin-top: 10px;

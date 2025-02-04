@@ -4,6 +4,7 @@
       .container {
         .tab-panel {
           flex: 1;
+          margin-right: 20px;
           .favority {
             .favority-title {
               color: white;
@@ -24,6 +25,54 @@
               flex-direction: row;
               gap: 20px;
               flex-wrap: wrap;
+            }
+            .pagination-box {
+              align-items: center;
+              margin-top: 30px;
+              .css-15k5uk4-MuiButtonBase-root-MuiPaginationItem-root {
+                color: rgb(212, 206, 206);
+                border-color: rgb(78, 75, 75);
+              }
+            }
+          }
+          .follow {
+            .follow-head {
+              color: white;
+              .title {
+                font-weight: 700;
+                font-size: 25px;
+                margin: 5px 0;
+                letter-spacing: 1px;
+              }
+              .subtitle {
+                font-weight: 600;
+                font-size: 16px;
+                color: #7d7a7a;
+              }
+            }
+            .follow-body {
+              margin-top: 20px;
+              table {
+                background-color: #595656;
+                border-radius: 5px;
+                .table-head {
+                  .th-item {
+                    font-weight: 600;
+                    color: white;
+                    letter-spacing: 1px;
+                    font-size: 18px;
+                  }
+                }
+                .tb-item {
+                  color: white;
+                }
+                .tb-item-btn {
+                  button {
+                    margin-left: 10px;
+                    color: white;
+                  }
+                }
+              }
             }
             .pagination-box {
               align-items: center;

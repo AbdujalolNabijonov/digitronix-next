@@ -1,5 +1,5 @@
 import { NextPage } from "next";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import LayoutBasic from "@/libs/components/layouts/LayoutBasic";
 import TabContext from "@mui/lab/TabContext";
 import TabPanel from "@mui/lab/TabPanel";
@@ -9,18 +9,18 @@ import { BookOpenText, UserCircleCheck } from "@phosphor-icons/react";
 import { useRouter } from "next/router";
 import Favorities from "@/libs/components/memberPage/Favoities";
 import Visited from "@/libs/components/memberPage/Visited";
-import Follower from "@/libs/components/memberPage/Follower";
+import Following from "@/libs/components/memberPage/Following";
 import Articles from "@/libs/components/memberPage/Articles";
 import WriteArticle from "@/libs/components/memberPage/WriteArticle";
 import MyProfile from "@/libs/components/memberPage/MyProfile";
-import { Product } from "@/libs/types/product/product";
-import { useQuery } from "@apollo/client"
-import { Direction } from "@/libs/enum/common.enum";
-import Following from "@/libs/components/memberPage/Following";
+import Follower from "@/libs/components/memberPage/Follower";
+import { useReactiveVar } from "@apollo/client";
+import { userVar } from "@/apollo/store";
 
 const MemberPage: NextPage = (props: any) => {
     const router = useRouter()
     const memberId = router.query.memberId
+    const user = useReactiveVar(userVar)
     const stage = router.query.stage
     const [value, setValue] = useState<string>(stage as string ?? "1")
 
@@ -32,6 +32,11 @@ const MemberPage: NextPage = (props: any) => {
         }
         router.push(url, url, { scroll: false })
     }
+    useEffect(() => {
+        if (router.query.stage) {
+            setValue(router.query.stage as string)
+        }
+    }, [router])
     return (
         <Stack className="my-page">
             <Stack className="container">
@@ -64,15 +69,15 @@ const MemberPage: NextPage = (props: any) => {
                                 <Stack>
                                     <Stack className="account-item">
                                         <User />
-                                        <Box>Abdujalol</Box>
+                                        <Box>{user.memberFullName || user.memberNick}</Box>
                                     </Stack>
                                     <Stack className="account-item">
                                         <Phone />
-                                        <Box>32011222</Box>
+                                        <Box>{user.memberPhone}</Box>
                                     </Stack>
                                     <Stack className="account-item">
                                         <Crosshair />
-                                        <Box className="account-type">User</Box>
+                                        <Box className="account-type">{user.memberType}</Box>
                                     </Stack>
                                 </Stack>
                             </Stack>

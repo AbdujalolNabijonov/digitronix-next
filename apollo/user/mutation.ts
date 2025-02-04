@@ -151,5 +151,38 @@ export const LIKE_TARGET_ARTICLE = gql`
         createdAt
     }
 }
-
 `
+
+//FOLLOW
+export const SUBSCRIBE_MEMBER=gql`
+    mutation FollowMember($input:String!) {
+    followMember(input: $input) {
+        followingId
+        followerId
+        createdAt
+        updatedAt
+    }
+}
+`
+export const UNSUBSCRIBE_MEMBER = gql`
+    mutation UnfollowMember($input:String!) {
+    unfollowMember(input: $input) {
+        followingId
+        followerId
+        createdAt
+        updatedAt
+    }
+}
+`
+export const DELETE_FOLLOWER =gql`
+    mutation DeleteFollower($input:String!) {
+    deleteFollower(input: $input) {
+        _id
+        followingId
+        followerId
+        createdAt
+        updatedAt
+    }
+}
+`
+

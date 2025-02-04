@@ -578,3 +578,116 @@ export const GET_ARTICLE = gql`
     }
 }
 `
+
+//Follow
+export const GET_FOLLOWINGS = gql`
+    query GetFollowingMembers($input:FollowInquiry!) {
+    getFollowingMembers(input:$input) {
+        list {
+            followingId
+            followerId
+            createdAt
+            updatedAt
+            meLiked {
+                memberId
+                likeTargetId
+                myFavorite
+            }
+            meFollowed {
+                followingId
+                followerId
+                myFollowing
+            }
+            followingData {
+                _id
+                memberFullName
+                memberEmail
+                memberStatus
+                memberType
+                memberAuthType
+                memberPhone
+                memberNick
+                memberPassword
+                memberImage
+                memberAddress
+                memberDesc
+                memberProducts
+                memberArticles
+                memberFollowers
+                memberFollowings
+                memberPoints
+                memberLikes
+                memberViews
+                memberComments
+                memberRank
+                memberWarnings
+                memberBlocks
+                accessToken
+                deletedAt
+                createdAt
+                updatedAt
+            }
+        }
+        metaCounter {
+            total
+        }
+    }
+}
+`
+
+export const GET_FOLLOWERS = gql`
+query GetFollowerMembers($input:FollowInquiry!) {
+    getFollowerMembers(input:$input) {
+        list {
+            _id
+            followingId
+            followerId
+            createdAt
+            updatedAt
+            meLiked {
+                memberId
+                likeTargetId
+                myFavorite
+            }
+            meFollowed {
+                followingId
+                followerId
+                myFollowing
+            }
+            followerData {
+                _id
+                memberFullName
+                memberEmail
+                memberStatus
+                memberType
+                memberAuthType
+                memberPhone
+                memberNick
+                memberPassword
+                memberImage
+                memberAddress
+                memberDesc
+                memberProducts
+                memberArticles
+                memberFollowers
+                memberFollowings
+                memberPoints
+                memberLikes
+                memberViews
+                memberComments
+                memberRank
+                memberWarnings
+                memberBlocks
+                accessToken
+                deletedAt
+                createdAt
+                updatedAt
+            }
+        }
+        metaCounter {
+            total
+        }
+    }
+}
+
+`
