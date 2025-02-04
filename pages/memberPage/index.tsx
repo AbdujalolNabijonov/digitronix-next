@@ -16,6 +16,8 @@ import MyProfile from "@/libs/components/memberPage/MyProfile";
 import Follower from "@/libs/components/memberPage/Follower";
 import { useReactiveVar } from "@apollo/client";
 import { userVar } from "@/apollo/store";
+import { sweetErrorHandling } from "@/libs/sweetAlert";
+import { Messages } from "@/libs/config";
 
 const MemberPage: NextPage = (props: any) => {
     const router = useRouter()
@@ -23,6 +25,18 @@ const MemberPage: NextPage = (props: any) => {
     const user = useReactiveVar(userVar)
     const stage = router.query.stage
     const [value, setValue] = useState<string>(stage as string ?? "1")
+
+    useEffect(()=>{
+        if(!localStorage.getItem("accessToken")){
+            sweetErrorHandling(new Error(Messages.error2)).then()
+            router.push("/account/join")
+        }
+    },[])
+    useEffect(() => {
+        if (router.query.stage) {
+            setValue(router.query.stage as string)
+        }
+    }, [router])
 
     const navigateSelectHandler = (e: any, value: string) => {
         setValue(value)
@@ -32,11 +46,6 @@ const MemberPage: NextPage = (props: any) => {
         }
         router.push(url, url, { scroll: false })
     }
-    useEffect(() => {
-        if (router.query.stage) {
-            setValue(router.query.stage as string)
-        }
-    }, [router])
     return (
         <Stack className="my-page">
             <Stack className="container">

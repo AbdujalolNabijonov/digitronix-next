@@ -138,9 +138,13 @@ const Navbar: NextPage = (props: any) => {
                 <Link href={"/community"}>
                     Society
                 </Link>
-                <Link href={"/memberPage"}>
-                    My Profile
-                </Link>
+                {
+                    !user._id ? null : (
+                        <Link href={"/memberPage"}>
+                            My Profile
+                        </Link>
+                    )
+                }
                 <Link href={"/cs"}>
                     CS
                 </Link>
@@ -300,12 +304,16 @@ const Navbar: NextPage = (props: any) => {
                                 >
                                     Society
                                 </Link>
-                                <Link
-                                    href={"/memberPage?stage=1"}
-                                    className={router.pathname.includes("memberPage") ? "active" : ""}
-                                >
-                                    My Profile
-                                </Link>
+                                {
+                                    !user._id ? null : (
+                                        <Link
+                                            href={"/memberPage?stage=1"}
+                                            className={router.pathname.includes("memberPage") ? "active" : ""}
+                                        >
+                                            My Profile
+                                        </Link>
+                                    )
+                                }
                                 <Link
                                     href={"/cs"}
                                     className={router.pathname === "/cs" ? "active" : ""}

@@ -423,9 +423,9 @@ export const GET_ALL_ARTICLES = gql`
                 updatedAt
                 createdAt
                 meLiked {
-                    memberId
-                    likeTargetId
-                    myFavorite
+                memberId
+                likeTargetId
+                myFavorite
                 }
                 memberData {
                     _id
