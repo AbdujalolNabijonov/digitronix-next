@@ -134,6 +134,25 @@ export const LIKE_TARGET_COMMENT = gql`
 `
 
 //ARTICLE
+export const CREATE_ARTICLE=gql`
+    mutation CreateArticle($input: ArticleInput!) {
+    createArticle(input: $input) {
+        _id
+        memberId
+        articleCategory
+        articleStatus
+        articleTitle
+        articleContext
+        articleImage
+        articleLikes
+        articleViews
+        articleComments
+        updatedAt
+        createdAt
+    }
+}
+
+`
 export const LIKE_TARGET_ARTICLE = gql`
     mutation LikeTargetArticle($input: String!) {
     likeTargetArticle(input: $input) {

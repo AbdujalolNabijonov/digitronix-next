@@ -29,7 +29,6 @@ const ArticleCard = (props: ArticleProps) => {
             </Stack>
             <Stack className="article-card-body">
                 <Box className="article-title">{article.articleTitle}</Box>
-                <Box className="article-context">{article.articleContext.slice(0, 30) + "..."}</Box>
             </Stack>
             <Divider sx={{ borderBottomColor: "black" }} variant="middle" />
             <Stack className="article-card-footer">

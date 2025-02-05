@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState,useEffect } from "react"
 import { Box, Pagination, Stack } from "@mui/material"
 import ArticleCard from "../article/articleCard";
 import { Article } from "@/libs/types/article/article";
@@ -37,6 +37,11 @@ const Articles = (props: any) => {
             setTotalArticles(getAllArticles.metaCounter[0].total)
         }
     })
+
+    useEffect(() => {
+        getTargetArticlesRefetch({ input: searchObj })
+    }, [searchObj])
+
     const [likeTargetArticle] = useMutation(LIKE_TARGET_ARTICLE)
     const handlePaginationChange = (e: any, page: number) => {
         searchObj.page = page;
