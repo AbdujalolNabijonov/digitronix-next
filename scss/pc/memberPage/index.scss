@@ -122,9 +122,9 @@
                   letter-spacing: 2px;
                 }
               }
-              .article-submit{
-                button{
-                  background-color: #D77B3D;
+              .article-submit {
+                button {
+                  background-color: #d77b3d;
                   width: 300px;
                   padding: 15px 0;
                   margin-top: 20px;
@@ -132,6 +132,101 @@
                   font-size: 18px;
                   font-weight: 600;
                   letter-spacing: 1px;
+                }
+              }
+            }
+          }
+          .myprofile {
+            background-color: #595656;
+            border-radius: 100px 0 0 0;
+            .myprofile-head {
+              color: white;
+              background-image: url("/img/banner/account-banner.jpg");
+              background-size: cover;
+              background-position: center;
+              background-repeat: no-repeat;
+              height: 250px;
+              border-radius: 100px 0 0 0;
+              padding: 20px;
+              .title {
+                font-weight: 700;
+                font-size: 25px;
+                margin: 5px 0;
+                letter-spacing: 1px;
+                margin-top: 80px;
+                margin-left: 40px;
+              }
+              .subtitle {
+                font-weight: 600;
+                font-size: 16px;
+                color: white;
+                margin-left: 40px;
+              }
+            }
+            .myprofile-body {
+              padding: 20px;
+              position: relative;
+              width: 100%;
+              .member-image {
+                position: absolute;
+                padding: 0 30px;
+                width: 95%;
+                top: -50px;
+                flex-direction: row;
+                align-items: end;
+                justify-content: space-between;
+                .member-set {
+                  position: relative;
+                  .image-icon {
+                    position: absolute;
+                    bottom: 0;
+                    right: 0;
+                    font-size: 50px;
+                    height: 50px;
+                    width: 50px;
+                    background-color: gray;
+                    input{
+                      position: absolute;
+                      left: 7px;
+                      opacity: 0;
+                    }
+                  }
+                }
+                button {
+                  background-color: #d77b3d;
+                  width: 150px;
+                  padding: 10px;
+                  color: white;
+                  font-weight: 500;
+                  font-size: 16px;
+                }
+              }
+              .member-edit {
+                margin-top: 100px;
+                .info-part-one {
+                  flex-direction: row;
+                  gap: 20px;
+                  input {
+                    padding: 10px 5px;
+                  }
+                }
+                .info-part-two {
+                  margin-top: 10px;
+                  .edit-bio {
+                    margin-top: 20px;
+                    .edit-label{
+                      font-weight: 600;
+                      font-size: 18px;
+                    }
+                    textarea {
+                      width: 100%;
+                      border-radius: 5px;
+                      padding: 10px;
+                      font-size: 16px;
+                      resize: none;
+                      overflow-y: auto;
+                    }
+                  }
                 }
               }
             }

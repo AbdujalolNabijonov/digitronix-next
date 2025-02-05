@@ -29,6 +29,39 @@ mutation Signup($input: MemberInput!) {
     }
 }
 `
+export const UPDATE_MEMBER = gql`
+    mutation UpdateMember($input:UpdateMemberInquiry!) {
+    updateMember(input: $input) {
+        _id
+        memberFullName
+        memberEmail
+        memberStatus
+        memberType
+        memberAuthType
+        memberPhone
+        memberNick
+        memberPassword
+        memberImage
+        memberAddress
+        memberDesc
+        memberProducts
+        memberArticles
+        memberFollowers
+        memberFollowings
+        memberPoints
+        memberLikes
+        memberViews
+        memberComments
+        memberRank
+        memberWarnings
+        memberBlocks
+        accessToken
+        deletedAt
+        createdAt
+        updatedAt
+    }
+}
+`
 export const LIKE_TARGET_MEMBER = gql`
     mutation LikeTargetMember($input:String!) {
     likeTargetMember(input: $input) {
@@ -134,7 +167,7 @@ export const LIKE_TARGET_COMMENT = gql`
 `
 
 //ARTICLE
-export const CREATE_ARTICLE=gql`
+export const CREATE_ARTICLE = gql`
     mutation CreateArticle($input: ArticleInput!) {
     createArticle(input: $input) {
         _id
@@ -173,7 +206,7 @@ export const LIKE_TARGET_ARTICLE = gql`
 `
 
 //FOLLOW
-export const SUBSCRIBE_MEMBER=gql`
+export const SUBSCRIBE_MEMBER = gql`
     mutation FollowMember($input:String!) {
     followMember(input: $input) {
         followingId
@@ -193,7 +226,7 @@ export const UNSUBSCRIBE_MEMBER = gql`
     }
 }
 `
-export const DELETE_FOLLOWER =gql`
+export const DELETE_FOLLOWER = gql`
     mutation DeleteFollower($input:String!) {
     deleteFollower(input: $input) {
         _id

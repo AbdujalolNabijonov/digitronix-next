@@ -16,8 +16,9 @@ import MyProfile from "@/libs/components/memberPage/MyProfile";
 import Follower from "@/libs/components/memberPage/Follower";
 import { useReactiveVar } from "@apollo/client";
 import { userVar } from "@/apollo/store";
-import { sweetErrorHandling } from "@/libs/sweetAlert";
-import { Messages } from "@/libs/config";
+import { sweetConfirmAlert, sweetErrorHandling } from "@/libs/sweetAlert";
+import { Messages, serverApi } from "@/libs/config";
+import { logOut } from "@/libs/auth";
 
 const MemberPage: NextPage = (props: any) => {
     const router = useRouter()
@@ -26,12 +27,12 @@ const MemberPage: NextPage = (props: any) => {
     const stage = router.query.stage
     const [value, setValue] = useState<string>(stage as string ?? "1")
 
-    useEffect(()=>{
-        if(!localStorage.getItem("accessToken")){
+    useEffect(() => {
+        if (!localStorage.getItem("accessToken")) {
             sweetErrorHandling(new Error(Messages.error2)).then()
             router.push("/account/join")
         }
-    },[])
+    }, [])
     useEffect(() => {
         if (router.query.stage) {
             setValue(router.query.stage as string)
@@ -45,6 +46,15 @@ const MemberPage: NextPage = (props: any) => {
             url += `&memberId=${memberId}`
         }
         router.push(url, url, { scroll: false })
+    }
+    const logoutHandler = async () => {
+        try {
+            if (!user._id) throw new Error(Messages.error1)
+            if (await sweetConfirmAlert('Do you want to logout?')) logOut();
+        } catch (err: any) {
+            console.log(`Error: logoutHandler, ${err.message}`);
+            await sweetErrorHandling(err)
+        }
     }
     return (
         <Stack className="my-page">
@@ -74,7 +84,7 @@ const MemberPage: NextPage = (props: any) => {
                         </TabPanel>
                         <Stack className="account-nav">
                             <Stack className="account-info">
-                                <Avatar sx={{ width: "70px", height: "70px" }} />
+                                <Avatar sx={{ width: "70px", height: "70px" }} src={user.memberImage ? `${serverApi}/${user.memberImage}` : "img/profile/noUser.jpg"} />
                                 <Stack>
                                     <Stack className="account-item">
                                         <User />
@@ -158,6 +168,7 @@ const MemberPage: NextPage = (props: any) => {
                                     <Button
                                         startIcon={<SignOut />}
                                         className={"tab-list-item"}
+                                        onClick={logoutHandler}
                                     >
                                         Log Out
                                     </Button>
