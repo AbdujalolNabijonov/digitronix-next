@@ -9,6 +9,7 @@ export const Messages = {
 	error5: 'Only images with jpeg, jpg, png format allowed!',
 	error6: "Successfully log out!",
 	error7: "You can not like yourself",
+	error8: "You can not upload more than 5 images",
 	warn1: "You are blocked, Contact with admin",
 	success1: "Youa are successfully log in!",
 	success2: "Sucessfully commented!",

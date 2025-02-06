@@ -37,13 +37,6 @@ export enum ProductCategory {
     CHAIR = "CHAIR"
 }
 
-export enum ProductCore {
-    INTEL_10TH_GEN = "INTEL 10TH GEN",
-    INTEL_12TH_GEN = "INTEL 12TH GEN",
-    INTEL_13TH_GEN = "INTEL 13TH GEN",
-    INTEL_14TH_GEN = "INTEL 14TH GEN",
-    INTEL_15TH_GEN = "INTEL 15TH GEN"
-}
 export enum ProductSeries {
     TITAN = "TITAN",
     STEALTH = "STEALTH",

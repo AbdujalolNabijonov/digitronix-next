@@ -96,6 +96,40 @@ export const LIKE_TARGET_MEMBER = gql`
 }
 `
 //PRODUCT
+export const CREATE_PRODUCT = gql`
+    mutation CreateProduct($input: ProductInput!) {
+    createProduct(input: $input) {
+        memberId
+        productName
+        productStatus
+        productLabel
+        productBrand
+        productCategory
+        productPrice
+        productColor
+        productCore
+        productSerie
+        productDisplay
+        productMemory
+        productStorage
+        productWeight
+        productConnectivity
+        productMaterial
+        productImages
+        productDesc
+        productViews
+        productLikes
+        productComments
+        productRank
+        soldAt
+        deletedAt
+        createdAt
+        updatedAt
+        _id
+        productGraphics
+    }
+}
+`
 export const LIKE_TARGET_PRODUCT = gql`
     mutation LikeTargetProduct($input: String!) {
     likeTargetProduct(input: $input) {

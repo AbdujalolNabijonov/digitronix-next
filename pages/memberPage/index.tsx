@@ -5,7 +5,7 @@ import TabContext from "@mui/lab/TabContext";
 import TabPanel from "@mui/lab/TabPanel";
 import { Avatar, Box, Button, Divider, Stack, Tab } from "@mui/material";
 import { Binoculars, BookBookmark, Crosshair, Heart, Phone, SignOut, User, UserCircleGear, UserCirclePlus } from "phosphor-react";
-import { BookOpenText, UserCircleCheck } from "@phosphor-icons/react";
+import { BookOpenText, Devices, PlusSquare, UserCircleCheck } from "@phosphor-icons/react";
 import { useRouter } from "next/router";
 import Favorities from "@/libs/components/memberPage/Favoities";
 import Visited from "@/libs/components/memberPage/Visited";
@@ -19,6 +19,9 @@ import { userVar } from "@/apollo/store";
 import { sweetConfirmAlert, sweetErrorHandling } from "@/libs/sweetAlert";
 import { Messages, serverApi } from "@/libs/config";
 import { logOut } from "@/libs/auth";
+import { MemberType } from "@/libs/types/member/member";
+import AddProduct from "@/libs/components/memberPage/AddProduct";
+import AllProducts from "@/libs/components/memberPage/AllProducts";
 
 const MemberPage: NextPage = (props: any) => {
     const router = useRouter()
@@ -61,6 +64,12 @@ const MemberPage: NextPage = (props: any) => {
             <Stack className="container">
                 <TabContext value={value}>
                     <Stack flexDirection={"row"} sx={{ margin: "40px 0" }}>
+                        <TabPanel value={"8"} className="tab-panel">
+                            <AddProduct />
+                        </TabPanel>
+                        <TabPanel value={"9"} className="tab-panel">
+                            <AllProducts />
+                        </TabPanel>
                         <TabPanel value={"1"} className="tab-panel">
                             <Favorities />
                         </TabPanel>
@@ -104,6 +113,26 @@ const MemberPage: NextPage = (props: any) => {
                             <Stack className="account-manage">
                                 <Box className="title">Manage Listing</Box>
                                 <Stack className="tab-list">
+                                    {
+                                        user.memberType === MemberType.RETAILER ? (
+                                            <>
+                                                <Button
+                                                    startIcon={<PlusSquare />}
+                                                    className={stage === "8" ? "tab-list-item on" : "tab-list-item off"}
+                                                    onClick={(e: any) => navigateSelectHandler(e, '8')}
+                                                >
+                                                    Add Product
+                                                </Button>
+                                                <Button
+                                                    startIcon={<Devices />}
+                                                    className={stage === "9" ? "tab-list-item on" : "tab-list-item off"}
+                                                    onClick={(e: any) => navigateSelectHandler(e, '9')}
+                                                >
+                                                    My Products
+                                                </Button>
+                                            </>
+                                        ) : null
+                                    }
                                     <Button
                                         startIcon={<Heart />}
                                         className={stage === "1" ? "tab-list-item on" : "tab-list-item off"}

@@ -14,7 +14,8 @@ export enum ProductType {
     LAPTOP = "LAPTOP",
     DESKTOP = "DESKTOP",
     GRAPHICS = "GRAPHICS",
-    PERIPHERAL = "PERIPHERAL",
+    KEYBOARD = "KEYBOARD",
+    MICE = "MICE",
     CHAIR = "CHAIR"
 }
 

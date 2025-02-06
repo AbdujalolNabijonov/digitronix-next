@@ -185,7 +185,7 @@
                     height: 50px;
                     width: 50px;
                     background-color: gray;
-                    input{
+                    input {
                       position: absolute;
                       left: 7px;
                       opacity: 0;
@@ -214,7 +214,7 @@
                   margin-top: 10px;
                   .edit-bio {
                     margin-top: 20px;
-                    .edit-label{
+                    .edit-label {
                       font-weight: 600;
                       font-size: 18px;
                     }
@@ -231,11 +231,132 @@
               }
             }
           }
+          .add-product {
+            .add-product-head {
+              color: white;
+              .title {
+                font-weight: 700;
+                font-size: 25px;
+                margin: 5px 0;
+                letter-spacing: 1px;
+              }
+              .subtitle {
+                font-weight: 600;
+                font-size: 16px;
+                color: #7d7a7a;
+              }
+            }
+            .add-poduct-body {
+              .add-title {
+                margin-top: 20px;
+                font-size: 25px;
+                font-weight: 600;
+                color: white;
+              }
+              .add-insert {
+                padding: 10px;
+                flex-direction: row;
+                gap: 20px;
+                .add-label {
+                  font-size: 18px;
+                  color: white;
+                }
+              }
+              .product-desc {
+                textarea {
+                  resize: none;
+                  overflow-y: auto;
+                  width: 100%;
+                  border-radius: 10px;
+                  padding: 10px;
+                  margin-top: 20px;
+                  font-size: 16px;
+                }
+              }
+              .upload-images {
+                position: relative;
+                margin-top: 20px;
+                border: 1px dashed white;
+                border-radius: 30px;
+                height: 300px;
+                color: white;
+                align-items: center;
+                .drag-dropper {
+                  display: flex;
+                  flex-direction: column;
+                  align-items: center;
+                  border-radius: 30px;
+                  height: 100%;
+                  width: 100%;
+                  z-index: 100;
+                }
+                .title {
+                  font-weight: 600;
+                  font-size: 16px;
+                }
+                .drag-icon {
+                  font-size: 100px;
+                }
+                button {
+                  width: 200px;
+                  background-color: #d77b3d;
+                  color: white;
+                  font-size: 20px;
+                  letter-spacing: 1px;
+                }
+              }
+              .product-images {
+                flex-direction: row;
+                gap: 10px;
+                height: auto;
+                padding: 20px;
+                background-color: #595656;
+                margin-top: 20px;
+                border-radius: 20px;
+                img{
+                  width: 200px;
+                  border-radius: 10px;
+                  box-shadow: 0 0 5px black;
+                  height: 200px;
+                }
+              }
+              .submit-btn {
+                button {
+                  background-color: #d77b3d;
+                  color: white;
+                  padding: 10px;
+                  width: 200px;
+                  margin-top: 10px;
+                  border-radius: 5px;
+                  font-weight: 600;
+                  font-size: 20px;
+                  align-self: end;
+                  letter-spacing: 1px;
+                }
+              }
+            }
+          }
+          .all-products {
+            .all-products-head {
+              color: white;
+              .title {
+                font-weight: 700;
+                font-size: 25px;
+                margin: 5px 0;
+                letter-spacing: 1px;
+              }
+              .subtitle {
+                font-weight: 600;
+                font-size: 16px;
+                color: #7d7a7a;
+              }
+            }
+          }
         }
         .account-nav {
           background-color: #595656;
           border-radius: 10px;
-          height: auto;
+          max-height: 800px;
           width: 300px;
           padding: 20px;
           .account-info {

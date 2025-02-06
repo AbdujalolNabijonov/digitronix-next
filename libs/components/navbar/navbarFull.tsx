@@ -10,7 +10,7 @@ import {
     Usb,
     YoutubeSearchedForRounded
 } from "@mui/icons-material";
-import { Box, Button, Menu, MenuItem, MenuProps, Stack } from "@mui/material";
+import { Avatar, Box, Button, IconButton, Menu, MenuItem, MenuProps, Stack } from "@mui/material";
 import { NextPage } from "next";
 import Link from "next/link";
 import { CaretDown, DesktopTower } from "phosphor-react"
@@ -307,7 +307,7 @@ const Navbar: NextPage = (props: any) => {
                                 {
                                     !user._id ? null : (
                                         <Link
-                                            href={"/memberPage?stage=1"}
+                                            href={"/memberPage?stage=7"}
                                             className={router.pathname.includes("memberPage") ? "active" : ""}
                                         >
                                             My Profile
@@ -332,10 +332,9 @@ const Navbar: NextPage = (props: any) => {
                                         user && user._id ?
                                             (
                                                 <>
-                                                    <Button className={"register-btn"} onClick={(e: any) => setLogoutAnchor(e.target)}>
-                                                        <img src={imageUrl} alt="" />
-                                                        <p>Logout</p>
-                                                    </Button>
+                                                    <IconButton  onClick={(e: any) => setLogoutAnchor(e.target)}>
+                                                        <Avatar src={imageUrl} sx={{height:"50px", width:"50px"}}/>
+                                                    </IconButton>
                                                     <Menu
                                                         id="basic-menu"
                                                         anchorEl={logoutAnchor}
