@@ -24,7 +24,7 @@ const AllProducts = () => {
     const [value, setValue] = useState<string>("1")
     const [anchor, setAnchor] = useState(null);
     const user = useReactiveVar(userVar)
-    const [productId, setProductId] = useState("")
+    const memberId = router.query.memberId;
     const [totalProducts, setTotalProducts] = useState<number>(0)
     const [products, setProducts] = useState<Product[]>([])
     const [rebuild, setRebuild] = useState(new Date())
@@ -42,7 +42,7 @@ const AllProducts = () => {
             input: {
                 ...searchObj,
                 search: {
-                    memberId: user._id,
+                    memberId: memberId || user._id,
                     productStatus: ProductStatus.ACTIVE
                 }
             }
@@ -60,7 +60,7 @@ const AllProducts = () => {
             input: {
                 ...searchObj,
                 search: {
-                    memberId: user._id,
+                    memberId: memberId || user._id,
                     productStatus: ProductStatus.SOLD
                 }
             }
@@ -75,9 +75,9 @@ const AllProducts = () => {
 
     useEffect(() => {
         if (value === "1") {
-            refetchProductActive({ input: { ...searchObj, search: { memberId: user._id, productStatus: ProductStatus.ACTIVE } } }).then();
+            refetchProductActive({ input: { ...searchObj, search: { memberId: memberId || user._id, productStatus: ProductStatus.ACTIVE } } }).then();
         } else {
-            refetchProductSold({ input: { ...searchObj, search: { memberId: user._id, productStatus: ProductStatus.SOLD } } }).then();
+            refetchProductSold({ input: { ...searchObj, search: { memberId: memberId || user._id, productStatus: ProductStatus.SOLD } } }).then();
         }
     }, [value, searchObj, rebuild])
 
@@ -85,7 +85,6 @@ const AllProducts = () => {
         setValue(tabIndex)
     }
     const toggleStatusHandler = (e: any, productId: string) => {
-        setProductId(productId)
         setAnchor(e.currentTarget)
     }
 
@@ -123,7 +122,11 @@ const AllProducts = () => {
                     <Stack className="tab-list">
                         <TabList onChange={handleChange}>
                             <Tab label="On Sale" value={"1"} className="tab-item" />
-                            <Tab label="On Sold" value={"2"} className="tab-item" />
+                            {
+                                !memberId ? (
+                                    <Tab label="On Sold" value={"2"} className="tab-item" />
+                                ) : null
+                            }
                         </TabList>
                     </Stack>
                     <TabPanel value={value}>
@@ -149,7 +152,7 @@ const AllProducts = () => {
                                         View
                                     </TableCell>
                                     {
-                                        value === "1" ? (
+                                        value === "1" && !memberId ? (
                                             <TableCell className="tab-item" align="center">
                                                 Action
                                             </TableCell>
@@ -175,7 +178,7 @@ const AllProducts = () => {
                                                 {moment(product.createdAt).format("DD MMMM, YYYY")}
                                             </TableCell>
                                             {
-                                                value === "1" ? (
+                                                value === "1" && !memberId ? (
                                                     <>
                                                         <TableCell className="trow-item status" align="center">
                                                             <Fab className="status-btn" onClick={(e: any) => toggleStatusHandler(e, product._id)}>
@@ -195,11 +198,17 @@ const AllProducts = () => {
                                                             </Menu>
                                                         </TableCell>
                                                     </>
-                                                ) : (
+                                                ) : !memberId ? (
                                                     <TableCell className="trow-item status" align="center">
                                                         <Button disableRipple className="status-btn">
                                                             Sold
                                                         </Button>
+                                                    </TableCell>
+                                                ) : (
+                                                    <TableCell className="trow-item status" align="center">
+                                                        <Fab className="status-btn" disableRipple>
+                                                            Active
+                                                        </Fab>
                                                     </TableCell>
                                                 )
                                             }
@@ -207,7 +216,7 @@ const AllProducts = () => {
                                                 {product.productViews}
                                             </TableCell>
                                             {
-                                                value === "1" ? (
+                                                value === "1" && !memberId ? (
                                                     <TableCell className="trow-item" align="center">
                                                         <Stack className="action-btn">
                                                             <IconButton onClick={() => {

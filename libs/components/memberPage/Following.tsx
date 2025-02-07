@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react"
 import { Avatar, Box, Button, Pagination, Stack, Table, TableBody, TableCell, TableHead, TableRow } from "@mui/material"
 import { useRouter } from "next/router"
-import { MinusCircle} from "phosphor-react"
+import { MinusCircle, PlusCircle } from "phosphor-react"
 import { useMutation, useQuery, useReactiveVar } from "@apollo/client"
 import { FollowingObj } from "@/libs/types/follow/follow.object"
 import { GET_FOLLOWINGS } from "@/apollo/user/query"
 import { userVar } from "@/apollo/store"
 import { Messages, serverApi } from "@/libs/config"
 import { sweetErrorHandling, sweetTopSmallSuccessAlert } from "@/libs/sweetAlert"
-import { UNSUBSCRIBE_MEMBER } from "@/apollo/user/mutation"
+import { SUBSCRIBE_MEMBER, UNSUBSCRIBE_MEMBER } from "@/apollo/user/mutation"
 import { ErrorOutline } from "@mui/icons-material"
 
 const Following = (props: any) => {
@@ -35,6 +35,7 @@ const Following = (props: any) => {
             setTotalFollowings(getFollowingMembers.metaCounter[0].total)
         }
     })
+    const [subscribeMember] = useMutation(SUBSCRIBE_MEMBER)
     useEffect(() => {
         getFollowingsRefetch({ input: searchObj }).then()
     }, [searchObj])
@@ -53,6 +54,18 @@ const Following = (props: any) => {
             await getFollowingsRefetch({ input: searchObj })
         } catch (err: any) {
             console.log(`Error: unsubscribeHandler, ${err.message}`)
+            await sweetErrorHandling(err)
+        }
+    }
+    const subscribeMemberHandler = async (e: any, memberId: any) => {
+        try {
+            if (!user._id) throw new Error(Messages.error2);
+            if (!memberId) throw new Error(Messages.error1);
+            await subscribeMember({ variables: { input: memberId } });
+            await sweetTopSmallSuccessAlert(Messages.success3);
+            await getFollowingsRefetch({ input: searchObj })
+        } catch (err: any) {
+            console.log(`ERROR: subscribeMemberHandler, ${err.message}`);
             await sweetErrorHandling(err)
         }
     }
@@ -107,11 +120,22 @@ const Following = (props: any) => {
                                                     <TableCell align="center" className={"tb-item"} >
                                                         {follow.followingData?.memberArticles}
                                                     </TableCell>
-                                                    <TableCell align="center" className={"tb-item-btn"} colSpan={2}>
-                                                        <Button onClick={(e: any) => unsubscribeHandler(e, follow.followingData?._id)} color="error" variant="contained" endIcon={<MinusCircle />}>
-                                                            Unfollow
-                                                        </Button>
-                                                    </TableCell>
+                                                    {
+                                                        follow.meFollowed && follow.meFollowed[0]?.myFollowing ? (
+                                                            <TableCell align="center" className={"tb-item-btn"} colSpan={2}>
+                                                                <Button onClick={(e: any) => unsubscribeHandler(e, follow.followingData?._id)} color="error" variant="contained" endIcon={<MinusCircle />}>
+                                                                    Unfollow
+                                                                </Button>
+                                                            </TableCell>
+                                                        ) : (
+                                                            <TableCell align="center" className={"tb-item-btn"} colSpan={2}>
+                                                                <Button onClick={(e: any) => subscribeMemberHandler(e, follow.followingData?._id)} color="success" variant="contained" endIcon={<PlusCircle />}>
+                                                                    Follow
+                                                                </Button>
+                                                            </TableCell>
+                                                        )
+                                                    }
+
                                                 </TableRow>
                                             )
                                         })

@@ -8,7 +8,7 @@ import { userVar } from "@/apollo/store"
 import { FollowerObj } from "@/libs/types/follow/follow.object"
 import { Messages, serverApi } from "@/libs/config"
 import { sweetErrorHandling, sweetTopSmallSuccessAlert } from "@/libs/sweetAlert"
-import { DELETE_FOLLOWER, SUBSCRIBE_MEMBER } from "@/apollo/user/mutation"
+import { DELETE_FOLLOWER, SUBSCRIBE_MEMBER, UNSUBSCRIBE_MEMBER } from "@/apollo/user/mutation"
 import { ErrorOutline } from "@mui/icons-material"
 
 const Follower = (props: any) => {
@@ -41,6 +41,7 @@ const Follower = (props: any) => {
 
     const [subscribeMember] = useMutation(SUBSCRIBE_MEMBER)
     const [deleteFollower] = useMutation(DELETE_FOLLOWER)
+    const [unsubscribeMember] = useMutation(UNSUBSCRIBE_MEMBER)
 
     const subscribeMemberHandler = async (e: any, memberId: any) => {
         try {
@@ -63,6 +64,18 @@ const Follower = (props: any) => {
             await getFollowersRefetch({ input: searchObj })
         } catch (err: any) {
             console.log(`ERROR: subscribeMemberHandler, ${err.message}`);
+            await sweetErrorHandling(err)
+        }
+    }
+    const unsubscribeHandler = async (e: any, followId: any) => {
+        try {
+            if (!user._id) throw new Error(Messages.error2);
+            if (!followId) throw new Error(Messages.error1);
+            await unsubscribeMember({ variables: { input: followId } });
+            await sweetTopSmallSuccessAlert(Messages.success4)
+            await getFollowersRefetch({ input: searchObj })
+        } catch (err: any) {
+            console.log(`Error: unsubscribeHandler, ${err.message}`)
             await sweetErrorHandling(err)
         }
     }
@@ -122,18 +135,35 @@ const Follower = (props: any) => {
                                                         {follow.followerData?.memberArticles}
                                                     </TableCell>
                                                     {
-                                                        <TableCell align="center" className={"tb-item-btn"} colSpan={2}>
-                                                            <Button onClick={(e) => deleteFollowerHandler(e, follow.followerData?._id)} color="warning" variant="contained" endIcon={<Trash />}>
-                                                                Delete
-                                                            </Button>
-                                                            {
-                                                                follow.meFollowed && follow.meFollowed[0]?.myFollowing ? null : (
-                                                                    <Button onClick={(e: any) => subscribeMemberHandler(e, follow.followerData?._id)} color="success" variant="contained" endIcon={<PlusCircle />}>
-                                                                        Follow Back
-                                                                    </Button>
-                                                                )
-                                                            }
-                                                        </TableCell>
+                                                        memberId ? (
+                                                            <TableCell align="center" className={"tb-item-btn"} colSpan={2}>
+                                                                {
+                                                                    follow.meFollowed && follow.meFollowed[0]?.myFollowing ? (
+                                                                        <Button onClick={(e: any) => unsubscribeHandler(e, follow.followerData?._id)} color="error" variant="contained" endIcon={<MinusCircle />}>
+                                                                            UnFollow
+                                                                        </Button>
+                                                                    ) : (
+
+                                                                        <Button onClick={(e: any) => subscribeMemberHandler(e, follow.followerData?._id)} color="success" variant="contained" endIcon={<PlusCircle />}>
+                                                                            Follow
+                                                                        </Button>
+                                                                    )
+                                                                }
+                                                            </TableCell>
+                                                        ) : (
+                                                            <TableCell align="center" className={"tb-item-btn"} colSpan={2}>
+                                                                <Button onClick={(e) => deleteFollowerHandler(e, follow.followerData?._id)} color="warning" variant="contained" endIcon={<Trash />}>
+                                                                    Delete
+                                                                </Button>
+                                                                {
+                                                                    follow.meFollowed && follow.meFollowed[0]?.myFollowing ? null : (
+                                                                        <Button onClick={(e: any) => subscribeMemberHandler(e, follow.followerData?._id)} color="success" variant="contained" endIcon={<PlusCircle />}>
+                                                                            Follow Back
+                                                                        </Button>
+                                                                    )
+                                                                }
+                                                            </TableCell>
+                                                        )
                                                     }
                                                 </TableRow>
                                             )
