@@ -211,7 +211,7 @@ const AllProducts = () => {
                                                     <TableCell className="trow-item" align="center">
                                                         <Stack className="action-btn">
                                                             <IconButton onClick={() => {
-                                                                router.push(`/memberPage?stage=8&productid=${product._id}`)
+                                                                router.push(`/memberPage?stage=8&productId=${product._id}`)
                                                             }}>
                                                                 <Pen />
                                                             </IconButton>

@@ -16,7 +16,9 @@ const Favorities = (props: any) => {
         limit: 6,
         sort: "createdAt",
         direction: Direction.ASC,
-        search: {}
+        search: {
+            
+        }
     })
 
     const { refetch: getFavorityProductsRefetch } = useQuery(GET_FAVORITY_PRODUCTS, {

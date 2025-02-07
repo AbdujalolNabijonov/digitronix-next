@@ -94,3 +94,20 @@ export enum MaterialType {
     LEATHER = "LEATHER",
     MESH = "MESH"
 }
+
+export enum OperatingSystem {
+    WINDOWS = "WINDOWS",
+    MACOS = "MACOS",
+    LINUX = "LINUX",
+    UBUNTU = "UBUNTU",
+    FEDORA = "FEDORA",
+    DEBIAN = "DEBIAN",
+    ARCH_LINUX = "ARCHLINUX",
+    KALI_LINUX = "KALILINUX",
+    CHROME_OS = "CHROME OS",
+    FREEBSD = "FREEBSD",
+    OPENBSD = "OPENBSD",
+    SOLARIS = "SOLARIS",
+    HAIKU = "HAIKU",
+    REACTOS = "REACTOS"
+}

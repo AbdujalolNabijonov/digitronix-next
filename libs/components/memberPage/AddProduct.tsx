@@ -1,5 +1,5 @@
 import { useRef, useState } from "react"
-import { Connectivity, MaterialType, ProductBrand, ProductCategory, ProductLabel, ProductSeries } from "@/libs/enum/product.enum"
+import { Connectivity, MaterialType, OperatingSystem, ProductBrand, ProductCategory, ProductLabel, ProductSeries } from "@/libs/enum/product.enum"
 import { ProductType } from "@/libs/types/product/product.input"
 import { CloudUploadRounded, KeyboardArrowDown } from "@mui/icons-material"
 import { CssVarsProvider, FormControl, FormLabel, Input, Option, Select, selectClasses } from "@mui/joy"
@@ -10,12 +10,16 @@ import { sweetConfirmAlert, sweetErrorHandling, sweetTopSmallSuccessAlert } from
 import axios from "axios"
 import { getJwtToken } from "@/libs/auth"
 import { Messages, serverApi } from "@/libs/config"
-import { useMutation } from "@apollo/client"
-import { CREATE_PRODUCT } from "@/apollo/user/mutation"
+import { useMutation, useQuery } from "@apollo/client"
+import { CREATE_PRODUCT, UPDATE_PRODUCT } from "@/apollo/user/mutation"
 import { numberSplitterHandler } from "@/libs/features/splitter"
+import { useRouter } from "next/router"
+import { GET_PRODUCT } from "@/apollo/user/query"
 
 const AddProduct = () => {
     const inputRef = useRef<HTMLInputElement>(null);
+    const router = useRouter()
+    const productId = router.query.productId
     const fileTypes = ["JPG", "PNG"];
     const requiredFields: Record<string, string[]> = {
         LAPTOP: ["productName", "productBrand", "productPrice", "productCore", "productDisplay", "productGraphics", "productImages", "productMemory", "productOS", "productSerie", "productStorage"],
@@ -50,6 +54,22 @@ const AddProduct = () => {
 
 
     const [createProduct] = useMutation(CREATE_PRODUCT)
+    const { } = useQuery(GET_PRODUCT, {
+        fetchPolicy: "network-only",
+        notifyOnNetworkStatusChange: true,
+        skip: !productId,
+        variables: { input: productId },
+        onCompleted: ({ getProduct }) => {
+            Object.keys(initialProduct).map(key => {
+                //@ts-ignore
+                initialProduct[key] = getProduct[key]
+            })
+            setProductObj({ ...initialProduct });
+            setPriceValue(numberSplitterHandler(getProduct.productPrice, 3, "."))
+        }
+    })
+
+    const [updateProduct] = useMutation(UPDATE_PRODUCT)
 
     const imagesUploadHandler = async (files: any) => {
         try {
@@ -121,6 +141,36 @@ const AddProduct = () => {
         } catch (err: any) {
             console.log(`Error: submitHandler, ${err.message}`)
             await sweetErrorHandling(err)
+        }
+    }
+
+    const updateProductHandler = async () => {
+        try {
+            const category = productObj.productCategory;
+            const fieldsToCheck = requiredFields[category] || [];
+            //@ts-ignore
+            const missingFields = fieldsToCheck.filter(field => !productObj[field]);
+
+            if (missingFields.length > 0) {
+                throw new Error(`Missing required fields: ${missingFields.join(", ")}`);
+            }
+            if (!productObj.productDesc) {
+                throw new Error("Insert some info about your product ")
+            }
+            Object.keys(productObj).map(key => {
+                //@ts-ignore
+                if (!productObj[key]) delete productObj[key]
+            })
+            const confirm = await sweetConfirmAlert("Do you want to update product?")
+
+            if (confirm) {
+                await updateProduct({ variables: { input: { ...productObj, _id: productId } } });
+                await sweetTopSmallSuccessAlert("Product updated successfully!")
+                router.push("/memberPage?stage=9")
+            }
+        } catch (err: any) {
+            console.log(`ERROR: updateProductHandler, ${err.message}`)
+            await sweetErrorHandling(err);
         }
     }
 
@@ -326,30 +376,34 @@ const AddProduct = () => {
                                     </FormControl>
                                 </Stack>
                                 <Stack className="add-insert">
-                                    <FormControl sx={{ flex: 1 }}>
-                                        <FormLabel className={"add-label"}>
-                                            Display Inch
-                                        </FormLabel>
-                                        <Select
-                                            placeholder="Select a brand"
-                                            indicator={<KeyboardArrowDown />}
-                                            onChange={displaySelectHandler}
-                                            value={productObj.productDisplay}
-                                            sx={{
-                                                padding: "10px",
-                                                [`& .${selectClasses.indicator}`]: {
-                                                    transition: '0.2s',
-                                                    [`&.${selectClasses.expanded}`]: {
-                                                        transform: 'rotate(-180deg)',
-                                                    },
-                                                },
-                                            }}
-                                        >
-                                            {[10.1, 11.6, 12.3, 12.5, 13.3, 14, 15.6, 16, 17.3, 18].map((inch: number, index: number) => (
-                                                <Option value={inch} key={inch}>{inch}</Option>
-                                            ))}
-                                        </Select>
-                                    </FormControl>
+                                    {
+                                        productObj.productCategory === ProductCategory.LAPTOP ? (
+                                            <FormControl sx={{ flex: 1 }}>
+                                                <FormLabel className={"add-label"}>
+                                                    Display Inch
+                                                </FormLabel>
+                                                <Select
+                                                    placeholder="Select a brand"
+                                                    indicator={<KeyboardArrowDown />}
+                                                    onChange={displaySelectHandler}
+                                                    value={productObj.productDisplay}
+                                                    sx={{
+                                                        padding: "10px",
+                                                        [`& .${selectClasses.indicator}`]: {
+                                                            transition: '0.2s',
+                                                            [`&.${selectClasses.expanded}`]: {
+                                                                transform: 'rotate(-180deg)',
+                                                            },
+                                                        },
+                                                    }}
+                                                >
+                                                    {[10.1, 11.6, 12.3, 12.5, 13.3, 14, 15.6, 16, 17.3, 18].map((inch: number, index: number) => (
+                                                        <Option value={inch} key={inch}>{inch}</Option>
+                                                    ))}
+                                                </Select>
+                                            </FormControl>
+                                        ) : null
+                                    }
                                     <FormControl sx={{ flex: 1 }}>
                                         <FormLabel className={"add-label"}>
                                             OS
@@ -358,6 +412,7 @@ const AddProduct = () => {
                                             placeholder="Select a brand"
                                             indicator={<KeyboardArrowDown />}
                                             onChange={OSSelectHandler}
+                                            value={productObj.productOS}
                                             sx={{
                                                 padding: "10px",
                                                 [`& .${selectClasses.indicator}`]: {
@@ -368,22 +423,7 @@ const AddProduct = () => {
                                                 },
                                             }}
                                         >
-                                            {[
-                                                "Windows",
-                                                "macOS",
-                                                "Linux",
-                                                "Ubuntu",
-                                                "Fedora",
-                                                "Debian",
-                                                "Arch Linux",
-                                                "Kali Linux",
-                                                "Chrome OS",
-                                                "FreeBSD",
-                                                "OpenBSD",
-                                                "Solaris",
-                                                "Haiku",
-                                                "ReactOS"
-                                            ].map((os: string, index: number) => (
+                                            {Object.values(OperatingSystem).map((os: string, index: number) => (
                                                 <Option value={os} key={os}>{os}</Option>
                                             ))}
                                         </Select>
@@ -402,7 +442,7 @@ const AddProduct = () => {
                                             placeholder="Select a brand"
                                             indicator={<KeyboardArrowDown />}
                                             onChange={memorySelectHandler}
-                                            value={productObj.productMemory}
+                                            value={productObj?.productMemory}
                                             sx={{
                                                 padding: "10px",
                                                 [`& .${selectClasses.indicator}`]: {
@@ -413,7 +453,7 @@ const AddProduct = () => {
                                                 },
                                             }}
                                         >
-                                            {[2, 4, 8, 16, 32, 64, 128, 256].map((memory: number, index: number) => (
+                                            {[2, 4, 8, 16, 24, 32, 64, 128, 256].map((memory: number, index: number) => (
                                                 <Option value={memory} key={memory}>{memory}GB</Option>
                                             ))}
                                         </Select>
@@ -702,9 +742,17 @@ const AddProduct = () => {
                 }
                 <Divider sx={{ borderColor: "white", marginTop: "20px" }} />
                 <Stack className="submit-btn">
-                    <Button onClick={submitHandler} disabled={productObj.productImages.length>0}>
-                        Create Product
-                    </Button>
+                    {
+                        productId ? (
+                            <Button onClick={updateProductHandler} >
+                                Update Product
+                            </Button>
+                        ) : (
+                            <Button onClick={submitHandler} >
+                                Create Product
+                            </Button>
+                        )
+                    }
                 </Stack>
             </Stack>
         </Stack>
