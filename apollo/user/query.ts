@@ -138,6 +138,7 @@ export const GET_PRODUCT = gql`
             productMaterial
             productImages
             productDesc
+            productOS
             productViews
             productLikes
             productComments
@@ -210,6 +211,7 @@ query GetAllProducts($input: ProductInquiry!) {
             productDesc
             productViews
             productLikes
+            productOS
             productComments
             productRank
             soldAt

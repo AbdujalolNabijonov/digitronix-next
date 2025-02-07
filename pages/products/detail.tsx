@@ -266,11 +266,7 @@ const Detail: NextPage = () => {
                             <Stack className="product-spec-detail">
                                 <Stack className="product-spec-desc">
                                     <Box className="product-spec-desc-title">Product Description</Box>
-                                    <Box className="product-spec-desc-content">{product?.productDesc && product?.productDesc.length ? product?.productDesc.map(ele => (
-                                        <ul>
-                                            <li>{ele}</li>
-                                        </ul>
-                                    )) : "No Description"}</Box>
+                                    <Box className="product-spec-desc-content">{product?.productDesc ? product?.productDesc : "No Description"}</Box>
                                 </Stack>
                                 <Stack className="product-spec-detail-sec">
                                     <Box className="product-spec-detail-title">Product Details</Box>
@@ -305,7 +301,7 @@ const Detail: NextPage = () => {
                                                     <Circuitry size={20} />
                                                     <Box>OS</Box>
                                                 </Stack>
-                                                <Box className="spec-value">{product?.productOS ?? "N/N"}</Box>
+                                                <Box className="spec-value">{product?.productOS ? product?.productOS : "N/N"}</Box>
                                             </Stack>
                                             <Stack justifyContent={"space-between"} flexDirection={"row"}>
                                                 <Stack direction={"row"} gap={"10px"} className="spec-title">

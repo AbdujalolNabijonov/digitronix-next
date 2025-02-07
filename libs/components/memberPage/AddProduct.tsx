@@ -702,7 +702,7 @@ const AddProduct = () => {
                 }
                 <Divider sx={{ borderColor: "white", marginTop: "20px" }} />
                 <Stack className="submit-btn">
-                    <Button onClick={submitHandler}>
+                    <Button onClick={submitHandler} disabled={productObj.productImages.length>0}>
                         Create Product
                     </Button>
                 </Stack>
