@@ -69,6 +69,13 @@ const Following = (props: any) => {
             await sweetErrorHandling(err)
         }
     }
+    const navigatePageHandler = (e: any, id: any) => {
+        if (user._id === id) {
+            router.push(`/memberPage?stage=3`)
+        } else {
+            router.push(`/memberPage?stage=3&memberId=${id}`)
+        }
+    }
     return (
         <Stack className="follow">
             <Stack className="follow-head">
@@ -108,7 +115,7 @@ const Following = (props: any) => {
                                                     <TableCell className={"tb-item"} align="center" colSpan={2}  >
                                                         <Stack flexDirection={"row"} alignItems={"center"} gap={"10px"}>
                                                             <Avatar src={memberImage} />
-                                                            <Box>{follow.followingData?.memberFullName ?? follow.followingData?.memberNick}</Box>
+                                                            <Button onClick={(e:any)=>navigatePageHandler(e, follow.followingData?._id)}>{follow.followingData?.memberFullName ?? follow.followingData?.memberNick}</Button>
                                                         </Stack>
                                                     </TableCell>
                                                     <TableCell align="center" className={"tb-item"} >

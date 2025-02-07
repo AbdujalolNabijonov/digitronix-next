@@ -114,6 +114,13 @@ const ArticleDetail = (props: any) => {
             await sweetErrorHandling(err)
         }
     }
+    const navigatePageHandler = ()=>{
+        if (user._id === article?.memberData._id) {
+            router.push(`/memberPage?stage=3`)
+        } else {
+            router.push(`/memberPage?stage=3&memberId=${article?.memberData._id}`)
+        }
+    }
     return (
         <Stack className="article-detail">
             <Stack className="container">
@@ -132,7 +139,7 @@ const ArticleDetail = (props: any) => {
                         <Stack className="owner-info">
                             <Stack className="article-owner">
                                 <img src={article?.memberData.memberImage ? `${serverApi}/${article.memberData.memberImage}` : "/img/profile/noUser.jpg"} alt="This is user" />
-                                <Box>{article?.memberData.memberFullName ?? article?.memberData.memberNick}</Box>
+                                <Button sx={{color:"white"}} onClick={navigatePageHandler}>{article?.memberData.memberFullName ?? article?.memberData.memberNick}</Button>
                                 <Divider orientation="vertical" variant="middle" flexItem />
                                 <Box>{moment(article?.createdAt).format("YYYY-MM-DD HH:mm")}</Box>
                             </Stack>

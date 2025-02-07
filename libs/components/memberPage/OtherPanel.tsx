@@ -51,13 +51,17 @@ const OtherPanel = (props: any) => {
             <Stack className="account-manage">
                 <Box className="title">Manage Listing</Box>
                 <Stack className="tab-list">
-                    <Button
-                        startIcon={<Devices />}
-                        className={stage === "9" ? "tab-list-item on" : "tab-list-item off"}
-                        onClick={(e: any) => navigateSelectHandler(e, '9')}
-                    >
-                        Products
-                    </Button>
+                    {
+                        member.memberType === MemberType.RETAILER ? (
+                            <Button
+                                startIcon={<Devices />}
+                                className={stage === "9" ? "tab-list-item on" : "tab-list-item off"}
+                                onClick={(e: any) => navigateSelectHandler(e, '9')}
+                            >
+                                Products
+                            </Button>
+                        ) : null
+                    }
                     <Button
                         startIcon={<UserCircleCheck />}
                         className={stage === "3" ? "tab-list-item on" : "tab-list-item off"}
