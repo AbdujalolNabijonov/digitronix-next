@@ -1,0 +1,91 @@
+.pc-wrapper {
+  .main {
+    .cs-page {
+      .container {
+        .cs-head {
+          margin-top: 20px;
+          align-items: center;
+          .title {
+            color: white;
+            font-weight: 600;
+            font-size: 30px;
+          }
+          .subtitle {
+            color: rgb(183, 174, 174);
+            font-size: 18px;
+          }
+        }
+        .cs-body {
+          .tab-list {
+            flex-direction: row;
+            gap: 70px;
+            justify-content: center;
+            margin-top: 40px;
+            button {
+              padding: 10px;
+              width: 200px;
+            }
+            .on {
+              background-color: #d77b3d;
+              color: white;
+            }
+            .off {
+              color: black;
+              background-color: rgb(205, 198, 198);
+            }
+          }
+          .panel-title {
+            font-weight: 600;
+            font-size: 25px;
+            color: white;
+            margin-top: 20px;
+          }
+          table {
+            margin: 20px 0 40px 0;
+            .panel-head {
+              background-color: rgb(102, 101, 101);
+              .th-item {
+                font-weight: 600;
+                letter-spacing: 1px;
+                color: white;
+              }
+            }
+            .panel-body {
+              .tb-item {
+                color: white;
+              }
+            }
+          }
+          .tabs-control {
+            align-items: end;
+            margin: 20px 0;
+            .tabs-item {
+              color: white;
+              font-weight: 600;
+              letter-spacing: 1px;
+            }
+            .MuiTabs-indicator {
+              background-color: #d77b3d;
+            }
+          }
+          .accor {
+            background-color: #494747;
+            margin: 0;
+            .accor-title {
+              color: white;
+              letter-spacing: 1px;
+              font-weight: 700;
+            }
+            .accor-body {
+              background-color: rgb(175, 176, 176);
+              color: rgb(69, 68, 68);
+              margin: 15px 10px;
+              border-radius: 5px;
+              font-weight: 600;
+            }
+          }
+        }
+      }
+    }
+  }
+}

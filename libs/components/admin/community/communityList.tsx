@@ -20,7 +20,7 @@ import Typography from '@mui/material/Typography';
 import { Stack } from '@mui/material';
 import { REACT_APP_API_URL } from '@/libs/config';
 import { Article } from '@/libs/types/article/article';
-import { ArticleStatus } from '@/libs/enum/article.enu';
+import { ArticleStatus } from '@/libs/enum/article.enum';
 import { Delete, OpenInBrowserRounded } from '@mui/icons-material';
 import Moment from "react-moment"
 

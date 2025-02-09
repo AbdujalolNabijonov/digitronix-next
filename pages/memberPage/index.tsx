@@ -84,7 +84,6 @@ const MemberPage: NextPage = (props: any) => {
                                 <MyPanel navigateSelectHandler={navigateSelectHandler} />
                             )
                         }
-
                     </Stack>
                 </TabContext>
             </Stack>

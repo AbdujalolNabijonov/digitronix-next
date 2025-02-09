@@ -1,4 +1,3 @@
-import SearchPanel from "@/libs/components/admin/searchPanel"
 import LayoutAdmin from "@/libs/components/layouts/LayoutAdmin"
 import { MembersInquiry } from "@/libs/types/member/member.input"
 import { Box, Button, Stack, TablePagination } from "@mui/material"
@@ -7,7 +6,7 @@ import { useState } from "react"
 import { NoticeList } from "@/libs/components/admin/cs/noticeList"
 import { Add } from "@mui/icons-material"
 
-const Notice: NextPage = ({ initialProps, ...props }: any) => {
+const NoticeAdmin: NextPage = ({ initialProps, ...props }: any) => {
     //Initializations
     const [anchorEl, setAnchorEl] = useState<HTMLElement[] | []>([])
     const [membersInquiry, setMembersInquiry] = useState<MembersInquiry>(initialProps)
@@ -58,7 +57,6 @@ const Notice: NextPage = ({ initialProps, ...props }: any) => {
                     </Button>
                 </>
                 <Stack>
-                    <SearchPanel />
                     <Box className="table-list">
                         <NoticeList
                             members={members}
@@ -84,7 +82,7 @@ const Notice: NextPage = ({ initialProps, ...props }: any) => {
     )
 }
 
-Notice.defaultProps = {
+NoticeAdmin.defaultProps = {
     initialProps: {
         limit: 10,
         page: 1,
@@ -93,4 +91,4 @@ Notice.defaultProps = {
     }
 }
 
-export default LayoutAdmin(Notice)
+export default LayoutAdmin(NoticeAdmin)
