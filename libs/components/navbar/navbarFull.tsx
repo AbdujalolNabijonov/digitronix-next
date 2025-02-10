@@ -13,7 +13,7 @@ import {
 import { Avatar, Box, Button, IconButton, Menu, MenuItem, MenuProps, Stack } from "@mui/material";
 import { NextPage } from "next";
 import Link from "next/link";
-import { CaretDown, DesktopTower } from "phosphor-react"
+import { CaretDown, DesktopTower, X } from "phosphor-react"
 import { alpha, styled } from '@mui/material/styles';
 import { useRouter } from "next/router";
 import { useReactiveVar } from "@apollo/client";
@@ -34,6 +34,7 @@ const Navbar: NextPage = (props: any) => {
     const drop = Boolean(anchorEl2);
     const [scrolled, setScrolled] = useState<boolean>(false);
     const [anchorEl3, setAnchorEl3] = useState(null)
+    const [anchorEl4, setAnchorEl4] = useState(null)
     const [logoutAnchor, setLogoutAnchor] = useState<null | HTMLElement>(null);
     const logoutOpen = Boolean(logoutAnchor)
     const drop2 = Boolean(anchorEl3)
@@ -122,7 +123,13 @@ const Navbar: NextPage = (props: any) => {
         await sweetTopSuccessAlert(Messages.error6)
         router.push("/")
     }
-
+    const toggleNotificationHandler = (e: any) => {
+        if (!anchorEl4) {
+            setAnchorEl4(e.currentTarget)
+        } else {
+            setAnchorEl4(null)
+        }
+    }
     if (device === "mobile") {
         return (
             <>
@@ -291,7 +298,6 @@ const Navbar: NextPage = (props: any) => {
                                         </Stack>
                                     </Menu>
                                 </a>
-
                                 <Link
                                     href={"/retailers"}
                                     className={router.pathname.includes("/retailers") ? "active" : ""}
@@ -332,8 +338,8 @@ const Navbar: NextPage = (props: any) => {
                                         user && user._id ?
                                             (
                                                 <>
-                                                    <IconButton  onClick={(e: any) => setLogoutAnchor(e.target)}>
-                                                        <Avatar src={imageUrl} sx={{height:"50px", width:"50px"}}/>
+                                                    <IconButton onClick={(e: any) => setLogoutAnchor(e.target)}>
+                                                        <Avatar src={imageUrl} sx={{ height: "40px", width: "40px" }} />
                                                     </IconButton>
                                                     <Menu
                                                         id="basic-menu"
@@ -358,15 +364,99 @@ const Navbar: NextPage = (props: any) => {
                                                     <p>Login / Register</p>
                                                 </Button>
                                             )}
-
                                 </div>
-                                <Button>
-                                    <YoutubeSearchedForRounded sx={{ fill: "white" }} />
-                                </Button>
-                                <Button className="notify-ring">
-                                    <NotificationsOutlined style={{ fontSize: "25px", fill: "white" }} />
-                                    <div className="badge">7</div>
-                                </Button>
+                                <Stack className="notify">
+                                    <Button className="notify-ring" onClick={toggleNotificationHandler}>
+                                        <NotificationsOutlined style={{ fontSize: "25px", fill: "white" }} />
+                                        <div className="badge">7</div>
+                                    </Button>
+                                    <Menu
+                                        anchorEl={anchorEl4}
+                                        open={Boolean(anchorEl4)}
+                                        onClose={toggleNotificationHandler}
+                                        className="notify-box"
+                                    >
+                                        <Stack direction={"row"} alignItems={"center"} justifyContent={"space-between"}>
+                                            <Box className="title">Notifications (10)</Box>
+                                            <IconButton onClick={toggleNotificationHandler}><X /></IconButton>
+                                        </Stack>
+                                        <Stack className="notify-body">
+                                            <MenuItem>
+                                                <Stack className="notify-item">
+                                                    <Stack className="notify-owner">
+                                                        <Avatar />
+                                                        <Stack className="action">
+                                                            <Box >William commented in Something</Box>
+                                                            <Box >2 hours ago</Box>
+                                                        </Stack>
+                                                    </Stack>
+                                                    <Stack className={"notify-content"}>
+                                                        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+                                                    </Stack>
+                                                </Stack>
+                                            </MenuItem>
+                                            <MenuItem>
+                                                <Stack className="notify-item">
+                                                    <Stack className="notify-owner">
+                                                        <Avatar />
+                                                        <Stack className="action">
+                                                            <Box >William commented in Something</Box>
+                                                            <Box >2 hours ago</Box>
+                                                        </Stack>
+                                                    </Stack>
+                                                    <Stack className={"notify-content"}>
+                                                        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+                                                    </Stack>
+                                                </Stack>
+                                            </MenuItem>
+                                            <MenuItem>
+                                                <Stack className="notify-item">
+                                                    <Stack className="notify-owner">
+                                                        <Avatar />
+                                                        <Stack className="action">
+                                                            <Box >William commented in Something</Box>
+                                                            <Box >2 hours ago</Box>
+                                                        </Stack>
+                                                    </Stack>
+                                                    <Stack className={"notify-content"}>
+                                                        Loream is word copy platform
+                                                    </Stack>
+                                                </Stack>
+                                            </MenuItem>
+                                            <MenuItem>
+                                                <Stack className="notify-item">
+                                                    <Stack className="notify-owner">
+                                                        <Avatar />
+                                                        <Stack className="action">
+                                                            <Box >William commented in Something</Box>
+                                                            <Box >2 hours ago</Box>
+                                                        </Stack>
+                                                    </Stack>
+                                                    <Stack className={"notify-content"}>
+                                                        Loream is word copy platform
+                                                    </Stack>
+                                                </Stack>
+                                            </MenuItem>
+                                            <MenuItem>
+                                                <Stack className="notify-item">
+                                                    <Stack className="notify-owner">
+                                                        <Avatar />
+                                                        <Stack className="action">
+                                                            <Box >William commented in Something</Box>
+                                                            <Box >2 hours ago</Box>
+                                                        </Stack>
+                                                    </Stack>
+                                                    <Stack className={"notify-content"}>
+                                                        Loream is word copy platform
+                                                    </Stack>
+                                                </Stack>
+                                            </MenuItem>
+                                        </Stack>
+                                        <Stack flexDirection={"row"} justifyContent={"end"} sx={{ padding: "10px" }}>
+                                            <Link href={""}>view notifications</Link>
+                                        </Stack>
+                                    </Menu>
+                                </Stack>
                                 <div className="lang-box">
                                     <Button
                                         disableRipple

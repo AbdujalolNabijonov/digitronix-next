@@ -3,7 +3,7 @@ import { Connectivity, MaterialType, OperatingSystem, ProductBrand, ProductCateg
 import { ProductType } from "@/libs/types/product/product.input"
 import { CloudUploadRounded, KeyboardArrowDown } from "@mui/icons-material"
 import { CssVarsProvider, FormControl, FormLabel, Input, Option, Select, selectClasses } from "@mui/joy"
-import { Box, Button, Divider, IconButton, Stack } from "@mui/material"
+import { Box, Button, Divider, Stack } from "@mui/material"
 import { ArrowSquareOut } from "phosphor-react"
 import { FileUploader } from 'react-drag-drop-files'
 import { sweetConfirmAlert, sweetErrorHandling, sweetTopSmallSuccessAlert } from "@/libs/sweetAlert"

@@ -1,77 +1,132 @@
 import LayoutAdmin from "@/libs/components/layouts/LayoutAdmin"
 import { MembersInquiry } from "@/libs/types/member/member.input"
-import { Box, Button, MenuItem, OutlinedInput, Select, Stack, TablePagination } from "@mui/material"
+import { Box, Button, MenuItem, Modal, OutlinedInput, Select, Stack, TablePagination } from "@mui/material"
 import { NextPage } from "next"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { FaqList } from "@/libs/components/admin/cs/faqList"
-import { Add, CancelRounded } from "@mui/icons-material"
+import { Add, CancelRounded, ErrorOutline } from "@mui/icons-material"
 import { FaqInquiry } from "@/libs/types/faq/faq.input"
 import { FaqCategory, FaqStatus } from "@/libs/enum/faq.enum"
-import { start } from "repl"
+import { CssVarsProvider, FormLabel, Input, FormControl as JoyForm } from "@mui/joy"
+import { FilePlus, X } from "phosphor-react"
+import { useMutation, useQuery } from "@apollo/client"
+import { GET_TARGET_FAQS } from "@/apollo/user/query"
+import { FaqObj } from "@/libs/types/faq/faq"
+import { sweetConfirmAlert, sweetErrorHandling, sweetTopSmallSuccessAlert } from "@/libs/sweetAlert"
+import { CREATE_FAQ, DELETE_TARGET_FAQ } from "@/apollo/user/mutation"
+import { Messages } from "@/libs/config"
 
 const Faq: NextPage = ({ initialProps, ...props }: any) => {
     //Initializations
-    const [anchorEl, setAnchorEl] = useState<HTMLElement[] | []>([])
-    const [membersInquiry, setMembersInquiry] = useState<MembersInquiry>(initialProps)
     const [faqInquiry, setFaqInquiry] = useState<FaqInquiry>(initialProps)
     const [value, setValue] = useState<string>("ALL")
-    const members: any[] = []
-    const membersTotal = 4
+    const [toggleModal, setToggleModal] = useState(false)
+    const [faqList, setFaqList] = useState<FaqObj[]>([])
+    const [total, setTotal] = useState<number>(0)
+    const [faqcreateObj, setFaqcreateObj] = useState({
+        faqQuestion: "",
+        faqAnswer: "",
+        faqCategory: FaqCategory.GENERAL
+    })
+
+    const {
+        refetch: getTargetFaqsRefetch
+    } = useQuery(GET_TARGET_FAQS, {
+        fetchPolicy: "cache-and-network",
+        notifyOnNetworkStatusChange: true,
+        variables: { input: faqInquiry },
+        onCompleted: ({ getTargetFaqs }) => {
+            setFaqList(getTargetFaqs.list)
+            setTotal(getTargetFaqs.metaCounter[0].total ?? 0)
+        }
+    })
+    const [createFaq] = useMutation(CREATE_FAQ)
+    const [deleteTargetFaq] = useMutation(DELETE_TARGET_FAQ)
+
+    useEffect(() => {
+        getTargetFaqsRefetch({ input: faqInquiry }).then()
+    }, [faqInquiry])
     //Handlers
+    const submitDataHandler = async () => {
+        try {
+            if (!faqcreateObj.faqAnswer || !faqcreateObj.faqCategory || !faqcreateObj.faqQuestion) {
+                setToggleModal(false)
+                throw new Error(Messages.error3)
+            }
+            await createFaq({ variables: { input: faqcreateObj } });
+            await sweetTopSmallSuccessAlert("Successfully faq created!")
+            setToggleModal(false);
+            await getTargetFaqsRefetch({ input: faqInquiry })
+        } catch (err: any) {
+            console.log(`ERROR: submitDataHandler, ${err.message}`);
+            await sweetErrorHandling(err)
+        }
+    }
+
+    const deleteTargetFaqHandler = async (e: any, targetId: string) => {
+        try {
+            if (!targetId) throw new Error(Messages.error1);
+            const confirm = await sweetConfirmAlert("Do you want to delete?")
+            if (confirm) {
+                await deleteTargetFaq({ variables: { input: targetId } });
+                await sweetTopSmallSuccessAlert("Successfully deleted!")
+                await getTargetFaqsRefetch({ input: faqInquiry })
+            }
+        } catch (err: any) {
+            console.log(`ERROR: deleteTargetFaq, ${err.message}`);
+            await sweetErrorHandling(err)
+        }
+    }
+
     const changePageHandler = async (event: unknown, newPage: number) => {
-        membersInquiry.page = newPage + 1;
+        faqInquiry.page = newPage + 1;
         // await getAllMembersReftch({ input: membersInquiry })
-        setMembersInquiry({ ...membersInquiry });
+        setFaqInquiry({ ...faqInquiry });
     };
 
     const changeRowsPerPageHandler = async (event: React.ChangeEvent<HTMLInputElement>) => {
-        membersInquiry.limit = parseInt(event.target.value, 10);
-        membersInquiry.page = 1;
+        faqInquiry.limit = parseInt(event.target.value, 10);
+        faqInquiry.page = 1;
         // await getAllMembersReftch({ input: membersInquiry })
-        setMembersInquiry({ ...membersInquiry });
-    };
-    const menuIconClickHandler = (e: any, index: number) => {
-        const tempAnchor = anchorEl.slice();
-        tempAnchor[index] = e.currentTarget;
-        setAnchorEl(tempAnchor);
+        setFaqInquiry({ ...faqInquiry });
     };
 
-    const menuIconCloseHandler = () => {
-        setAnchorEl([]);
-    };
 
     const textHandler = (text: string) => {
-        setFaqInquiry({ ...faqInquiry, search: { ...faqInquiry.search, text } })
+        faqInquiry.search.text = text
+        setFaqInquiry({...faqInquiry})
     }
 
-    const handleSearchStatus = (status: string) => {
-        if (status !== "ALL") {
-            setFaqInquiry({ ...faqInquiry, search: { ...faqInquiry.search, faqStatus: status } })
-        } else {
-            delete faqInquiry.search.faqStatus;
-            setFaqInquiry(faqInquiry)
-        }
-    }
 
     const handleSearchCategory = (category: string) => {
         if (category !== "ALL") {
             setFaqInquiry({ ...faqInquiry, search: { ...faqInquiry.search, faqCategory: category } })
         } else {
             delete faqInquiry.search.faqCategory;
-            setFaqInquiry(faqInquiry)
+            setFaqInquiry({...faqInquiry})
         }
         setValue(category)
     }
 
-    const updateMemberHandler = async (updateData: any) => {
-        // try {
-        // 	await updateMemberByAdmin({ variables: { input: updateData } });
-        // 	menuIconCloseHandler();
-        // 	await getAllMembersReftch({ input: membersInquiry })
-        // } catch (err: any) {
-        // 	sweetErrorHandling(err).then();
-        // }
-    };
+    const toggleModalHandler = () => {
+        if (!toggleModal) {
+            setToggleModal(true)
+        } else {
+            setToggleModal(false)
+        }
+    }
+    const changeCategoryHandler = (e: any) => {
+        faqcreateObj.faqCategory = e.target.value
+        setFaqcreateObj({ ...faqcreateObj })
+    }
+    const setQuestionHandler = (e: any) => {
+        faqcreateObj.faqQuestion = e.target.value;
+        setFaqcreateObj({ ...faqcreateObj })
+    }
+    const setAnswerHandler = (e: any) => {
+        faqcreateObj.faqAnswer = e.target.value
+        setFaqcreateObj({ ...faqcreateObj })
+    }
     return (
         <>
             <Stack className="admin-user" >
@@ -79,40 +134,60 @@ const Faq: NextPage = ({ initialProps, ...props }: any) => {
                     FAQ Management
                 </Box>
                 <>
-                    <Button style={{ backgroundColor: "gray", width: "150px", marginTop: "30px", fontWeight: "bold", color: "white" }}>
+                    <Button
+                        sx={{ backgroundColor: "gray", width: "150px", marginTop: "30px", fontWeight: "bold", color: "white" }}
+                        onClick={toggleModalHandler}
+                    >
                         <div>ADD</div>
                         <Add />
                     </Button>
+                    <Modal
+                        open={toggleModal}
+                        onClose={toggleModalHandler}
+                        aria-labelledby="modal-modal-title"
+                        aria-describedby="modal-modal-description"
+                    >
+                        <Stack className="faq-modal">
+                            <Stack className="faq-main">
+                                <Box className="title">ADD FAQ</Box>
+                                <CssVarsProvider>
+                                    <Stack>
+                                        <label htmlFor="selectCategory" className="add-label">Category</label>
+                                        <select
+                                            id="selectCategory"
+                                            onChange={changeCategoryHandler}
+                                            value={faqcreateObj.faqCategory}
+                                        >
+                                            {
+                                                Object.values(FaqCategory).map((category: string, index: number) => (
+                                                    (<option value={category} key={index}>{category}</option>)
+                                                ))
+                                            }
+                                        </select>
+                                    </Stack>
+                                    <Stack>
+                                        <JoyForm>
+                                            <FormLabel className="add-label">Question</FormLabel>
+                                            <Input placeholder="Type in here…" variant="outlined" onChange={setQuestionHandler} />
+                                        </JoyForm>
+                                    </Stack>
+                                    <Stack>
+                                        <JoyForm>
+                                            <FormLabel className="add-label">Answer</FormLabel>
+                                            <textarea rows={10} onChange={setAnswerHandler}></textarea>
+                                        </JoyForm>
+                                    </Stack>
+                                </CssVarsProvider>
+                                <Stack flexDirection={"row"} gap={"30px"}>
+                                    <Button endIcon={< X />} variant="contained" color="info" onClick={toggleModalHandler}>Exit</Button>
+                                    <Button endIcon={<FilePlus />} variant="contained" color="warning" onClick={submitDataHandler}>Add</Button>
+                                </Stack>
+                            </Stack>
+                        </Stack>
+                    </Modal>
                 </>
                 <Stack>
                     <Stack className="search-panel">
-                        <Stack className="status" direction={"row"} gap={"10px"}>
-                            <Box className={!faqInquiry?.search?.faqStatus ? 'on' : ''} onClick={() => handleSearchStatus("ALL")}>ALL</Box>
-                            <Stack
-                                direction={"row"}
-                                className={faqInquiry?.search?.faqStatus === FaqStatus.ACTIVE ? 'on' : ''}
-                                onClick={() => handleSearchStatus(FaqStatus.ACTIVE)}
-                            >
-                                <div>Active</div>
-                                <div>(0)</div>
-                            </Stack>
-                            <Stack
-                                direction={"row"}
-                                className={faqInquiry?.search?.faqStatus === FaqStatus.BLOCK ? 'on' : ''}
-                                onClick={() => handleSearchStatus(FaqStatus.BLOCK)}
-                            >
-                                <div>Blocked</div>
-                                <div>(0)</div>
-                            </Stack>
-                            <Stack
-                                direction={"row"}
-                                className={faqInquiry?.search?.faqStatus === FaqStatus.DELETE ? 'on' : ''}
-                                onClick={() => handleSearchStatus(FaqStatus.DELETE)}
-                            >
-                                <div>Deleted</div>
-                                <div>(0)</div>
-                            </Stack>
-                        </Stack>
                         <Stack className="search-area" direction={"row"} alignItems={"center"} justifyContent={"end"}>
                             <OutlinedInput
                                 value={faqInquiry.search.text}
@@ -155,23 +230,32 @@ const Faq: NextPage = ({ initialProps, ...props }: any) => {
                         </Stack>
                     </Stack>
                     <Box className="table-list">
-                        <FaqList
-                            members={members}
-                            anchorEl={anchorEl}
-                            menuIconClickHandler={menuIconClickHandler}
-                            menuIconCloseHandler={menuIconCloseHandler}
-                            updateMemberHandler={updateMemberHandler}
-                        />
-                        <TablePagination
-                            style={{ color: "white" }}
-                            rowsPerPageOptions={[10, 20, 40, 60]}
-                            component="div"
-                            count={membersTotal}
-                            rowsPerPage={membersInquiry?.limit}
-                            page={membersInquiry?.page - 1}
-                            onPageChange={changePageHandler}
-                            onRowsPerPageChange={changeRowsPerPageHandler}
-                        />
+                        {
+                            faqList && faqList.length > 0 ? (
+                                <>
+                                    <FaqList faqList={faqList} deleteTargetFaqHandler={deleteTargetFaqHandler} />
+                                    <TablePagination
+                                        style={{ color: "white" }}
+                                        rowsPerPageOptions={[10, 20, 40, 60]}
+                                        component="div"
+                                        count={total}
+                                        rowsPerPage={faqInquiry?.limit}
+                                        page={faqInquiry?.page - 1}
+                                        onPageChange={changePageHandler}
+                                        onRowsPerPageChange={changeRowsPerPageHandler}
+                                    />
+                                </>
+                            ) : (
+                                <Stack
+                                    alignItems={"center"}
+                                    style={{ margin: "30px 0", fontSize: "24px", color: "white" }}
+                                    gap={"10px"}
+                                >
+                                    <ErrorOutline fontSize="large" />
+                                    <div>No products found!</div>
+                                </Stack>
+                            )
+                        }
                     </Box>
                 </Stack>
             </Stack>

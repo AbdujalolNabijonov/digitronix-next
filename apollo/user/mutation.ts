@@ -273,6 +273,31 @@ export const LIKE_TARGET_ARTICLE = gql`
     }
 }
 `
+//FAQ
+export const CREATE_FAQ = gql`
+    mutation CreateFaq($input:FaqInput!) {
+    createFaq(input: $input) {
+        _id
+        faqQuestion
+        faqAnswer
+        faqCategory
+        createdAt
+        updatedAt
+    }
+}
+`
+export const DELETE_TARGET_FAQ = gql`
+    mutation DeleteTargetFaq($input:String!) {
+        deleteTargetFaq(input: $input) {
+            _id
+            faqQuestion
+            faqAnswer
+            faqCategory
+            createdAt
+            updatedAt
+        }
+    }
+`
 
 //FOLLOW
 export const SUBSCRIBE_MEMBER = gql`

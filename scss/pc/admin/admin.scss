@@ -144,3 +144,46 @@
     }
   }
 }
+.faq-modal{
+  position: relative;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  .faq-main{
+    height: 500px;
+    width: 400px;
+    background-color:#201f2f;
+    padding: 20px;
+    border-radius: 5px;
+    .title{
+      color: white;
+      text-align: center;
+      font-weight: 600;
+      font-size: 20px;
+    }
+    .add-label{
+      margin-top: 10px;
+      font-weight: 500;
+      color: white;
+    }
+    select{
+      padding: 10px;
+      margin-top: 7px;
+      border-radius: 5px;
+    }
+    textarea{
+      resize: none;
+      border-radius: 5px;
+      padding: 10px;
+      font-size: 14px;
+      overflow-y: auto;
+    }
+    button{
+      color: white;
+      font-weight: 500;
+      margin-top: 10px;
+      flex:1;
+      letter-spacing: 1px;
+    }
+  }
+}

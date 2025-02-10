@@ -691,5 +691,24 @@ query GetFollowerMembers($input:FollowInquiry!) {
         }
     }
 }
+`
 
+//FAQ
+
+export const GET_TARGET_FAQS = gql`
+    query GetTargetFaqs($input:FaqInquiry!) {
+    getTargetFaqs(input: $input) {
+        list {
+            _id
+            faqQuestion
+            faqAnswer
+            faqCategory
+            createdAt
+            updatedAt
+        }
+        metaCounter {
+            total
+        }
+    }
+}
 `

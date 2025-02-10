@@ -11,22 +11,24 @@ import {
 	Menu,
 	Fade,
 	MenuItem,
+	IconButton,
 } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
 import { Stack } from '@mui/material';
 import { Member, MemberStatus, MemberType } from '../../../types/member/member';
 import { REACT_APP_API_URL } from '@/libs/config';
+import { FaqObj } from '@/libs/types/faq/faq';
+import moment from 'moment';
+import { Trash } from 'phosphor-react';
 
 interface Data {
+	order: string;
 	id: string;
-	nickname: string;
-	fullname: string;
-	phone: string;
-	type: string;
-	state: string;
-	warning: string;
-	block: string;
+	question: string;
+	category: string;
+	date: string;
+	action: string;
 }
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
@@ -50,53 +52,41 @@ interface HeadCell {
 
 const headCells: readonly HeadCell[] = [
 	{
+		id: 'order',
+		numeric: true,
+		disablePadding: false,
+		label: 'No',
+	},
+	{
 		id: 'id',
 		numeric: true,
 		disablePadding: false,
-		label: 'MB ID',
+		label: 'ID',
 	},
 	{
-		id: 'nickname',
+		id: 'question',
+		numeric: false,
+		disablePadding: false,
+		label: 'QUESTION',
+	},
+	{
+		id: 'category',
+		numeric: false,
+		disablePadding: false,
+		label: 'CATEGORY',
+	},
+	{
+		id: 'date',
 		numeric: true,
 		disablePadding: false,
-		label: 'NICK NAME',
+		label: 'DATE',
 	},
 	{
-		id: 'fullname',
+		id: 'action',
 		numeric: false,
 		disablePadding: false,
-		label: 'FULL NAME',
-	},
-	{
-		id: 'phone',
-		numeric: true,
-		disablePadding: false,
-		label: 'PHONE NUM',
-	},
-	{
-		id: 'type',
-		numeric: false,
-		disablePadding: false,
-		label: 'MEMBER TYPE',
-	},
-	{
-		id: 'warning',
-		numeric: false,
-		disablePadding: false,
-		label: 'WARNING',
-	},
-	{
-		id: 'block',
-		numeric: false,
-		disablePadding: false,
-		label: 'BLOCK CRIMES',
-	},
-	{
-		id: 'state',
-		numeric: false,
-		disablePadding: false,
-		label: 'STATE',
-	},
+		label: 'ACTION',
+	}
 ];
 
 interface EnhancedTableProps {
@@ -117,9 +107,10 @@ function EnhancedTableHead(props: EnhancedTableProps) {
 				{headCells.map((headCell) => (
 					<TableCell
 						key={headCell.id}
-						align={headCell.numeric ? 'left' : 'center'}
+						align={'center'}
 						padding={headCell.disablePadding ? 'none' : 'normal'}
-						style={{color:"white"}}
+						style={{ color: "white" }}
+						colSpan={headCell.label === "QUESTION" ? 2 : 1}
 					>
 						{headCell.label}
 					</TableCell>
@@ -129,16 +120,9 @@ function EnhancedTableHead(props: EnhancedTableProps) {
 	);
 }
 
-interface MemberPanelListType {
-	members: Member[];
-	anchorEl: any;
-	menuIconClickHandler: any;
-	menuIconCloseHandler: any;
-	updateMemberHandler: any;
-}
 
-export const FaqList = (props: MemberPanelListType) => {
-	const { members, anchorEl, menuIconClickHandler, menuIconCloseHandler, updateMemberHandler } = props;
+export const FaqList = (props: any) => {
+	const { faqList, deleteTargetFaqHandler } = props;
 
 	return (
 		<Stack>
@@ -147,105 +131,32 @@ export const FaqList = (props: MemberPanelListType) => {
 					{/*@ts-ignore*/}
 					<EnhancedTableHead />
 					<TableBody>
-						{members.length === 0 && (
-							<TableRow>
-								<TableCell align="center" colSpan={8} style={{color:"white"}}>
-									<span className={'no-data'}>data not found!</span>
-								</TableCell>
-							</TableRow>
-						)}
-
-						{members.length !== 0 &&
-							members.map((member: Member, index: number) => {
-								const member_image = member.memberImage
-									? `${REACT_APP_API_URL}/${member.memberImage}`
-									: '/img/profile/defaultUser.svg';
-								return (
-									<TableRow hover key={member?._id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-										<TableCell align="left">{member._id}</TableCell>
-
-										<TableCell align="left" className={'name'}>
-											<Stack direction={'row'}>
-												<Link href={`/member?memberId=${member._id}`}>
-													<div>
-														<Avatar alt="Remy Sharp" src={member_image} sx={{ ml: '2px', mr: '10px' }} />
-													</div>
-												</Link>
-												<Link href={`/member?memberId=${member._id}`}>
-													<div>{member.memberNick}</div>
-												</Link>
-											</Stack>
-										</TableCell>
-
-										<TableCell align="center">{member.memberFullName ?? '-'}</TableCell>
-										<TableCell align="left">{member.memberPhone}</TableCell>
-
-										<TableCell align="center">
-											<Button onClick={(e: any) => menuIconClickHandler(e, index)} className={'badge success'}>
-												{member.memberType}
-											</Button>
-
-											<Menu
-												className={'menu-modal'}
-												MenuListProps={{
-													'aria-labelledby': 'fade-button',
-												}}
-												anchorEl={anchorEl[index]}
-												open={Boolean(anchorEl[index])}
-												onClose={menuIconCloseHandler}
-												TransitionComponent={Fade}
-												sx={{ p: 1 }}
-											>
-												{Object.values(MemberType)
-													.filter((ele) => ele !== member?.memberType)
-													.map((type: string) => (
-														<MenuItem
-															onClick={() => updateMemberHandler({ _id: member._id, memberType: type })}
-															key={type}
-														>
-															<Typography variant={'subtitle1'} component={'span'}>
-																{type}
-															</Typography>
-														</MenuItem>
-													))}
-											</Menu>
-										</TableCell>
-
-										<TableCell align="center">{member.memberWarnings}</TableCell>
-										<TableCell align="center">{member.memberBlocks}</TableCell>
-										<TableCell align="center">
-											<Button onClick={(e: any) => menuIconClickHandler(e, member._id)} className={'badge success'}>
-												{member.memberStatus}
-											</Button>
-
-											<Menu
-												className={'menu-modal'}
-												MenuListProps={{
-													'aria-labelledby': 'fade-button',
-												}}
-												anchorEl={anchorEl[member._id]}
-												open={Boolean(anchorEl[member._id])}
-												onClose={menuIconCloseHandler}
-												TransitionComponent={Fade}
-												sx={{ p: 1 }}
-											>
-												{Object.values(MemberStatus)
-													.filter((ele: string) => ele !== member?.memberStatus)
-													.map((status: string) => (
-														<MenuItem
-															onClick={() => updateMemberHandler({ _id: member._id, memberStatus: status })}
-															key={status}
-														>
-															<Typography variant={'subtitle1'} component={'span'}>
-																{status}
-															</Typography>
-														</MenuItem>
-													))}
-											</Menu>
-										</TableCell>
-									</TableRow>
-								);
-							})}
+						{faqList.map((faq: FaqObj, index: number) => {
+							return (
+								<TableRow hover key={index} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+									<TableCell align="center">
+										{index + 1}
+									</TableCell>
+									<TableCell align="center">
+										{faq._id}
+									</TableCell>
+									<TableCell align="center" colSpan={2}>
+										{faq.faqQuestion}
+									</TableCell>
+									<TableCell align="center">
+										{faq.faqCategory}
+									</TableCell>
+									<TableCell align="center">
+										{moment(faq.createdAt).format("DD MMMM, YYYY")}
+									</TableCell>
+									<TableCell align="center">
+										<IconButton onClick={(e: any) => deleteTargetFaqHandler(e, faq._id)}>
+											<Trash />
+										</IconButton>
+									</TableCell>
+								</TableRow>
+							);
+						})}
 					</TableBody>
 				</Table>
 			</TableContainer>

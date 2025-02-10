@@ -45,7 +45,7 @@ const HomeBanner = () => {
                         <ul className="accordion-group" id="accordion">
                             <li
                                 style={{
-                                    backgroundImage: 'url("/img/banner/chair.jpg")',
+                                    backgroundImage: 'url("/img/banner/chair.webp")',
                                 }}
                             >
                                 <div className="accordion-overlay"></div>
@@ -94,7 +94,7 @@ const HomeBanner = () => {
                             </li>
                             <li
                                 style={{
-                                    backgroundImage: `url("/img/banner/keyboard.jpg")`,
+                                    backgroundImage: `url("/img/banner/keyboard.jpeg")`,
                                 }}
                             >
                                 <div className="accordion-overlay"></div>

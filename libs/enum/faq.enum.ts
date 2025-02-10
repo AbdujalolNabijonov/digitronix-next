@@ -4,7 +4,11 @@ export enum FaqStatus {
     DELETE = "DELETE"
 }
 
-export enum FaqCategory{
-    ADMIN = "ADMIN",
-    USER = "USER"
+
+export enum FaqCategory {
+    GENERAL = 'GENERAL',
+    SERVICES = 'SERVICES',
+    BUY = "BUY",
+    COMMUNITY = "COMMUNITY",
+    CONTACT = "CONTACT"
 }
