@@ -16,7 +16,7 @@ import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
 import { Stack } from '@mui/material';
 import { Member, MemberStatus, MemberType } from '../../../types/member/member';
-import { REACT_APP_API_URL } from '@/libs/config';
+import { REACT_APP_API_URL, serverApi } from '@/libs/config';
 
 interface Data {
 	id: string;
@@ -158,7 +158,7 @@ export const MemberPanelList = (props: MemberPanelListType) => {
 						{members.length !== 0 &&
 							members.map((member: Member, index: number) => {
 								const member_image = member.memberImage
-									? `${"http://localhost:3005"}/${member.memberImage}`
+									? `${serverApi}/${member.memberImage}`
 									: '/img/profile/defaultUser.svg';
 								return (
 									<TableRow hover key={member?._id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
@@ -166,12 +166,12 @@ export const MemberPanelList = (props: MemberPanelListType) => {
 
 										<TableCell align="left" className={'name'}>
 											<Stack direction={'row'} alignItems={"center"}>
-												<Link href={`/member?memberId=${member._id}`}>
+												<Link href={`/member?stage=3&memberId=${member._id}`}>
 													<div>
 														<Avatar alt="Remy Sharp" src={member_image} sx={{ ml: '2px', mr: '10px' }} />
 													</div>
 												</Link>
-												<Link href={`/member?memberId=${member._id}`}>
+												<Link href={`/member?stage=3&memberId=${member._id}`}>
 													<div>{member.memberNick}</div>
 												</Link>
 											</Stack>

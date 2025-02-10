@@ -1,7 +1,7 @@
 import { Direction } from "@/libs/enum/common.enum"
 import { ProductCategory, ProductSort } from "@/libs/enum/product.enum"
 import { ProductsInquiry } from "@/libs/types/product/product.input"
-import { Memory, RemoveRedEyeRounded, SdCard, ThumbUpAltRounded } from "@mui/icons-material"
+import { ErrorOutline, Memory, RemoveRedEyeRounded, SdCard, ThumbUpAltRounded } from "@mui/icons-material"
 import { Box, Button, CircularProgress, Divider, IconButton, Stack } from "@mui/material"
 import { NextPage } from "next"
 import { ArrowSquareOut, Cpu, HardDrive, HardDrives, Laptop, Monitor } from "phosphor-react"
@@ -140,94 +140,104 @@ const SortProduct: NextPage = ({ initialProps, ...props }: any) => {
                             </Stack>
                         </Stack>
                         <Stack className="target-products">
-                            {getTargetProductsLoading ? <Box sx={{ alignSelf: "center" }}><CircularProgress size={"3rem"} /></Box> : targetProducts ? (
-                                <Swiper
-                                    slidesPerView={3}
-                                    spaceBetween={30}
-                                    pagination={{
-                                        clickable: true,
-                                    }}
-                                    keyboard={true}
-                                    modules={[Keyboard, Navigation]}
-                                    className="swiper"
-                                >
-                                    {targetProducts.map((product: Product, index: number) => {
-                                        const product_img = `${serverApi}/${product.productImages[0]}`
-                                        return (
-                                            <SwiperSlide key={product._id} >
-                                                <Stack
-                                                    onClick={() => {
-                                                        const link = `/products/detail?id=${product._id}`
-                                                        router.push(link, link, { scroll: false })
-                                                    }}
-                                                    data-aos="fade-up"
-                                                    data-aos-duration={`${3000 * index}`}
-                                                    className={scroll ? "product-card aos-animate" : "product-card"}
-                                                >
-                                                    <Stack className="card-head" alignItems={"center"}>
-                                                        <img src={product_img} alt="" />
+                            {getTargetProductsLoading ? <Box sx={{ alignSelf: "center" }}><CircularProgress size={"3rem"} /></Box> :
+                                targetProducts && targetProducts.length>0 ? (
+                                    <Swiper
+                                        slidesPerView={3}
+                                        spaceBetween={30}
+                                        pagination={{
+                                            clickable: true,
+                                        }}
+                                        keyboard={true}
+                                        modules={[Keyboard, Navigation]}
+                                        className="swiper"
+                                    >
+                                        {targetProducts.map((product: Product, index: number) => {
+                                            const product_img = `${serverApi}/${product.productImages[0]}`
+                                            return (
+                                                <SwiperSlide key={product._id} >
+                                                    <Stack
+                                                        onClick={() => {
+                                                            const link = `/products/detail?id=${product._id}`
+                                                            router.push(link, link, { scroll: false })
+                                                        }}
+                                                        data-aos="fade-up"
+                                                        data-aos-duration={`${3000 * index}`}
+                                                        className={scroll ? "product-card aos-animate" : "product-card"}
+                                                    >
+                                                        <Stack className="card-head" alignItems={"center"}>
+                                                            <img src={product_img} alt="" />
+                                                        </Stack>
+                                                        <Box>
+                                                            <Divider variant="middle" sx={{ borderColor: "gray" }} />
+                                                            <Stack className="card-body" gap={"5px"}>
+                                                                <Stack direction={"row"} gap={"10px"} alignItems={"center"} className="name">
+                                                                    <Laptop size={30} />
+                                                                    <div>{product.productName}</div>
+                                                                </Stack>
+                                                                {
+                                                                    product.productCategory === ProductCategory.DESKTOP || product.productCategory === ProductCategory.LAPTOP ? (
+                                                                        <>
+                                                                            <Stack direction={"row"} gap={"10px"} alignItems={"center"} className="cpu">
+                                                                                <Cpu size={30} />
+                                                                                <div>{product.productCore}</div>
+                                                                            </Stack>
+                                                                            <Stack direction={"row"} gap={"10px"} alignItems={"center"} className="graphics">
+                                                                                <GraphicsCard size={30} />
+                                                                                <div>{product.productGraphics}</div>
+                                                                            </Stack>
+                                                                        </>
+                                                                    ) : null
+                                                                }
+                                                                {
+                                                                    product.productDisplay ? (
+                                                                        <Stack direction={"row"} gap={"10px"} alignItems={"center"} className="display">
+                                                                            <Monitor size={30} />
+                                                                            <div>{product.productDisplay} inch</div>
+                                                                        </Stack>
+                                                                    ) : null
+                                                                }
+                                                                {
+                                                                    product.productCategory === ProductCategory.KEYBOARD || product.productCategory === ProductCategory.CHAIR ? null : (
+                                                                        <Stack direction={"row"} gap={"10px"} alignItems={"center"} className="storage">
+                                                                            <HardDrives size={30} />
+                                                                            <div>{product.productStorage} GB</div>
+                                                                        </Stack>
+                                                                    )
+                                                                }
+                                                            </Stack>
+                                                            <Divider sx={{ borderColor: "gray" }} variant="middle" />
+                                                            <Stack className="product-status">
+                                                                <Stack direction={"row"} gap={"5px"} alignItems={"center"}>
+                                                                    <IconButton onClick={(e) => { e.stopPropagation() }} disableRipple>
+                                                                        <RemoveRedEyeRounded sx={{ fill: "black" }} />
+                                                                    </IconButton>
+                                                                    {product.productViews}
+                                                                </Stack>
+                                                                <Stack direction={"row"} gap={"5px"} alignItems={'center'}>
+                                                                    <IconButton onClick={(e) => { handleLikeTargetProduct(e, product._id) }}>
+                                                                        <ThumbUpAltRounded sx={product.meLiked && product.meLiked[0]?.myFavorite ? { fill: "#F44336" } : { fill: "black" }} />
+                                                                    </IconButton>
+                                                                    {product.productLikes}
+                                                                </Stack>
+                                                            </Stack>
+                                                        </Box>
                                                     </Stack>
-                                                    <Box>
-                                                        <Divider variant="middle" sx={{ borderColor: "gray" }} />
-                                                        <Stack className="card-body" gap={"5px"}>
-                                                            <Stack direction={"row"} gap={"10px"} alignItems={"center"} className="name">
-                                                                <Laptop size={30} />
-                                                                <div>{product.productName}</div>
-                                                            </Stack>
-                                                            {
-                                                                product.productCategory === ProductCategory.DESKTOP || product.productCategory === ProductCategory.LAPTOP ? (
-                                                                    <>
-                                                                        <Stack direction={"row"} gap={"10px"} alignItems={"center"} className="cpu">
-                                                                            <Cpu size={30} />
-                                                                            <div>{product.productCore}</div>
-                                                                        </Stack>
-                                                                        <Stack direction={"row"} gap={"10px"} alignItems={"center"} className="graphics">
-                                                                            <GraphicsCard size={30} />
-                                                                            <div>{product.productGraphics}</div>
-                                                                        </Stack>
-                                                                    </>
-                                                                ) : null
-                                                            }
-                                                            {
-                                                                product.productDisplay ? (
-                                                                    <Stack direction={"row"} gap={"10px"} alignItems={"center"} className="display">
-                                                                        <Monitor size={30} />
-                                                                        <div>{product.productDisplay} inch</div>
-                                                                    </Stack>
-                                                                ) : null
-                                                            }
-                                                            {
-                                                                product.productCategory === ProductCategory.KEYBOARD || product.productCategory === ProductCategory.CHAIR ? null : (
-                                                                    <Stack direction={"row"} gap={"10px"} alignItems={"center"} className="storage">
-                                                                        <HardDrives size={30} />
-                                                                        <div>{product.productStorage} GB</div>
-                                                                    </Stack>
-                                                                )
-                                                            }
-                                                        </Stack>
-                                                        <Divider sx={{ borderColor: "gray" }} variant="middle" />
-                                                        <Stack className="product-status">
-                                                            <Stack direction={"row"} gap={"5px"} alignItems={"center"}>
-                                                                <IconButton onClick={(e)=>{e.stopPropagation()}} disableRipple>
-                                                                    <RemoveRedEyeRounded sx={{ fill: "black" }} />
-                                                                </IconButton>
-                                                                {product.productViews}
-                                                            </Stack>
-                                                            <Stack direction={"row"} gap={"5px"} alignItems={'center'}>
-                                                                <IconButton onClick={(e) => { handleLikeTargetProduct(e, product._id) }}>
-                                                                    <ThumbUpAltRounded sx={product.meLiked && product.meLiked[0]?.myFavorite ? { fill: "#F44336" } : { fill: "black" }} />
-                                                                </IconButton>
-                                                                {product.productLikes}
-                                                            </Stack>
-                                                        </Stack>
-                                                    </Box>
-                                                </Stack>
-                                            </SwiperSlide>
-                                        )
-                                    })
-                                    }
-                                </Swiper>
-                            ) : "no"}
+                                                </SwiperSlide>
+                                            )
+                                        })
+                                        }
+                                    </Swiper>
+                                ) : (
+                                    <Stack
+                                        alignItems={"center"}
+                                        style={{ margin: "30px 0", fontSize: "24px", color: "black" }}
+                                        gap={"10px"}
+                                    >
+                                        <ErrorOutline fontSize="large" />
+                                        <div>No products found!</div>
+                                    </Stack>
+                                )}
                         </Stack>
                     </Stack>
                 </Box>

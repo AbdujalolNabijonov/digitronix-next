@@ -11,6 +11,7 @@ import {
 	Menu,
 	Fade,
 	MenuItem,
+	IconButton,
 } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
@@ -19,6 +20,7 @@ import { REACT_APP_API_URL } from '@/libs/config';
 import { Product } from '@/libs/types/product/product';
 import { ProductStatus } from '@/libs/enum/product.enum';
 import { numberSplitterHandler } from '@/libs/features/splitter';
+import { useRouter } from 'next/router';
 
 interface Data {
 	label: string;
@@ -134,7 +136,7 @@ interface MemberPanelListType {
 
 export const ProductList = (props: MemberPanelListType) => {
 	const { products, anchorEl, menuIconClickHandler, menuIconCloseHandler, updateProductHandler } = props;
-
+	const router = useRouter()
 	return (
 		<Stack>
 			<TableContainer>
@@ -149,7 +151,6 @@ export const ProductList = (props: MemberPanelListType) => {
 								</TableCell>
 							</TableRow>
 						)}
-
 						{products.length !== 0 &&
 							products.map((product: Product, index: number) => {
 								const member_image = product.productImages[0]
@@ -162,26 +163,24 @@ export const ProductList = (props: MemberPanelListType) => {
 
 										<TableCell align="left" className={'name'}>
 											<Stack direction={'row'} alignItems={"center"}>
-												<Link href={`/product?productId=${product?._id}`}>
+												<Button onClick={()=>{
+													router.push(`/products/detail?id=${product?._id}`)
+												}} disabled={!(product.productStatus===ProductStatus.ACTIVE)}>
 													<div>
 														<Avatar alt="Remy Sharp" src={member_image} sx={{ ml: '2px', mr: '10px' }} />
 													</div>
-												</Link>
-												<Link href={`/product?productId=${product._id}`}>
-													<div>{product.productName}</div>
-												</Link>
+												</Button>
+												<div>{product.productName}</div>
 											</Stack>
 										</TableCell>
 
 										<TableCell align="center">{numberSplitterHandler(product.productPrice, 3, ",")}₩</TableCell>
 										<TableCell align="left">{product.memberData?.memberNick}</TableCell>
 										<TableCell align="left">{product.productCategory}</TableCell>
-
 										<TableCell align="center">
-											<Button onClick={(e: any) => menuIconClickHandler(e, index)} style={{backgroundColor:'gray'}}>
+											<Button onClick={(e: any) => menuIconClickHandler(e, index)} style={{ backgroundColor: 'gray' }}>
 												{product.productStatus}
 											</Button>
-
 											<Menu
 												className={'menu-modal'}
 												MenuListProps={{

@@ -40,7 +40,6 @@ const Join = () => {
             router.push("/")
         } catch (err: any) {
             console.log("handleLogInRequest:", err.message)
-            sweetErrorAlert(Messages.error1)
         }
     }, [input2])
 

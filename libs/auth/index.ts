@@ -116,7 +116,7 @@ export const requestJwtToken = async ({ nick, email, password }: { nick: string,
     try {
         const result = await apolloClient.query({
             query: LOG_IN,
-            variables: { input: { memberNick:nick, memberEmail:email, memberPassword:password } },
+            variables: { input: { memberNick: nick, memberEmail: email, memberPassword: password } },
             fetchPolicy: "network-only"
         })
 
@@ -124,15 +124,8 @@ export const requestJwtToken = async ({ nick, email, password }: { nick: string,
         return { jwtToken: accessToken }
     } catch (err: any) {
         console.log("Error, requestJwtToken:", err.graphQLErrors);
-        switch (err.graphQLErrors[0].message) {
-            case 'Wrong password, try again':
-                await sweetMixinErrorAlert('Please check your password again');
-                break;
-            case 'Definer: user has been blocked!':
-                await sweetMixinErrorAlert('User has been blocked!');
-                break;
-        }
-        throw new Error('token error')
+        await sweetMixinErrorAlert(err.graphQLErrors[0].message || err.graphQLErrors[0].message[0])
+        throw err
     }
 }
 

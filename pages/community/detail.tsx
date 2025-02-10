@@ -116,9 +116,9 @@ const ArticleDetail = (props: any) => {
     }
     const navigatePageHandler = ()=>{
         if (user._id === article?.memberData._id) {
-            router.push(`/memberPage?stage=3`)
+            router.push(`/member?stage=3`)
         } else {
-            router.push(`/memberPage?stage=3&memberId=${article?.memberData._id}`)
+            router.push(`/member?stage=3&memberId=${article?.memberData._id}`)
         }
     }
     return (
