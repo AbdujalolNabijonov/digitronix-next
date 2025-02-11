@@ -1,4 +1,4 @@
-import { GraphicsSeries, GraphicsType, ProductCategory, ProductCore, ProductSeries } from "@/libs/enum/product.enum"
+import { GraphicsSeries, GraphicsType, ProductCategory, ProductSeries } from "@/libs/enum/product.enum"
 import { AmdCoreList, BrandsList, DisplayResolution, IntelCoreList } from "@/libs/types/product/product"
 import { ProductsInquiry } from "@/libs/types/product/product.input"
 import { CancelRounded, Computer, ExpandMore, HomeWorkOutlined, KeyboardDoubleArrowDownOutlined, KeyboardDoubleArrowUpOutlined, Memory, Refresh, Search, Tab, TabOutlined } from "@mui/icons-material"

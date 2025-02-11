@@ -7,8 +7,6 @@ import {
     Logout,
     Mouse,
     NotificationsOutlined,
-    Usb,
-    YoutubeSearchedForRounded
 } from "@mui/icons-material";
 import { Avatar, Box, Button, IconButton, Menu, MenuItem, MenuProps, Stack } from "@mui/material";
 import { NextPage } from "next";

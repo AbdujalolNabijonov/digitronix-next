@@ -4,7 +4,6 @@ import {
     MaterialType,
     ProductBrand,
     ProductCategory,
-    ProductCore,
     ProductLabel,
     ProductSeries
 } from "@/libs/enum/product.enum"
@@ -28,7 +27,7 @@ export interface Product {
     productPrice: number,
     productColor: string,
     productOS?: string,
-    productCore?: ProductCore,
+    productCore?: string,
     productSerie?: ProductSeries,
     productDisplay?: number,
     productMemory?: number,

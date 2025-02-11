@@ -193,6 +193,7 @@ const Detail = (props: any) => {
                     {
                         comments && comments.length > 0 ? (
                             <CommentRead
+                                setCommentSearchObj={setSearchCommentObj}
                                 comments={comments}
                                 totalComments={comments.length}
                                 commentSearchObj={searchCommentObj}

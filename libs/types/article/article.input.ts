@@ -1,5 +1,3 @@
-import { ArticleCategory, ArticleStatus } from "@/libs/enum/article.enu"
-
 export interface ArticleInquiry {
     page: number,
     limit: number,

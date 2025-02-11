@@ -694,7 +694,6 @@ query GetFollowerMembers($input:FollowInquiry!) {
 `
 
 //FAQ
-
 export const GET_TARGET_FAQS = gql`
     query GetTargetFaqs($input:FaqInquiry!) {
     getTargetFaqs(input: $input) {
@@ -703,6 +702,24 @@ export const GET_TARGET_FAQS = gql`
             faqQuestion
             faqAnswer
             faqCategory
+            createdAt
+            updatedAt
+        }
+        metaCounter {
+            total
+        }
+    }
+}
+`
+
+//NOTICE
+export const GET_NOTICES = gql`
+    query GetAllNotices($input:NoticeInquiry!) {
+    getAllNotices(input: $input) {
+        list {
+            _id
+            noticeContent
+            memberId
             createdAt
             updatedAt
         }

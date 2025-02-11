@@ -6,12 +6,11 @@ import { useRouter } from "next/router"
 const ProductBanner = (props: any) => {
     //Initialization
     const router = useRouter()
-
     const [category, setCategory] = useState<string>("")
 
     //LifeCircle
     useEffect(() => {
-        const queryInput = router.query.input ? JSON.parse(router?.query?.input as string) : '';
+        const queryInput = router.query.input ? JSON.parse(router.query?.input as string) : '';
         if (queryInput && queryInput.search.productCategory !== category) {
             setCategory(queryInput.search.productCategory);
         }
@@ -22,7 +21,7 @@ const ProductBanner = (props: any) => {
             <Box className="product-banner">
                 <Box className={"vid-ads"}>
                     <video key={category} autoPlay muted loop>
-                        <source src={`/vids/product/${category}.mp4`} />
+                        <source src={`/vids/product/${category.toLowerCase()}.mp4`} />
                     </video>
                     <Box className="container">
                         <Stack className={"info"}>

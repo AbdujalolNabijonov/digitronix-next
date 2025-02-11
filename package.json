@@ -25,6 +25,7 @@
     "apollo-link-token-refresh": "0.4.0",
     "apollo-upload-client": "17.0.0",
     "axios": "^1.7.4",
+    "global": "^4.4.0",
     "jwt-decode": "^4.0.0",
     "moment": "^2.30.1",
     "next": "14.2.5",
