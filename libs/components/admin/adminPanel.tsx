@@ -1,26 +1,34 @@
 import { ArrowDropDown, Campaign, DevicesOutlined, ForumOutlined, HomeWork, HomeWorkOutlined, PeopleOutline, Quiz, SupportAgentOutlined } from "@mui/icons-material";
-import { Accordion, AccordionDetails, AccordionSummary, Box, MenuItem, Stack, Typography } from "@mui/material"
+import { Accordion, AccordionDetails, AccordionSummary, Avatar, Box, MenuItem, Stack, Typography } from "@mui/material"
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import {useReactiveVar} from "@apollo/client"
 import { userVar } from "@/apollo/store";
+import { serverApi } from "@/libs/config";
 
 const AdminPanel = () => {
     //Initializations
     const pathname = useRouter().pathname;
-    const userInfo = useReactiveVar(userVar)
+    const user = useReactiveVar(userVar)
 
     return (
         <>
             <Stack className="admin-panel">
                 <Stack className="brand-title">
-                    <div className="title">
+                    <a className="title" href="/">
                         DIGITRONIX
-                    </div>
+                    </a>
                     <Stack className="user">
-                        <img src="/img/profile/defaultUser.svg" alt="user" />
-                        <div className="name">{userInfo.memberNick}</div>
+                        <Avatar 
+                        src={user.memberImage?`${serverApi}/${user.memberImage}`:"/img/profile/noUser.jpg"} 
+                        alt="image"
+                        sx={{width:"50px", height:"50px"}}
+                        />
+                        <Stack className="user-info">
+                            <Box>{user.memberFullName||user.memberNick}</Box>
+                            <Box>{user.memberPhone}</Box>
+                        </Stack>
                     </Stack>
                 </Stack>
                 <Stack className="btn-list" gap={"10px"}>

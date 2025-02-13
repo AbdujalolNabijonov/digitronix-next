@@ -333,11 +333,22 @@ export const DELETE_FOLLOWER = gql`
 `
 
 //NOTICE
-export const DELETE_NOTICE = gql`
-    mutation DeleteTargetNotice($input:String!) {
-    deleteTargetNotice(input: $input) {
+export const DELETE_NOTICES = gql`
+    mutation DeleteNotices {
+        deleteNotices {
+            acknowledged
+            deletedCount
+        }
+    }
+`
+
+export const DELETE_NOTICE_BY_ADMIN = gql`
+    mutation DeleteTargetNoticeByAdmin($input:String!) {
+    deleteTargetNoticeByAdmin(input:$input) {
         _id
+        noticeTitle
         noticeContent
+        noticeGroup
         memberId
         createdAt
         updatedAt

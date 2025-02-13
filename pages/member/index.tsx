@@ -18,6 +18,7 @@ import AddProduct from "@/libs/components/memberPage/AddProduct";
 import AllProducts from "@/libs/components/memberPage/AllProducts";
 import MyPanel from "@/libs/components/memberPage/MyPanel";
 import OtherPanel from "@/libs/components/memberPage/OtherPanel";
+import Notifications from "@/libs/components/memberPage/Notifications";
 
 const MemberPage: NextPage = (props: any) => {
     const router = useRouter()
@@ -39,7 +40,7 @@ const MemberPage: NextPage = (props: any) => {
 
     const navigateSelectHandler = (e: any, value: string) => {
         setValue(value)
-        let url = `/memberPage?stage=${value}`
+        let url = `/member?stage=${value}`
         if (memberId) {
             url += `&memberId=${memberId}`
         }
@@ -50,12 +51,6 @@ const MemberPage: NextPage = (props: any) => {
             <Stack className="container">
                 <TabContext value={value}>
                     <Stack flexDirection={"row"} sx={{ margin: "40px 0" }}>
-                        <TabPanel value={"8"} className="tab-panel">
-                            <AddProduct />
-                        </TabPanel>
-                        <TabPanel value={"9"} className="tab-panel">
-                            <AllProducts />
-                        </TabPanel>
                         <TabPanel value={"1"} className="tab-panel">
                             <Favorities />
                         </TabPanel>
@@ -76,6 +71,18 @@ const MemberPage: NextPage = (props: any) => {
                         </TabPanel>
                         <TabPanel value={"7"} className="tab-panel">
                             <MyProfile />
+                        </TabPanel>
+                        <TabPanel value={"8"} className="tab-panel">
+                            <AddProduct />
+                        </TabPanel>
+                        <TabPanel value={"9"} className="tab-panel">
+                            <AllProducts />
+                        </TabPanel>
+                        <TabPanel value={"9"} className="tab-panel">
+                            <AllProducts />
+                        </TabPanel>
+                        <TabPanel value={"10"} className="tab-panel">
+                            <Notifications />
                         </TabPanel>
                         {
                             memberId ? (

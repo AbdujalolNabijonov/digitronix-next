@@ -264,14 +264,15 @@
     padding: 20px 15px;
   }
   .notify-body {
-    max-height: 550px;
+    max-height: 500px;
+    width: 450px;
     overflow-y: auto;
     .notify-item {
-      background-color: #535252;
+      background-color: #615f5f;
       padding: 10px 15px;
       border-radius: 5px;
       .notify-owner {
-        width: 400px;
+        margin: 10px;
         flex-direction: row;
         gap: 10px;
         .action {

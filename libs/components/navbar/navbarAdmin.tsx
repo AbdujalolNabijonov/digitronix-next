@@ -43,13 +43,8 @@ const NavbarAdmin = () => {
             <Stack className={"admin-navbar"} direction={"row"} justifyContent={"end"}>
                 <Stack direction={"row"} alignItems={"center"} gap={"10px"}>
                     <>
-                        <Button className="notify">
-                            <NotificationsOutlined fontSize="large" />
-                        </Button>
-                    </>
-                    <>
                         <Button onClick={(e: any) => setAnchorEl(e.target)}>
-                            <img src={imageUrl} alt="" />
+                            <img src={imageUrl} alt=""  />
                         </Button>
                         <Menu
                             sx={{ mt: '45px' }}

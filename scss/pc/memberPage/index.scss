@@ -35,6 +35,52 @@
               }
             }
           }
+          .notification {
+            .notification-head {
+              color: white;
+              .title {
+                font-weight: 700;
+                font-size: 25px;
+                margin: 5px 0;
+                letter-spacing: 1px;
+              }
+            }
+            .notify-body {
+              .notify-category {
+                flex-direction: row;
+                gap: 10px;
+                button {
+                  background-color: #7d7a7a;
+                  color: white;
+                  width: 100px;
+                  padding: 10px 0;
+                }
+                .on {
+                  background-color: #d77b3d;
+                }
+              }
+              .notify-items{
+                margin-top: 20px;
+                .notify-item{
+                  color: white;
+                  background-color: #484646;
+                  margin: 0;
+                  img{
+                    height: 40px;
+                    width: 40px;
+                    border-radius: 5px;
+                  }
+                  .notify-item-title{
+                    font-size: 16px;
+                  }
+                  .notify-item-body{
+                    background-color: #595656;
+                    margin: 20px;
+                  }
+                }
+              }
+            }
+          }
           .follow {
             .follow-head {
               color: white;

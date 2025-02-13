@@ -1,5 +1,4 @@
 import React from 'react';
-import Link from 'next/link';
 import {
 	TableCell,
 	TableHead,
@@ -7,17 +6,9 @@ import {
 	TableRow,
 	Table,
 	TableContainer,
-	Button,
-	Menu,
-	Fade,
-	MenuItem,
 	IconButton,
 } from '@mui/material';
-import Avatar from '@mui/material/Avatar';
-import Typography from '@mui/material/Typography';
 import { Stack } from '@mui/material';
-import { Member, MemberStatus, MemberType } from '../../../types/member/member';
-import { REACT_APP_API_URL } from '@/libs/config';
 import { Trash } from 'phosphor-react';
 import moment from 'moment';
 import { Notice } from '@/libs/types/notice/notice';
@@ -127,7 +118,7 @@ export const NoticeList = (props: any) => {
 								<TableRow hover key={index} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
 									<TableCell align="center">{index+1}</TableCell>
 									<TableCell align="center">{notice._id}</TableCell>
-									<TableCell align="center" colSpan={2}>{notice.noticeContent}</TableCell>
+									<TableCell align="center" colSpan={2}>{notice.noticeTitle}</TableCell>
 									<TableCell align="center">{moment(notice.createdAt).format("DD MMMM, YYYY")}</TableCell>
 									<TableCell align="center">
 										<IconButton onClick={(e:any)=>deleteTargetNoticeHandler(notice._id)}>

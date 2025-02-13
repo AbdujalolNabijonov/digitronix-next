@@ -12,7 +12,8 @@ import { GET_NOTICES } from "@/apollo/user/query"
 import { socketVar } from "@/apollo/store"
 import { sweetConfirmAlert, sweetErrorHandling, sweetTopSmallSuccessAlert } from "@/libs/sweetAlert"
 import { Messages } from "@/libs/config"
-import { DELETE_NOTICE } from "@/apollo/user/mutation"
+import { DELETE_NOTICE_BY_ADMIN } from "@/apollo/user/mutation"
+import { NoticeGroup } from "@/libs/enum/notice.enum"
 
 const NoticeAdmin: NextPage = ({ initialProps, ...props }: any) => {
     //Initializations
@@ -25,7 +26,9 @@ const NoticeAdmin: NextPage = ({ initialProps, ...props }: any) => {
         event: "message",
         data: {
             event: "notice",
-            noticeContent: ""
+            noticeContent: "",
+            noticeTitle: "",
+            noticeGroup: NoticeGroup.ADMIN
         }
     })
     const socket = useReactiveVar(socketVar)
@@ -39,7 +42,7 @@ const NoticeAdmin: NextPage = ({ initialProps, ...props }: any) => {
             setTotalNotices(getAllNotices.metaCounter[0].total)
         }
     })
-    const [deleteNotice] = useMutation(DELETE_NOTICE)
+    const [deleteTargetNotice] = useMutation(DELETE_NOTICE_BY_ADMIN)
 
     useEffect(() => {
         getNoticesRefetch({ input: noticeInquiry })
@@ -48,7 +51,7 @@ const NoticeAdmin: NextPage = ({ initialProps, ...props }: any) => {
     //Handlers
     const submitDataHandler = async () => {
         try {
-            if (!noticeMsg.data.noticeContent) throw new Error(Messages.error1);
+            if (!noticeMsg.data.noticeContent || !noticeMsg.data.noticeTitle) throw new Error(Messages.error1);
             socket.send(JSON.stringify(noticeMsg))
             await sweetTopSmallSuccessAlert("Sucecessfully sent!")
             setToggleModal(false)
@@ -65,7 +68,7 @@ const NoticeAdmin: NextPage = ({ initialProps, ...props }: any) => {
             if (!targetId) throw new Error(Messages.error1);
             const confirm = await sweetConfirmAlert("Do you want to delete notice?")
             if (confirm) {
-                await deleteNotice({ variables: { input: targetId } })
+                await deleteTargetNotice({ variables: { input: targetId } })
                 await sweetTopSmallSuccessAlert("Sucecessfully deleted!")
                 setRebuild(new Date())
             }
@@ -82,19 +85,22 @@ const NoticeAdmin: NextPage = ({ initialProps, ...props }: any) => {
     }
     const changePageHandler = async (event: unknown, newPage: number) => {
         noticeInquiry.page = newPage + 1;
-        // await getAllMembersReftch({ input: membersInquiry })
         setNoticeInquiry({ ...noticeInquiry });
     };
 
     const changeRowsPerPageHandler = async (event: React.ChangeEvent<HTMLInputElement>) => {
         noticeInquiry.limit = parseInt(event.target.value, 10);
         noticeInquiry.page = 1;
-        // await getAllMembersReftch({ input: membersInquiry })
         setNoticeInquiry({ ...noticeInquiry });
     };
 
     const handleNoticeHandler = (e: any) => {
         noticeMsg.data.noticeContent = e.target.value;
+        setNoticeMsg({ ...noticeMsg })
+    }
+
+    const titleChooseHandler = (e: any) => {
+        noticeMsg.data.noticeTitle = e.target.value;
         setNoticeMsg({ ...noticeMsg })
     }
 
@@ -122,6 +128,10 @@ const NoticeAdmin: NextPage = ({ initialProps, ...props }: any) => {
                             <Stack className="faq-main">
                                 <Box className="title">ADD NOTICE</Box>
                                 <CssVarsProvider>
+                                    <JoyForm>
+                                        <FormLabel className="add-label">Title</FormLabel>
+                                        <Input placeholder="Type in here…" variant="outlined" onChange={titleChooseHandler} />
+                                    </JoyForm>
                                     <Stack>
                                         <JoyForm>
                                             <FormLabel className="add-label">Text</FormLabel>
@@ -177,7 +187,9 @@ NoticeAdmin.defaultProps = {
         page: 1,
         limit: 10,
         sort: "createdAt",
-        search: {}
+        search: {
+            noticeGroup: NoticeGroup.ADMIN
+        }
     }
 }
 

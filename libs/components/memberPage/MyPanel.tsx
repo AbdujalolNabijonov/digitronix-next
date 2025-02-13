@@ -2,7 +2,7 @@ import { Avatar, Box, Button, Divider, Stack } from "@mui/material"
 import { useReactiveVar } from '@apollo/client'
 import { userVar } from "@/apollo/store"
 import { Messages, serverApi } from "@/libs/config"
-import { Binoculars, BookBookmark, Crosshair, Heart, Phone, SignOut, User, UserCircleGear, UserCirclePlus } from "phosphor-react"
+import { BellRinging, Binoculars, BookBookmark, Crosshair, Heart, Phone, SignOut, User, UserCircleGear, UserCirclePlus } from "phosphor-react"
 import { MemberType } from "@/libs/types/member/member"
 import { BookOpenText, Devices, PlusSquare, UserCircleCheck } from "@phosphor-icons/react"
 import { useRouter } from "next/router"
@@ -38,7 +38,19 @@ const MyPanel = (props: any) => {
                     </Stack>
                     <Stack className="account-item">
                         <Crosshair />
-                        <Box className="account-type">{user.memberType}</Box>
+                        {
+                            user.memberType === MemberType.ADMIN ? (
+                                <Button
+                                    variant="contained"
+                                    color="secondary"
+                                    sx={{ color: "white" }}
+                                    onClick={() => {router.push("/_admin") }}
+                                >{user.memberType}</Button>
+                            ) : (
+                                <Box className="account-type">{user.memberType}</Box>
+                            )
+                        }
+
                     </Stack>
                 </Stack>
             </Stack>
@@ -72,6 +84,13 @@ const MyPanel = (props: any) => {
                         onClick={(e: any) => navigateSelectHandler(e, '1')}
                     >
                         My Favorities
+                    </Button>
+                    <Button
+                        startIcon={<BellRinging />}
+                        className={stage === "10" ? "tab-list-item on" : "tab-list-item off"}
+                        onClick={(e: any) => navigateSelectHandler(e, '10')}
+                    >
+                        Notifications
                     </Button>
                     <Button
                         startIcon={<Binoculars />}

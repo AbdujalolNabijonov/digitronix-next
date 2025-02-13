@@ -2,43 +2,61 @@ import { useEffect, useState } from "react";
 import {
     AccountCircleRounded,
     Chair,
+    ErrorOutline,
     Keyboard,
     LaptopOutlined,
     Logout,
     Mouse,
     NotificationsOutlined,
 } from "@mui/icons-material";
-import { Avatar, Box, Button, IconButton, Menu, MenuItem, MenuProps, Stack } from "@mui/material";
+import { Avatar, Badge, Box, Button, Divider, IconButton, Menu, MenuItem, MenuProps, Stack } from "@mui/material";
 import { NextPage } from "next";
 import Link from "next/link";
 import { CaretDown, DesktopTower, X } from "phosphor-react"
 import { alpha, styled } from '@mui/material/styles';
 import { useRouter } from "next/router";
-import { useReactiveVar } from "@apollo/client";
-import { userVar } from "@/apollo/store";
+import { useMutation, useQuery, useReactiveVar } from "@apollo/client";
+import { socketVar, userVar } from "@/apollo/store";
 import { getJwtToken, logOut, updateUserInfo } from "@/libs/auth";
-import { sweetTopSuccessAlert } from "@/libs/sweetAlert";
+import { sweetConfirmAlert, sweetErrorAlert, sweetErrorHandling, sweetTopSmallSuccessAlert, sweetTopSuccessAlert } from "@/libs/sweetAlert";
 import { Messages, serverApi } from "@/libs/config";
 import { ProductCategory } from "@/libs/enum/product.enum";
 import { Direction } from "@/libs/enum/common.enum";
-import { GraphicsCard } from "@phosphor-icons/react";
+import { BookOpenText, GraphicsCard } from "@phosphor-icons/react";
+import TabContext from "@mui/lab/TabContext";
+import TabPanel from "@mui/lab/TabPanel";
+import { GET_NOTICES } from "@/apollo/user/query";
+import { NoticeGroup } from "@/libs/enum/notice.enum";
+import { Notice } from "@/libs/types/notice/notice";
+import moment from "moment";
+import { DELETE_NOTICES } from "@/apollo/user/mutation";
+import useDeviceDetect from "@/libs/hooks/useDeviceDetector";
 
 
 const Navbar: NextPage = (props: any) => {
     //Initialization
-    const device: string = "desktop";
+    const device = useDeviceDetect()
+    const user = useReactiveVar(userVar)
     const [anchorEl2, setAnchorEl2] = useState(null);
-    const [lang, setLang] = useState<string | null>("en");
     const drop = Boolean(anchorEl2);
+    const [lang, setLang] = useState<string | null>("en");
     const [scrolled, setScrolled] = useState<boolean>(false);
     const [anchorEl3, setAnchorEl3] = useState(null)
     const [anchorEl4, setAnchorEl4] = useState(null)
     const [logoutAnchor, setLogoutAnchor] = useState<null | HTMLElement>(null);
+    const [notices, setNotices] = useState([])
+    const [totalNotices, setTotalNotices] = useState(0)
+    const [searchObj, setSearchObj] = useState({
+        page: 1,
+        limit: 10,
+        search: {}
+    })
+    const [rebuild, setRebuild] = useState(new Date())
     const logoutOpen = Boolean(logoutAnchor)
     const drop2 = Boolean(anchorEl3)
-    const user = useReactiveVar(userVar)
-
     const router = useRouter()
+    const socket = useReactiveVar(socketVar)
+
     //LifeCircle
     useEffect(() => {
         const scrolledWindow = () => {
@@ -55,8 +73,29 @@ const Navbar: NextPage = (props: any) => {
         if (jwtToken) {
             updateUserInfo(jwtToken)
         }
-        console.log(user)
     }, [])
+
+    const { refetch: getNoticesRefetch } = useQuery(GET_NOTICES, {
+        fetchPolicy: "cache-and-network",
+        notifyOnNetworkStatusChange: true,
+        variables: {
+            input: searchObj
+        },
+        onCompleted: ({ getAllNotices }) => {
+            setNotices(getAllNotices.list)
+            setTotalNotices(getAllNotices.metaCounter[0].total)
+        }
+    })
+
+    const [deleteNotices] = useMutation(DELETE_NOTICES)
+
+    useEffect(() => {
+        getNoticesRefetch({ input: searchObj }).then()
+        socket.onmessage = ({ data }) => {
+            getNoticesRefetch({ input: searchObj }).then()
+        }
+    }, [socket, rebuild])
+
 
     //Customize Style
     const StyledMenu = styled((props: MenuProps) => (
@@ -98,6 +137,23 @@ const Navbar: NextPage = (props: any) => {
     }));
 
     //Handlers
+    const handleViewNotices = async () => {
+        try {
+            if (notices && notices.length > 0) {
+                const confirm = await sweetConfirmAlert("Do you want to mark as read all?")
+                if (confirm) {
+                    await deleteNotices()
+                    await sweetTopSmallSuccessAlert("You read all notices")
+                    setAnchorEl4(null)
+                    setRebuild(new Date())
+                    setTotalNotices(0)
+                }
+            }
+        } catch (err: any) {
+            console.log(`Error: handleViewNotices, ${err.message}`)
+            await sweetErrorHandling(err)
+        }
+    }
     const langClick = (e: any) => {
         setAnchorEl2(e.currentTarget)
     }
@@ -311,7 +367,7 @@ const Navbar: NextPage = (props: any) => {
                                 {
                                     !user._id ? null : (
                                         <Link
-                                            href={"/memberPage?stage=7"}
+                                            href={"/member?stage=7"}
                                             className={router.pathname.includes("memberPage") ? "active" : ""}
                                         >
                                             My Profile
@@ -366,7 +422,7 @@ const Navbar: NextPage = (props: any) => {
                                 <Stack className="notify">
                                     <Button className="notify-ring" onClick={toggleNotificationHandler}>
                                         <NotificationsOutlined style={{ fontSize: "25px", fill: "white" }} />
-                                        <div className="badge">7</div>
+                                        <div className="badge">{totalNotices}</div>
                                     </Button>
                                     <Menu
                                         anchorEl={anchorEl4}
@@ -375,83 +431,60 @@ const Navbar: NextPage = (props: any) => {
                                         className="notify-box"
                                     >
                                         <Stack direction={"row"} alignItems={"center"} justifyContent={"space-between"}>
-                                            <Box className="title">Notifications (10)</Box>
+                                            <Box className="title">Notifications ({totalNotices})</Box>
                                             <IconButton onClick={toggleNotificationHandler}><X /></IconButton>
                                         </Stack>
-                                        <Stack className="notify-body">
-                                            <MenuItem>
-                                                <Stack className="notify-item">
-                                                    <Stack className="notify-owner">
-                                                        <Avatar />
-                                                        <Stack className="action">
-                                                            <Box >William commented in Something</Box>
-                                                            <Box >2 hours ago</Box>
-                                                        </Stack>
-                                                    </Stack>
-                                                    <Stack className={"notify-content"}>
-                                                        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
-                                                    </Stack>
-                                                </Stack>
-                                            </MenuItem>
-                                            <MenuItem>
-                                                <Stack className="notify-item">
-                                                    <Stack className="notify-owner">
-                                                        <Avatar />
-                                                        <Stack className="action">
-                                                            <Box >William commented in Something</Box>
-                                                            <Box >2 hours ago</Box>
-                                                        </Stack>
-                                                    </Stack>
-                                                    <Stack className={"notify-content"}>
-                                                        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
-                                                    </Stack>
-                                                </Stack>
-                                            </MenuItem>
-                                            <MenuItem>
-                                                <Stack className="notify-item">
-                                                    <Stack className="notify-owner">
-                                                        <Avatar />
-                                                        <Stack className="action">
-                                                            <Box >William commented in Something</Box>
-                                                            <Box >2 hours ago</Box>
-                                                        </Stack>
-                                                    </Stack>
-                                                    <Stack className={"notify-content"}>
-                                                        Loream is word copy platform
-                                                    </Stack>
-                                                </Stack>
-                                            </MenuItem>
-                                            <MenuItem>
-                                                <Stack className="notify-item">
-                                                    <Stack className="notify-owner">
-                                                        <Avatar />
-                                                        <Stack className="action">
-                                                            <Box >William commented in Something</Box>
-                                                            <Box >2 hours ago</Box>
-                                                        </Stack>
-                                                    </Stack>
-                                                    <Stack className={"notify-content"}>
-                                                        Loream is word copy platform
-                                                    </Stack>
-                                                </Stack>
-                                            </MenuItem>
-                                            <MenuItem>
-                                                <Stack className="notify-item">
-                                                    <Stack className="notify-owner">
-                                                        <Avatar />
-                                                        <Stack className="action">
-                                                            <Box >William commented in Something</Box>
-                                                            <Box >2 hours ago</Box>
-                                                        </Stack>
-                                                    </Stack>
-                                                    <Stack className={"notify-content"}>
-                                                        Loream is word copy platform
-                                                    </Stack>
-                                                </Stack>
-                                            </MenuItem>
+                                        <Divider sx={{ borderBottomColor: "black" }} />
+                                        <Stack flexDirection={"row"} justifyContent={"end"} padding={"0 10px"}>
+                                            <IconButton onClick={handleViewNotices}>
+                                                <BookOpenText size={32} color={'black'} />
+                                            </IconButton>
                                         </Stack>
-                                        <Stack flexDirection={"row"} justifyContent={"end"} sx={{ padding: "10px" }}>
-                                            <Link href={""}>view notifications</Link>
+                                        <Stack className="notify-body">
+                                            {
+                                                notices && notices.length > 0 ? notices.map((notice: Notice, index: number) => {
+                                                    const imagePath = notice?.memberData?.memberImage ? `${serverApi}/${notice.memberData?.memberImage}` : "/img/profile/noUser.jpg"
+                                                    return (
+                                                        <MenuItem key={index}>
+                                                            <Stack className="notify-item">
+                                                                <Stack className="notify-owner">
+                                                                    <Avatar src={imagePath} />
+                                                                    <Stack className="action">
+                                                                        <Box >{notice.noticeTitle} by {notice.memberData.memberType}</Box>
+                                                                        <Box >{moment(notice.createdAt).format("HH:mm, DD MMMM")}</Box>
+                                                                    </Stack>
+                                                                </Stack>
+                                                                <Stack className={"notify-content"}>
+                                                                    {notice.noticeContent}
+                                                                </Stack>
+                                                            </Stack>
+                                                        </MenuItem>
+                                                    )
+                                                }) : (
+                                                    <Stack
+                                                        alignItems={"center"}
+                                                        style={{ fontSize: "24px", color: "black" }}
+                                                        gap={"10px"}
+                                                    >
+                                                        <ErrorOutline fontSize="large" />
+                                                        <div>No notices found!</div>
+                                                    </Stack>
+                                                )
+                                            }
+                                        </Stack>
+                                        <Stack>
+                                            <Button
+                                                variant="contained"
+                                                color="warning"
+                                                sx={{
+                                                    borderRadius: 0,
+                                                    color: 'white',
+                                                    marginTop: "20px",
+                                                    padding: "10px 0",
+                                                    fontWeight: "500",
+                                                    fontSize:"16px"
+                                                }}
+                                            >View All</Button>
                                         </Stack>
                                     </Menu>
                                 </Stack>
@@ -462,7 +495,6 @@ const Navbar: NextPage = (props: any) => {
                                         onClick={langClick}
                                         endIcon={<CaretDown size={14} color="#616161" weight="fill" />}
                                     >
-
                                         <img
                                             className="img-flag"
                                             src="/img/flag/langen.png"

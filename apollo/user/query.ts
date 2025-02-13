@@ -714,14 +714,44 @@ export const GET_TARGET_FAQS = gql`
 
 //NOTICE
 export const GET_NOTICES = gql`
-    query GetAllNotices($input:NoticeInquiry!) {
+query GetAllNotices($input: NoticeInquiry!) {
     getAllNotices(input: $input) {
         list {
             _id
+            noticeTitle
             noticeContent
             memberId
             createdAt
             updatedAt
+            memberData {
+                _id
+                memberFullName
+                memberEmail
+                memberStatus
+                memberType
+                memberAuthType
+                memberPhone
+                memberNick
+                memberPassword
+                memberImage
+                memberAddress
+                memberDesc
+                memberProducts
+                memberArticles
+                memberFollowers
+                memberFollowings
+                memberPoints
+                memberLikes
+                memberViews
+                memberComments
+                memberRank
+                memberWarnings
+                memberBlocks
+                accessToken
+                deletedAt
+                createdAt
+                updatedAt
+            }
         }
         metaCounter {
             total
