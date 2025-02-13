@@ -16,10 +16,12 @@ import { GraphicsCard } from "@phosphor-icons/react"
 import { useRouter } from "next/router"
 import { LIKE_TARGET_PRODUCT } from "@/apollo/user/mutation"
 import { sweetErrorHandling, sweetTopSmallSuccessAlert } from "@/libs/sweetAlert"
-import { userVar } from "@/apollo/store"
+import { socketVar, userVar } from "@/apollo/store"
+import { NoticeGroup } from "@/libs/enum/notice.enum"
 
 const SortProduct: NextPage = ({ initialProps, ...props }: any) => {
     //Initialization
+    const socket = useReactiveVar(socketVar)
     const [type, setType] = useState<string>(ProductCategory.LAPTOP);
     const [sort, setSort] = useState<string>(ProductSort.LIKES)
     const [scroll, setScroll] = useState<boolean>(false)
@@ -74,6 +76,19 @@ const SortProduct: NextPage = ({ initialProps, ...props }: any) => {
             console.log(`ERROR: handleLikeTargetProduct, ${err.message}`)
             await sweetErrorHandling(err)
         }
+    }
+    const noticeHandler = (productName: string, noticeTargetId: any) => {
+        const messageInput = {
+            event: "message",
+            data: {
+                event: "notice",
+                noticeGroup: NoticeGroup.PRODUCT,
+                noticeTitle: `Product Liked`,
+                noticeTargetId: noticeTargetId,
+                noticeContent: `${user.memberNick} liked product named ${productName}`
+            }
+        }
+        socket.send(JSON.stringify(messageInput))
     }
     return (
         <>
@@ -141,7 +156,7 @@ const SortProduct: NextPage = ({ initialProps, ...props }: any) => {
                         </Stack>
                         <Stack className="target-products">
                             {getTargetProductsLoading ? <Box sx={{ alignSelf: "center" }}><CircularProgress size={"3rem"} /></Box> :
-                                targetProducts && targetProducts.length>0 ? (
+                                targetProducts && targetProducts.length > 0 ? (
                                     <Swiper
                                         slidesPerView={3}
                                         spaceBetween={30}
@@ -215,7 +230,14 @@ const SortProduct: NextPage = ({ initialProps, ...props }: any) => {
                                                                     {product.productViews}
                                                                 </Stack>
                                                                 <Stack direction={"row"} gap={"5px"} alignItems={'center'}>
-                                                                    <IconButton onClick={(e) => { handleLikeTargetProduct(e, product._id) }}>
+                                                                    <IconButton onClick={(e) => {
+                                                                        e.stopPropagation();
+                                                                        handleLikeTargetProduct(e, product._id)
+                                                                        //@ts-ignore
+                                                                        if (!product.meLiked[0]?.myFavorite) {
+                                                                            noticeHandler(product.productName, product.memberData?._id)
+                                                                        }
+                                                                    }}>
                                                                         <ThumbUpAltRounded sx={product.meLiked && product.meLiked[0]?.myFavorite ? { fill: "#F44336" } : { fill: "black" }} />
                                                                     </IconButton>
                                                                     {product.productLikes}

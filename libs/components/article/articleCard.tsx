@@ -4,6 +4,9 @@ import { ThumbUpAltRounded, VisibilityOutlined } from "@mui/icons-material"
 import { Avatar, Box, Divider, IconButton, Stack } from "@mui/material"
 import moment from "moment"
 import { useRouter } from "next/router"
+import { useReactiveVar } from "@apollo/client"
+import { socketVar, userVar } from "@/apollo/store"
+import { NoticeGroup } from "@/libs/enum/notice.enum"
 
 interface ArticleProps {
     article: Article;
@@ -12,9 +15,25 @@ interface ArticleProps {
 
 const ArticleCard = (props: ArticleProps) => {
     const { article, likeTargetArticle } = props
+    const socket = useReactiveVar(socketVar)
+    const user = useReactiveVar(userVar)
     const router = useRouter()
     const articleImage = article.articleImage ? `${serverApi}/${article.articleImage}` : "/img/profile/image.svg"
     const memberImage = article.memberData.memberImage ? `${serverApi}/${article.memberData.memberImage}` : "/img/profile/noUser.jpg"
+
+    const noticeLikeHandler = (articleTitle: any, noticeTargetId: any) => {
+        const messageInput = {
+            event: "message",
+            data: {
+                event: "notice",
+                noticeGroup: NoticeGroup.ARTICLE,
+                noticeTitle: `Article is liked`,
+                noticeTargetId: noticeTargetId,
+                noticeContent: `${user.memberNick} liked article titled ${articleTitle}`
+            }
+        }
+        socket.send(JSON.stringify(messageInput))
+    }
     return (
         <Stack className="article-card">
             <Stack className="article-image" onClick={() => {
@@ -44,7 +63,12 @@ const ArticleCard = (props: ArticleProps) => {
                         <div>{article.articleViews}</div>
                     </Stack>
                     <Stack direction={"row"} alignItems={"center"}>
-                        <IconButton onClick={(e: any) => { likeTargetArticle(e, article._id) }}>
+                        <IconButton onClick={(e: any) => {
+                            likeTargetArticle(e, article._id)
+                            if (!article.meLiked[0]?.myFavorite) {
+                                noticeLikeHandler(article.articleTitle, article.memberData._id)
+                            }
+                        }}>
                             <ThumbUpAltRounded sx={article.meLiked[0]?.myFavorite ? { fill: "#f44336" } : { fill: "gray" }} />
                         </IconButton>
                         <div>{article.articleLikes}</div>

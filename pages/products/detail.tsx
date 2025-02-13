@@ -21,16 +21,17 @@ import { CommentGroup } from "@/libs/enum/comment.enum"
 import { Comment } from "@/libs/types/comment/comment"
 import { sweetErrorHandling, sweetTopSmallSuccessAlert } from "@/libs/sweetAlert"
 import { CREATE_COMMENT, LIKE_TARGET_COMMENT, LIKE_TARGET_PRODUCT } from "@/apollo/user/mutation"
-import { userVar } from "@/apollo/store"
+import { socketVar, userVar } from "@/apollo/store"
 import 'react-medium-image-zoom/dist/styles.css'
-import moment from "moment"
 import CommentWrite from "@/libs/components/others/commentWrite"
 import CommentRead from "@/libs/components/others/commentRead"
+import { NoticeGroup } from "@/libs/enum/notice.enum"
 
 
 const Detail: NextPage = () => {
     const router = useRouter()
     const productId = router.query.id;
+    const socket = useReactiveVar(socketVar)
     const [thumbsSwiper, setThumbsSwiper] = useState<SwiperType | null>(null);
     const [product, setProduct] = useState<Product | null>(null)
     const [relatedProducts, setRelatedProducts] = useState([])
@@ -52,7 +53,6 @@ const Detail: NextPage = () => {
     const [totalComments, setTotalComments] = useState(0)
     const user = useReactiveVar(userVar)
     //LifeCircle
-
     const { refetch: getProductRefetch } = useQuery(GET_PRODUCT, {
         fetchPolicy: "cache-and-network",
         variables: {
@@ -122,6 +122,7 @@ const Detail: NextPage = () => {
             if (!rating) throw new Error(Messages.comment_err2)
             commentObj.commentRank = rating
             await createComment({ variables: { input: commentObj } })
+            noticeCommentHandler(product?.productName, user._id)
             await sweetTopSmallSuccessAlert(Messages.success2);
             commentObj.commentRank = 0;
             commentObj.commentContent = ""
@@ -152,6 +153,34 @@ const Detail: NextPage = () => {
             console.log(`Error: likeTargetProductHandler, ${err.message}`);
             await sweetErrorHandling(err)
         }
+    }
+
+    const noticeLikeHandler = (productName: string, noticeTargetId: any) => {
+        const messageInput = {
+            event: "message",
+            data: {
+                event: "notice",
+                noticeGroup: NoticeGroup.PRODUCT,
+                noticeTitle: `Product Liked`,
+                noticeTargetId: noticeTargetId,
+                noticeContent: `${user.memberNick} liked product named ${productName}`
+            }
+        }
+        socket.send(JSON.stringify(messageInput))
+    }
+
+    const noticeCommentHandler = (productName: any, noticeTargetId: any) => {
+        const messageInput = {
+            event: "message",
+            data: {
+                event: "notice",
+                noticeGroup: NoticeGroup.PRODUCT,
+                noticeTitle: `Product is commented`,
+                noticeTargetId: noticeTargetId,
+                noticeContent: `${user.memberNick} commented product named ${productName}`
+            }
+        }
+        socket.send(JSON.stringify(messageInput))
     }
 
     const likeTargetCommentHandler = async (e: any, commentId: string) => {
@@ -252,7 +281,13 @@ const Detail: NextPage = () => {
                                     <Box>{product?.productViews}</Box>
                                 </Stack>
                                 <Stack direction={"row"} alignItems={"center"} gap={"10px"}>
-                                    <IconButton onClick={(e) => likeTargetProductHandler(e, product?._id)}>
+                                    <IconButton onClick={(e) => {
+                                        likeTargetProductHandler(e, product?._id)
+                                        //@ts-ignore
+                                        if (product && !product?.meLiked[0]?.myFavorite) {
+                                            noticeLikeHandler(product?.productName, user._id)
+                                        }
+                                    }}>
                                         <ThumbUpAltRounded sx={product?.meLiked && product.meLiked[0]?.myFavorite ? { fill: "#f44336" } : { fill: "gray" }} />
                                     </IconButton>
                                     <Box>{product?.productLikes}</Box>

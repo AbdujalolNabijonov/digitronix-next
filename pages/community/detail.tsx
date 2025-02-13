@@ -15,9 +15,10 @@ import { CommentGroup } from "@/libs/enum/comment.enum"
 import CommentRead from "@/libs/components/others/commentRead"
 import { Comment } from "@/libs/types/comment/comment"
 import { sweetErrorHandling, sweetTopSmallSuccessAlert } from "@/libs/sweetAlert"
-import { userVar } from "@/apollo/store"
+import { socketVar, userVar } from "@/apollo/store"
 import { CREATE_COMMENT, LIKE_TARGET_ARTICLE, LIKE_TARGET_COMMENT } from "@/apollo/user/mutation"
 import { ArticleCategory } from "@/libs/enum/article.enum"
+import { NoticeGroup } from "@/libs/enum/notice.enum"
 
 const ArticleDetail = (props: any) => {
     const router = useRouter()
@@ -25,6 +26,7 @@ const ArticleDetail = (props: any) => {
     const articleId = query.id;
     const articleCategory = query.category
     const user = useReactiveVar(userVar)
+    const socket = useReactiveVar(socketVar)
     const [article, setArticle] = useState<Article>()
     const [rating, setRating] = useState<number>(0)
     const [totalComments, setTotalComments] = useState<number>(0)
@@ -81,6 +83,7 @@ const ArticleDetail = (props: any) => {
             if (!rating) throw new Error(Messages.comment_err2)
             commentObj.commentRank = rating
             await createComment({ variables: { input: commentObj } })
+            noticeCommentHandler(article?.articleTitle, user._id)
             await sweetTopSmallSuccessAlert(Messages.success2);
             commentObj.commentRank = 0;
             commentObj.commentContent = ""
@@ -90,6 +93,32 @@ const ArticleDetail = (props: any) => {
             console.log(`Error: submitCommentHandler, ${err.message}`)
             await sweetErrorHandling(err)
         }
+    }
+    const noticeCommentHandler = (articleTitle: any, noticeTargetId: any) => {
+        const messageInput = {
+            event: "message",
+            data: {
+                event: "notice",
+                noticeGroup: NoticeGroup.ARTICLE,
+                noticeTitle: `Article is written a comment`,
+                noticeTargetId: noticeTargetId,
+                noticeContent: `${user.memberNick} wrote a comment to article titled ${articleTitle}`
+            }
+        }
+        socket.send(JSON.stringify(messageInput))
+    }
+    const noticeLikeHandler = (articleTitle: any, noticeTargetId: any) => {
+        const messageInput = {
+            event: "message",
+            data: {
+                event: "notice",
+                noticeGroup: NoticeGroup.ARTICLE,
+                noticeTitle: `Article is liked`,
+                noticeTargetId: noticeTargetId,
+                noticeContent: `${user.memberNick} liked article titled ${articleTitle}`
+            }
+        }
+        socket.send(JSON.stringify(messageInput))
     }
     const likeTargetCommentHandler = async (e: any, commentId: string) => {
         try {
@@ -114,7 +143,7 @@ const ArticleDetail = (props: any) => {
             await sweetErrorHandling(err)
         }
     }
-    const navigatePageHandler = ()=>{
+    const navigatePageHandler = () => {
         if (user._id === article?.memberData._id) {
             router.push(`/member?stage=3`)
         } else {
@@ -127,7 +156,7 @@ const ArticleDetail = (props: any) => {
                 <Stack className="article-main">
                     <Stack className="title">
                         <Stack>
-                            <Box>{articleCategory??"".toUpperCase()} BOARD</Box>
+                            <Box>{articleCategory ?? "".toUpperCase()} BOARD</Box>
                             <Box>Express your opinions freely here without content restrictions</Box>
                         </Stack>
                         <Button endIcon={<Edit />}>
@@ -139,7 +168,7 @@ const ArticleDetail = (props: any) => {
                         <Stack className="owner-info">
                             <Stack className="article-owner">
                                 <img src={article?.memberData.memberImage ? `${serverApi}/${article.memberData.memberImage}` : "/img/profile/noUser.jpg"} alt="This is user" />
-                                <Button sx={{color:"white"}} onClick={navigatePageHandler}>{article?.memberData.memberFullName ?? article?.memberData.memberNick}</Button>
+                                <Button sx={{ color: "white" }} onClick={navigatePageHandler}>{article?.memberData.memberFullName ?? article?.memberData.memberNick}</Button>
                                 <Divider orientation="vertical" variant="middle" flexItem />
                                 <Box>{moment(article?.createdAt).format("YYYY-MM-DD HH:mm")}</Box>
                             </Stack>
@@ -151,7 +180,12 @@ const ArticleDetail = (props: any) => {
                                     <div>{article?.articleViews}</div>
                                 </Stack>
                                 <Stack direction={"row"} alignItems={"center"}>
-                                    <IconButton onClick={likeTargetArticleHandler}>
+                                    <IconButton onClick={() => {
+                                        likeTargetArticleHandler()
+                                        if (!article?.meLiked[0]?.myFavorite) {
+                                            noticeLikeHandler(article?.articleTitle, article?.memberData._id)
+                                        }
+                                    }}>
                                         <ThumbUpAltRounded sx={article?.meLiked[0]?.myFavorite ? { fill: "#f44336" } : { fill: "white" }} />
                                     </IconButton>
                                     <div>{article?.articleLikes}</div>

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Box, Button, Stack } from "@mui/material";
 import SmileRatingSelect from "./smileRateSelect";
+import {useReactiveVar} from "@apollo/client"
 
 interface CommentWriteProps {
     setRating: any;
@@ -21,7 +22,7 @@ const CommunityCommentWrite = (props: CommentWriteProps) => {
                 <SmileRatingSelect setValue={setRating} />
             </Stack>
             <Stack className="comment-input">
-                <input type="text" placeholder="Leave a comment" maxLength={200} onChange={(e: any) => {
+                <input value={commentObj.commentContent} type="text" placeholder="Leave a comment" maxLength={200} onChange={(e: any) => {
                     if (value.length <= 200) {
                         setValue(e.target.value)
                         commentObj.commentContent = e.target.value;

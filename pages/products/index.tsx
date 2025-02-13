@@ -22,14 +22,16 @@ import { Direction } from "@/libs/enum/common.enum";
 import { ProductCategory } from "@/libs/enum/product.enum";
 import { LIKE_TARGET_PRODUCT } from "@/apollo/user/mutation";
 import { sweetErrorHandling } from "@/libs/sweetAlert";
-import { userVar } from "@/apollo/store";
+import { socketVar, userVar } from "@/apollo/store";
 import { Messages } from "@/libs/config";
+import { NoticeGroup } from "@/libs/enum/notice.enum";
 
 
 
 const Products: NextPage = ({ initialProps, ...props }: any) => {
     const device = useDeviceDetect()
     const router = useRouter();
+    const socket = useReactiveVar(socketVar)
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [productsInquiry, setProductsInquiry] = useState<ProductsInquiry>(initialProps);
     const [products, setProducts] = useState<Product[]>([])
@@ -93,7 +95,7 @@ const Products: NextPage = ({ initialProps, ...props }: any) => {
             e.stopPropagation()
             if (!user._id) throw new Error(Messages.error2);
             if (!productId) throw new Error(Messages.error1);
-            await likeTargetProduct({ variables: { input: productId } });
+            const pro =await likeTargetProduct({ variables: { input: productId } });
             await getAllProductsRefetch({ input: productsInquiry })
         } catch (err: any) {
             console.log(`Error: likeTargetProductHandler, ${err.message}`);
@@ -150,7 +152,7 @@ const Products: NextPage = ({ initialProps, ...props }: any) => {
                                         >
                                             {
                                                 products.map((product: Product) =>
-                                                    <ProductCard product={product} key={product._id} likeTargetProductHandler={likeTargetProductHandler}/>
+                                                    <ProductCard product={product} key={product._id} likeTargetProductHandler={likeTargetProductHandler} />
                                                 )
                                             }
                                         </Stack>
