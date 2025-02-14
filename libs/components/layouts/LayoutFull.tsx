@@ -4,6 +4,7 @@ import { NextPage } from "next";
 import Head from "next/head";
 import Navbar from "../navbar/navbarFull";
 import Footer from "../footer/footer";
+import CommunityChat from "../others/communityChat";
 
 const LayoutFull = (Component: NextPage) => {
     return (props: any) => {
@@ -31,6 +32,7 @@ const LayoutFull = (Component: NextPage) => {
                         <Box className="main">
                             <Component {...props} />
                         </Box>
+                        <CommunityChat/>
                         <Box className="footer">
                             <Footer />
                         </Box>

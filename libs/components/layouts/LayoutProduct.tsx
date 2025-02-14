@@ -1,11 +1,12 @@
 import { NextPage } from "next";
 import Navbar from "../navbar/navbarFull";
 import Head from "next/head";
-import { Stack } from "@mui/material";
+import { Box, Stack } from "@mui/material";
 import Footer from "../footer/footer";
 import ProductBanner from "../products/productBanner";
 import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import CommunityChat from "../others/communityChat";
 
 const LayoutProduct = (Component: NextPage) => {
     return (props: any) => {
@@ -21,12 +22,13 @@ const LayoutProduct = (Component: NextPage) => {
                     </Head>
                     <Stack flexDirection={"column"} className="mobile-wrapper">
                         <Navbar {...props} />
-                        <div className="main">
+                        <Box className="main">
                             <Component {...props} />
-                        </div>
-                        <div className="footer">
+                        </Box>
+                        <CommunityChat />
+                        <Box className="footer">
                             <Footer />
-                        </div>
+                        </Box>
                     </Stack>
                 </>
             )

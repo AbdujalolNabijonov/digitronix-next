@@ -38,6 +38,7 @@ import { Notice } from "@/libs/types/notice/notice";
 import moment from "moment";
 import { DELETE_NOTICES } from "@/apollo/user/mutation";
 import useDeviceDetect from "@/libs/hooks/useDeviceDetector";
+import { RippleBadge } from "@/scss/MaterialTheme/styled";
 
 
 const Navbar: NextPage = (props: any) => {
@@ -429,7 +430,7 @@ const Navbar: NextPage = (props: any) => {
                                 <Stack className="notify">
                                     <Button className="notify-ring" onClick={toggleNotificationHandler}>
                                         <NotificationsOutlined style={{ fontSize: "25px", fill: "white" }} />
-                                        <div className="badge">{totalNotices}</div>
+                                        {totalNotices?(<RippleBadge badgeContent={totalNotices} style={{height:"20px", color:'red'}}/>):null}
                                     </Button>
                                     <Menu
                                         anchorEl={anchorEl4}

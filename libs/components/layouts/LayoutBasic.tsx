@@ -1,9 +1,10 @@
-import { Stack } from "@mui/material";
+import { Box, Stack } from "@mui/material";
 import { NextPage } from "next";
 import Head from "next/head";
 import Navbar from "../navbar/navbarFull";
 import Footer from "../footer/footer";
 import Banner from "../general/basicBanner";
+import CommunityChat from "../others/communityChat";
 
 const LayoutBasic = (Component: NextPage) => {
     return (props: any) => {
@@ -32,12 +33,13 @@ const LayoutBasic = (Component: NextPage) => {
                     <Stack className="pc-wrapper">
                         <Navbar {...props} />
                         <Banner />
-                        <div className="main">
+                        <Box className="main">
                             <Component {...props} />
-                        </div>
-                        <div className="footer">
+                        </Box>
+                        <CommunityChat />
+                        <Box className="footer">
                             <Footer />
-                        </div>
+                        </Box>
                     </Stack>
                 </>
             )
