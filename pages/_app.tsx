@@ -10,8 +10,9 @@ import "swiper/swiper-bundle.css";
 import "../scss/pc/main.scss"
 import "../scss/app.scss";
 import ContextProvider from "@/libs/components/context/ContextProvider";
+import { appWithTranslation } from 'next-i18next';
 
-export default function App({ Component, pageProps }: AppProps) {
+function App({ Component, pageProps }: AppProps) {
   //@ts-ignore
   const [theme, setTheme] = useState(createTheme(light));
   const client = useApollo(pageProps.initialApolloState);
@@ -29,3 +30,5 @@ export default function App({ Component, pageProps }: AppProps) {
     </>
   );
 }
+
+export default appWithTranslation(App)

@@ -1,12 +1,11 @@
 import { serverApi } from "@/libs/config"
 import { Article } from "@/libs/types/article/article"
-import { AccountCircleRounded, ArrowOutward } from "@mui/icons-material"
-import { Avatar, Box, Stack } from "@mui/material"
+import {  ArrowOutward } from "@mui/icons-material"
+import { Avatar, Box, IconButton, Stack } from "@mui/material"
 import moment from "moment"
-import Link from "next/link"
 
-const VerticalCard = (props: { article: Article }) => {
-    const { article } = props
+const VerticalCard = (props: { article: Article, navigatetoPageHandler:any }) => {
+    const { article,navigatetoPageHandler } = props
     const memberImage = article.memberData?.memberImage ? `${serverApi}/${article.memberData?.memberImage}` : "/img/profile/defaultUser.svg"
     const articleImage = article.articleImage ? `${serverApi}/${article.articleImage}` : ""
     return <>
@@ -20,9 +19,6 @@ const VerticalCard = (props: { article: Article }) => {
                 </div>
                 <div className="title">
                     {article.articleTitle}
-                </div>
-                <div className="context">
-                    {article.articleContext}
                 </div>
             </Box>
             <Stack
@@ -44,9 +40,9 @@ const VerticalCard = (props: { article: Article }) => {
                         <div className="date">{moment(article.createdAt).format("YYYY-MM-DD")}</div>
                     </div>
                 </Stack>
-                <Box className={"link"}>
+                <IconButton className={"link"} onClick={(e:any)=>navigatetoPageHandler(article._id, article.articleCategory)}>
                     <ArrowOutward />
-                </Box>
+                </IconButton>
             </Stack>
         </Stack>
     </>

@@ -6,7 +6,12 @@ import { useState } from "react";
 import TabPanel from "@mui/lab/TabPanel";
 import Notice from "@/libs/components/cs/Notice";
 import Faq from "@/libs/components/cs/Faq";
-
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+export const getStaticProps = async ({ locale }: any) => ({
+    props: {
+        ...(await serverSideTranslations(locale, ['common'])),
+    },
+});
 const Cs: NextPage = (props: any) => {
     const [value, setValue] = useState("1")
     const handleChangevalue = (e: any, value: string) => {

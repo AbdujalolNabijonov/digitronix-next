@@ -6,7 +6,11 @@ import { logIn, signUp } from "@/libs/auth";
 import { useRouter } from "next/router";
 import { Messages } from "@/libs/config";
 import { RemoveRedEyeRounded, VisibilityOff, VisibilityOffRounded } from "@mui/icons-material";
-
+export const getStaticProps = async ({ locale }: any) => ({
+    props: {
+        ...(await serverSideTranslations(locale, ['common'])),
+    },
+});
 const Join = () => {
     //Initilizations
     const [input, setInput] = useState({ nick: '', phone: '', email: '', type: "USER", password: '', })

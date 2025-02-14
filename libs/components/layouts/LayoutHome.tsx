@@ -5,10 +5,11 @@ import Navbar from "../navbar/navbarFull";
 import Footer from "../footer/footer";
 import HomeBanner from "../three/homeBanner";
 import CommunityChat from "../others/communityChat";
+import useDeviceDetect from "@/libs/hooks/useDeviceDetector";
 
 const LayoutHome = (Component: NextPage) => {
     return (props: any) => {
-        const device: string = "desktop";
+        const device: string = useDeviceDetect();
         if (device === "mobile") {
             return (
                 <>

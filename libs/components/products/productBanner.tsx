@@ -1,13 +1,14 @@
-import React, { useCallback, useEffect, useState } from "react"
+import React, {  useEffect, useState } from "react"
 import { Box, CircularProgress, Stack } from "@mui/material"
-import { NextPage } from "next"
 import { useRouter } from "next/router"
+import { useTranslation } from "react-i18next"
+
 
 const ProductBanner = (props: any) => {
     //Initialization
     const router = useRouter()
     const [category, setCategory] = useState<string>("")
-
+    const {t, i18n}=useTranslation("common")
     //LifeCircle
     useEffect(() => {
         const queryInput = router.query.input ? JSON.parse(router.query?.input as string) : '';
@@ -25,8 +26,8 @@ const ProductBanner = (props: any) => {
                     </video>
                     <Box className="container">
                         <Stack className={"info"}>
-                            <div>Product</div>
-                            <div className="subtitle">{category}</div>
+                            <div>{t("Product")}</div>
+                            <div className="subtitle">{t(category)}</div>
                         </Stack>
                     </Box>
                 </Box>

@@ -5,14 +5,15 @@ import HorizontalCard from "./horizontalCard"
 import { useState } from "react"
 import { useQuery } from '@apollo/client'
 import { GET_ALL_ARTICLES } from "@/apollo/user/query"
-import { Direction } from "@/libs/enum/common.enum"
 import { ArticleCategory } from "@/libs/enum/article.enum"
 import { Article } from "@/libs/types/article/article"
+import { useRouter } from "next/router"
 
 
 const CommunityArticle: NextPage = ({ initialProps, ...props }: any) => {
     const [newsArticles, setNewsArticles] = useState([]);
     const [humarArticles, setHumarArticles] = useState([]);
+    const router = useRouter()
 
     const { } = useQuery(GET_ALL_ARTICLES, {
         fetchPolicy: "cache-and-network",
@@ -40,6 +41,9 @@ const CommunityArticle: NextPage = ({ initialProps, ...props }: any) => {
             setNewsArticles(getAllArticles.list)
         }
     })
+    const navigatetoPageHandler = (articleId: string, articleCategory: string) => {
+        router.push(`/community/detail?id=${articleId}&category=${articleCategory}`)
+    }
     return (
         <>
             <Stack className="community-article">
@@ -51,14 +55,14 @@ const CommunityArticle: NextPage = ({ initialProps, ...props }: any) => {
                         <Stack direction={"row"} gap="20px">
                             {
                                 newsArticles.map((article: Article, index: number) => (
-                                    <VerticalCard key={index} article={article} />
+                                    <VerticalCard key={index} article={article} navigatetoPageHandler={navigatetoPageHandler} />
                                 ))
                             }
                         </Stack>
                         <Stack gap={"10px"}>
                             {
                                 humarArticles.map((article: Article, index: number) => (
-                                    <HorizontalCard key={index} article={article} />
+                                    <HorizontalCard key={index} article={article} navigatetoPageHandler={navigatetoPageHandler} />
                                 ))
                             }
                         </Stack>

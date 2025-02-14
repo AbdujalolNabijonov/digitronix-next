@@ -7,11 +7,12 @@ import ProductBanner from "../products/productBanner";
 import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import CommunityChat from "../others/communityChat";
+import useDeviceDetect from "@/libs/hooks/useDeviceDetector";
 
 const LayoutProduct = (Component: NextPage) => {
     return (props: any) => {
         //Initialization
-        const device: string = "desktop"
+        const device: string = useDeviceDetect()
 
         if (device === "mobile") {
             return (

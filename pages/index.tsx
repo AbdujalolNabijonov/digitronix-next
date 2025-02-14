@@ -8,7 +8,13 @@ import SearchPc from "@/libs/components/home/searchPc";
 import MonitorAds from "@/libs/components/home/monitorAds";
 import Event from "@/libs/components/home/event";
 import CommunityArticle from "@/libs/components/home/communityArticle";
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
+export const getStaticProps = async ({ locale }: any) => ({
+  props: {
+    ...(await serverSideTranslations(locale, ['common'])),
+  },
+});
 const Home: NextPage = (props: any) => {
   const device: string = "desktop"
   if (device === "mobile") {

@@ -19,7 +19,12 @@ import { socketVar, userVar } from "@/apollo/store"
 import { CREATE_COMMENT, LIKE_TARGET_ARTICLE, LIKE_TARGET_COMMENT } from "@/apollo/user/mutation"
 import { ArticleCategory } from "@/libs/enum/article.enum"
 import { NoticeGroup } from "@/libs/enum/notice.enum"
-
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+export const getStaticProps = async ({ locale }: any) => ({
+    props: {
+        ...(await serverSideTranslations(locale, ['common'])),
+    },
+});
 const ArticleDetail = (props: any) => {
     const router = useRouter()
     const { query } = useRouter()

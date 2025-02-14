@@ -26,7 +26,12 @@ import 'react-medium-image-zoom/dist/styles.css'
 import CommentWrite from "@/libs/components/others/commentWrite"
 import CommentRead from "@/libs/components/others/commentRead"
 import { NoticeGroup } from "@/libs/enum/notice.enum"
-
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+export const getStaticProps = async ({ locale }: any) => ({
+    props: {
+        ...(await serverSideTranslations(locale, ['common'])),
+    },
+});
 
 const Detail: NextPage = () => {
     const router = useRouter()

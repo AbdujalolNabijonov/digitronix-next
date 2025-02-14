@@ -24,8 +24,12 @@ import { LIKE_TARGET_PRODUCT } from "@/apollo/user/mutation";
 import { sweetErrorHandling } from "@/libs/sweetAlert";
 import { socketVar, userVar } from "@/apollo/store";
 import { Messages } from "@/libs/config";
-import { NoticeGroup } from "@/libs/enum/notice.enum";
-
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+export const getStaticProps = async ({ locale }: any) => ({
+    props: {
+        ...(await serverSideTranslations(locale, ['common'])),
+    },
+});
 
 
 const Products: NextPage = ({ initialProps, ...props }: any) => {

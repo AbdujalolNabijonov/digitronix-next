@@ -19,7 +19,12 @@ import { sweetErrorHandling, sweetTopSmallSuccessAlert } from "@/libs/sweetAlert
 import { socketVar, userVar } from "@/apollo/store"
 import { Messages, serverApi } from "@/libs/config"
 import { NoticeGroup } from "@/libs/enum/notice.enum"
-
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+export const getStaticProps = async ({ locale }: any) => ({
+    props: {
+        ...(await serverSideTranslations(locale, ['common'])),
+    },
+});
 const Detail = (props: any) => {
     const router = useRouter()
     const memberId = router.query.id
@@ -271,6 +276,7 @@ const Detail = (props: any) => {
                             <Stack direction={"row"} alignItems={"center"} gap={"2px"}>
                                 <IconButton onClick={(e) => {
                                     likeTargetHandler(e, member?._id as string)
+                                    //@ts-ignore
                                     if (!member?.meLiked[0]?.myFavorite) {
                                         noticeLikeHandler(member?._id)
                                     }

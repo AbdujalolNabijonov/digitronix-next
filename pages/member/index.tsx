@@ -19,7 +19,12 @@ import AllProducts from "@/libs/components/memberPage/AllProducts";
 import MyPanel from "@/libs/components/memberPage/MyPanel";
 import OtherPanel from "@/libs/components/memberPage/OtherPanel";
 import Notifications from "@/libs/components/memberPage/Notifications";
-
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+export const getStaticProps = async ({ locale }: any) => ({
+    props: {
+        ...(await serverSideTranslations(locale, ['common'])),
+    },
+});
 const MemberPage: NextPage = (props: any) => {
     const router = useRouter()
     const memberId = router.query.memberId

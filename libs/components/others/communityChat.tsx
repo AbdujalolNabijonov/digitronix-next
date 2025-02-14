@@ -75,7 +75,7 @@ const CommunityChat = () => {
                             {
                                 messages.map((message: any, index: number) => {
                                     const imageMember = message.memberData && message.memberData.memberImage ? `${serverApi}/${message.memberData.memberImage}` : "/img/profile/noUser.jpg"
-                                    if (message.event === "message" && message.memberData._id !== user._id) {
+                                    if (message.event === "message" && message.memberData?._id !== user._id) {
                                         return (
                                             <Stack className="msg-left">
                                                 <Avatar src={imageMember} alt="image" />
@@ -83,27 +83,26 @@ const CommunityChat = () => {
                                                     <Box>
                                                         {message.text}
                                                     </Box>
-                                                    <Box>{moment(new Date()).format("HH:MM")}</Box>
+                                                    <Box>{moment(message.date).format("HH:MM")}</Box>
                                                 </Stack>
                                             </Stack>
                                         )
-                                    } else if (message.event === "message" && message.memberData._id === user._id) {
+                                    } else if (message.event === "message" && message.memberData?._id === user._id) {
                                         return (
                                             <Stack className="msg-left" justifyContent={"end"}>
                                                 <Stack className="msg-item" sx={{ borderRadius: "5px 5px 0px 5px" }}>
                                                     <Box>
                                                         {message.text}
                                                     </Box>
-                                                    <Box>{moment(new Date()).format("HH:MM")}</Box>
+                                                    <Box>{moment(message.date).format("HH:mm")}</Box>
                                                 </Stack>
-                                                <Avatar src={imageMember} alt="image" />
                                             </Stack>
                                         )
                                     } else {
                                         return (
                                             <Stack className="msg-middle" flexDirection={"row"}>
                                                 <Divider sx={{ borderBottomColor: "white", flex: 1 }} />
-                                                <Box>{message.memberData.memberNick} has connected</Box>
+                                                <Box>{message.memberData?.memberNick??"GUEST"} has connected</Box>
                                                 <Divider sx={{ borderBottomColor: "white", flex: 1 }} />
                                             </Stack>
                                         )

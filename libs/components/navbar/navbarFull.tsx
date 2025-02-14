@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import {
     AccountCircleRounded,
     Chair,
@@ -28,7 +28,7 @@ import { useRouter } from "next/router";
 import { useMutation, useQuery, useReactiveVar } from "@apollo/client";
 import { socketVar, userVar } from "@/apollo/store";
 import { getJwtToken, logOut, updateUserInfo } from "@/libs/auth";
-import { sweetConfirmAlert, sweetErrorAlert, sweetErrorHandling, sweetTopSmallSuccessAlert, sweetTopSuccessAlert } from "@/libs/sweetAlert";
+import { sweetConfirmAlert, sweetErrorHandling, sweetTopSmallSuccessAlert, sweetTopSuccessAlert } from "@/libs/sweetAlert";
 import { Messages, serverApi } from "@/libs/config";
 import { ProductCategory } from "@/libs/enum/product.enum";
 import { Direction } from "@/libs/enum/common.enum";
@@ -39,6 +39,7 @@ import moment from "moment";
 import { DELETE_NOTICES } from "@/apollo/user/mutation";
 import useDeviceDetect from "@/libs/hooks/useDeviceDetector";
 import { RippleBadge } from "@/scss/MaterialTheme/styled";
+import { useTranslation } from "next-i18next";
 
 
 const Navbar: NextPage = (props: any) => {
@@ -53,6 +54,7 @@ const Navbar: NextPage = (props: any) => {
     const [anchorEl4, setAnchorEl4] = useState(null)
     const [logoutAnchor, setLogoutAnchor] = useState<null | HTMLElement>(null);
     const [notices, setNotices] = useState([])
+    const { t, i18n } = useTranslation('common');
     const [totalNotices, setTotalNotices] = useState(0)
     const [searchObj, setSearchObj] = useState({
         page: 1,
@@ -64,6 +66,15 @@ const Navbar: NextPage = (props: any) => {
     const drop2 = Boolean(anchorEl3)
     const router = useRouter()
     const socket = useReactiveVar(socketVar)
+
+    useEffect(() => {
+        if (localStorage.getItem('locale') === null) {
+            localStorage.setItem('locale', 'en');
+            setLang('en');
+        } else {
+            setLang(localStorage.getItem('locale'));
+        }
+    }, [router]);
 
     //LifeCircle
     useEffect(() => {
@@ -169,9 +180,15 @@ const Navbar: NextPage = (props: any) => {
         setAnchorEl2(null)
     }
 
-    const choiceLang = (event: any) => {
-        setLang(event.target.id)
-    }
+    const choiceLang = useCallback(
+        async (e: any) => {
+            setLang(e.target.id);
+            localStorage.setItem('locale', e.target.id);
+            setAnchorEl2(null);
+            await router.push(router.asPath, router.asPath, { locale: e.target.id });
+        },
+        [router],
+    )
 
     const openProductList = (event: any) => {
         setAnchorEl3(event.currentTarget)
@@ -196,26 +213,26 @@ const Navbar: NextPage = (props: any) => {
         return (
             <>
                 <Link href={"/"}>
-                    Home
+                    {t('Home')}
                 </Link>
                 <Link href={"/products"}>
-                    Products
+                    {t('Products')}
                 </Link>
                 <Link href={"/agents"}>
-                    Retailers
+                    {t('Retailers')}
                 </Link>
                 <Link href={"/community"}>
-                    Society
+                    {t('Society')}
                 </Link>
                 {
                     !user._id ? null : (
                         <Link href={"/memberPage"}>
-                            My Profile
+                            {t('My Profile')}
                         </Link>
                     )
                 }
                 <Link href={"/cs"}>
-                    CS
+                    {t('CS')}
                 </Link>
             </>
         )
@@ -259,7 +276,7 @@ const Navbar: NextPage = (props: any) => {
                                     }}
                                     className={router.pathname === "/" ? "active" : ""}
                                 >
-                                    Home
+                                    {t('Home')}
                                 </Link>
                                 <a
                                     className={router.pathname.includes('/products') ? "active" : ""}
@@ -269,7 +286,7 @@ const Navbar: NextPage = (props: any) => {
                                         className="product-btn"
                                         onClick={openProductList}
                                     >
-                                        Products
+                                        {t('Products')}
                                     </Button>
                                     <Menu
                                         open={drop2}
@@ -294,7 +311,7 @@ const Navbar: NextPage = (props: any) => {
                                                     setAnchorEl3(null)
                                                 }}>
                                                     <LaptopOutlined style={{ fontSize: "50px" }} />
-                                                    <div>Laptops</div>
+                                                    <div>{t('Laptops')}</div>
                                                 </Stack>
                                             </MenuItem>
                                             <MenuItem className="list-item">
@@ -306,7 +323,7 @@ const Navbar: NextPage = (props: any) => {
                                                     setAnchorEl3(null)
                                                 }}>
                                                     <DesktopTower size={"50px"} />
-                                                    <div>Desktops</div>
+                                                    <div>{t('Desktops')}</div>
                                                 </Stack>
                                             </MenuItem>
                                             <MenuItem className="list-item">
@@ -318,7 +335,7 @@ const Navbar: NextPage = (props: any) => {
                                                     setAnchorEl3(null)
                                                 }}>
                                                     <GraphicsCard size={"50px"} />
-                                                    <div>Graphics</div>
+                                                    <div>{t('Graphics')}</div>
                                                 </Stack>
                                             </MenuItem>
                                             <MenuItem className="list-item">
@@ -330,7 +347,7 @@ const Navbar: NextPage = (props: any) => {
                                                     setAnchorEl3(null)
                                                 }}>
                                                     <Mouse style={{ fontSize: "50px" }} />
-                                                    <div>Mice</div>
+                                                    <div>{t('Mice')}</div>
                                                 </Stack>
                                             </MenuItem>
                                             <MenuItem className="list-item">
@@ -342,7 +359,7 @@ const Navbar: NextPage = (props: any) => {
                                                     setAnchorEl3(null)
                                                 }}>
                                                     <Keyboard style={{ fontSize: "50px" }} />
-                                                    <div>Keyboard</div>
+                                                    <div>{t('Keyboard')}</div>
                                                 </Stack>
                                             </MenuItem>
                                             <MenuItem className="list-item">
@@ -354,7 +371,7 @@ const Navbar: NextPage = (props: any) => {
                                                     setAnchorEl3(null)
                                                 }}>
                                                     <Chair style={{ fontSize: "50px" }} />
-                                                    <div>Chair</div>
+                                                    <div>{t('Chair')}</div>
                                                 </Stack>
                                             </MenuItem>
                                         </Stack>
@@ -364,13 +381,13 @@ const Navbar: NextPage = (props: any) => {
                                     href={"/retailers"}
                                     className={router.pathname.includes("/retailers") ? "active" : ""}
                                 >
-                                    Retailers
+                                    {t('Retailers')}
                                 </Link>
                                 <Link
                                     href={"/community"}
                                     className={router.pathname.includes("/community") ? "active" : ""}
                                 >
-                                    Society
+                                    {t('Society')}
                                 </Link>
                                 {
                                     !user._id ? null : (
@@ -378,7 +395,7 @@ const Navbar: NextPage = (props: any) => {
                                             href={"/member?stage=7"}
                                             className={router.pathname.includes("memberPage") ? "active" : ""}
                                         >
-                                            My Profile
+                                            {t('My Profile')}
                                         </Link>
                                     )
                                 }
@@ -386,7 +403,7 @@ const Navbar: NextPage = (props: any) => {
                                     href={"/cs"}
                                     className={router.pathname === "/cs" ? "active" : ""}
                                 >
-                                    CS
+                                    {t('CS')}
                                 </Link>
                             </Stack>
                             <Stack
@@ -414,7 +431,7 @@ const Navbar: NextPage = (props: any) => {
                                                     >
                                                         <MenuItem onClick={handleLogOut}>
                                                             <Logout fontSize="small" style={{ color: 'blue', marginRight: '10px' }} />
-                                                            Logout
+                                                            {t('Logout')}
                                                         </MenuItem>
                                                     </Menu>
                                                 </>
@@ -423,14 +440,14 @@ const Navbar: NextPage = (props: any) => {
                                             (
                                                 <Button className={"register-btn"} onClick={() => router.push("/account/join")}>
                                                     <AccountCircleRounded style={{ fontSize: "45px", fill: "white" }} />
-                                                    <p>Login / Register</p>
+                                                    <p>{t('Login / Register')}</p>
                                                 </Button>
                                             )}
                                 </div>
                                 <Stack className="notify">
                                     <Button className="notify-ring" onClick={toggleNotificationHandler}>
                                         <NotificationsOutlined style={{ fontSize: "25px", fill: "white" }} />
-                                        {totalNotices?(<RippleBadge badgeContent={totalNotices} style={{height:"20px", color:'red'}}/>):null}
+                                        {totalNotices ? (<RippleBadge badgeContent={totalNotices} style={{ height: "20px", color: 'red' }} />) : null}
                                     </Button>
                                     <Menu
                                         anchorEl={anchorEl4}
@@ -492,7 +509,7 @@ const Navbar: NextPage = (props: any) => {
                                                     fontWeight: "500",
                                                     fontSize: "16px"
                                                 }}
-                                                onClick={()=>{
+                                                onClick={() => {
                                                     setAnchorEl4(null)
                                                     router.push("/member?stage=10")
                                                 }}
@@ -509,7 +526,7 @@ const Navbar: NextPage = (props: any) => {
                                     >
                                         <img
                                             className="img-flag"
-                                            src="/img/flag/langen.png"
+                                            src={lang === "en" ? "/img/flag/langen.png" : lang === "ru" ? "/img/flag/langru.png" : "/img/flag/langkr.png"}
                                             alt="this is chosen flag"
                                         />
                                     </Button>

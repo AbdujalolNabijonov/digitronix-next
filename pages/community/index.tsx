@@ -16,7 +16,12 @@ import { LIKE_TARGET_ARTICLE } from "@/apollo/user/mutation";
 import { sweetErrorHandling } from "@/libs/sweetAlert";
 import { userVar } from "@/apollo/store";
 import { Messages } from "@/libs/config";
-
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+export const getStaticProps = async ({ locale }: any) => ({
+    props: {
+        ...(await serverSideTranslations(locale, ['common'])),
+    },
+});
 
 const Community: NextPage = ({ initialProps, ...props }: any) => {
     const router = useRouter()

@@ -22,7 +22,12 @@ import { sweetErrorHandling } from "@/libs/sweetAlert";
 import { socketVar, userVar } from "@/apollo/store";
 import { LIKE_TARGET_MEMBER } from "@/apollo/user/mutation";
 import { NoticeGroup } from "@/libs/enum/notice.enum";
-
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+export const getStaticProps = async ({ locale }: any) => ({
+    props: {
+        ...(await serverSideTranslations(locale, ['common'])),
+    },
+});
 const Retailers: NextPage = (props: any) => {
     const [totalRetailers, setTotalRetailer] = useState<number>(10)
     const [retailers, setRetailers] = useState<Member[]>([])
@@ -170,6 +175,7 @@ const Retailers: NextPage = (props: any) => {
                                                     <Stack direction={"row"} alignItems={"center"} gap={"2px"}>
                                                         <IconButton onClick={(e) => { 
                                                             likeTargetHandler(e, member._id) 
+                                                            //@ts-ignore
                                                             if(!member.meLiked[0]?.myFavorite){
                                                                 noticeHandler(member._id)
                                                             }
