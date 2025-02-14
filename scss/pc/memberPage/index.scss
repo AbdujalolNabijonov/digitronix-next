@@ -59,21 +59,21 @@
                   background-color: #d77b3d;
                 }
               }
-              .notify-items{
+              .notify-items {
                 margin-top: 20px;
-                .notify-item{
+                .notify-item {
                   color: white;
                   background-color: #484646;
                   margin: 0;
-                  img{
+                  img {
                     height: 40px;
                     width: 40px;
                     border-radius: 5px;
                   }
-                  .notify-item-title{
+                  .notify-item-title {
                     font-size: 16px;
                   }
-                  .notify-item-body{
+                  .notify-item-body {
                     background-color: #595656;
                     margin: 20px;
                   }
@@ -478,6 +478,14 @@
                 font-weight: 600;
               }
             }
+          }
+          .follow-btn {
+            background-color: #f4705b;
+            color: white;
+            font-weight: 600;
+            padding: 10px;
+            margin: 10px 0;
+            letter-spacing: 1px;
           }
           .account-manage {
             margin: 15px 0;

@@ -16,13 +16,15 @@ import CommentWrite from "@/libs/components/others/commentWrite"
 import { CommentGroup } from "@/libs/enum/comment.enum"
 import { CREATE_COMMENT, LIKE_TARGET_COMMENT, LIKE_TARGET_MEMBER, LIKE_TARGET_PRODUCT } from "@/apollo/user/mutation"
 import { sweetErrorHandling, sweetTopSmallSuccessAlert } from "@/libs/sweetAlert"
-import { userVar } from "@/apollo/store"
+import { socketVar, userVar } from "@/apollo/store"
 import { Messages, serverApi } from "@/libs/config"
+import { NoticeGroup } from "@/libs/enum/notice.enum"
 
 const Detail = (props: any) => {
     const router = useRouter()
     const memberId = router.query.id
     const user = useReactiveVar(userVar)
+    const socket = useReactiveVar(socketVar)
     const [member, setMember] = useState<Member>()
     const [products, setProducts] = useState<Product[]>([])
     const [comments, setComments] = useState<Comment[]>([])
@@ -133,10 +135,24 @@ const Detail = (props: any) => {
             commentObj.commentContent = ""
             setCommentObj({ ...commentObj })
             await getAllCommentsRefetch({ input: searchCommentObj })
+            noticeCommentHandler(member?._id)
         } catch (err: any) {
             console.log(`ERROR: submitCommentHandler: ${err.message}`)
             await sweetErrorHandling(err)
         }
+    }
+    const noticeCommentHandler = (noticeTargetId: any) => {
+        const messageInput = {
+            event: "message",
+            data: {
+                event: "notice",
+                noticeGroup: NoticeGroup.MEMBER,
+                noticeTitle: `Member wrote a comment`,
+                noticeTargetId: noticeTargetId,
+                noticeContent: `${user.memberNick} wrote a comment to you`
+            }
+        }
+        socket.send(JSON.stringify(messageInput))
     }
     const likeTargetHandler = async (e: any, memberId: string) => {
         try {
@@ -150,6 +166,19 @@ const Detail = (props: any) => {
             console.log(`ERROR: likeTargetHandler: ${err}`);
             await sweetErrorHandling(err)
         }
+    }
+    const noticeLikeHandler = (noticeTargetId: any) => {
+        const messageInput = {
+            event: "message",
+            data: {
+                event: "notice",
+                noticeGroup: NoticeGroup.MEMBER,
+                noticeTitle: `Member Liked`,
+                noticeTargetId: noticeTargetId,
+                noticeContent: `${user.memberNick} liked You`
+            }
+        }
+        socket.send(JSON.stringify(messageInput))
     }
     const paginationSelectHandler = (e: any, page: number) => {
         searchObj.page = page
@@ -240,7 +269,12 @@ const Detail = (props: any) => {
                                 <Box>{member?.memberViews}</Box>
                             </Stack>
                             <Stack direction={"row"} alignItems={"center"} gap={"2px"}>
-                                <IconButton onClick={(e) => { likeTargetHandler(e, member?._id as string) }}>
+                                <IconButton onClick={(e) => {
+                                    likeTargetHandler(e, member?._id as string)
+                                    if (!member?.meLiked[0]?.myFavorite) {
+                                        noticeLikeHandler(member?._id)
+                                    }
+                                }}>
                                     <ThumbUpAltRounded sx={member?.meLiked && member?.meLiked[0]?.myFavorite ? { fill: "#f44336" } : { fill: "gray" }} />
                                 </IconButton>
                                 <Box>{member?.memberLikes}</Box>

@@ -4,16 +4,19 @@ import { useRouter } from "next/router"
 import { MinusCircle, PlusCircle, Trash } from "phosphor-react"
 import { useMutation, useQuery, useReactiveVar } from "@apollo/client"
 import { GET_FOLLOWERS } from "@/apollo/user/query"
-import { userVar } from "@/apollo/store"
+import { socketVar, userVar } from "@/apollo/store"
 import { FollowerObj } from "@/libs/types/follow/follow.object"
 import { Messages, serverApi } from "@/libs/config"
 import { sweetErrorHandling, sweetTopSmallSuccessAlert } from "@/libs/sweetAlert"
 import { DELETE_FOLLOWER, SUBSCRIBE_MEMBER, UNSUBSCRIBE_MEMBER } from "@/apollo/user/mutation"
 import { ErrorOutline } from "@mui/icons-material"
+import { useGlobal } from "@/libs/hooks/useGlobal"
+import { NoticeGroup } from "@/libs/enum/notice.enum"
 
 const Follower = (props: any) => {
     const router = useRouter()
     const user = useReactiveVar(userVar)
+    const socket = useReactiveVar(socketVar)
     const memberId = router.query.memberId;
     const [followers, setFollowers] = useState<FollowerObj[]>([])
     const [totalFollowers, setTotalFollowers] = useState<number>(0)
@@ -25,6 +28,7 @@ const Follower = (props: any) => {
             memberId: memberId ?? user._id
         }
     })
+    const { rebuild } = useGlobal()
 
     const { refetch: getFollowersRefetch } = useQuery(GET_FOLLOWERS, {
         fetchPolicy: "network-only",
@@ -37,11 +41,25 @@ const Follower = (props: any) => {
     })
     useEffect(() => {
         getFollowersRefetch({ input: searchObj }).then()
-    }, [searchObj])
+    }, [searchObj, rebuild])
 
     const [subscribeMember] = useMutation(SUBSCRIBE_MEMBER)
     const [deleteFollower] = useMutation(DELETE_FOLLOWER)
     const [unsubscribeMember] = useMutation(UNSUBSCRIBE_MEMBER)
+
+    const noticeHandler = (noticeTargetId: any) => {
+        const messageInput = {
+            event: "message",
+            data: {
+                event: "notice",
+                noticeGroup: NoticeGroup.FOLLOW,
+                noticeTitle: `User Followed you`,
+                noticeTargetId: noticeTargetId,
+                noticeContent: `${user.memberNick} started follow you.`
+            }
+        }
+        socket.send(JSON.stringify(messageInput))
+    }
 
     const subscribeMemberHandler = async (e: any, memberId: any) => {
         try {
@@ -50,6 +68,7 @@ const Follower = (props: any) => {
             await subscribeMember({ variables: { input: memberId } });
             await sweetTopSmallSuccessAlert(Messages.success3);
             await getFollowersRefetch({ input: searchObj })
+            noticeHandler(memberId)
         } catch (err: any) {
             console.log(`ERROR: subscribeMemberHandler, ${err.message}`);
             await sweetErrorHandling(err)
@@ -85,9 +104,9 @@ const Follower = (props: any) => {
     }
     const navigatePageHandler = (e: any, id: any) => {
         if (user._id === id) {
-            router.push(`/memberPage?stage=3`)
+            router.push(`/member?stage=3`)
         } else {
-            router.push(`/memberPage?stage=3&memberId=${id}`)
+            router.push(`/member?stage=3&memberId=${id}`)
         }
     }
     return (

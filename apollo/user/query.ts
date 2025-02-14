@@ -67,6 +67,11 @@ export const GET_MEMBER = gql`
             likeTargetId
             myFavorite
         }
+        meFollowed {
+            followingId
+            followerId
+            myFollowing
+        }
     }
 }
 `

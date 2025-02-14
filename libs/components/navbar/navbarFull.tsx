@@ -9,7 +9,17 @@ import {
     Mouse,
     NotificationsOutlined,
 } from "@mui/icons-material";
-import { Avatar, Badge, Box, Button, Divider, IconButton, Menu, MenuItem, MenuProps, Stack } from "@mui/material";
+import {
+    Avatar,
+    Box,
+    Button,
+    Divider,
+    IconButton,
+    Menu,
+    MenuItem,
+    MenuProps,
+    Stack
+} from "@mui/material";
 import { NextPage } from "next";
 import Link from "next/link";
 import { CaretDown, DesktopTower, X } from "phosphor-react"
@@ -23,10 +33,7 @@ import { Messages, serverApi } from "@/libs/config";
 import { ProductCategory } from "@/libs/enum/product.enum";
 import { Direction } from "@/libs/enum/common.enum";
 import { BookOpenText, GraphicsCard } from "@phosphor-icons/react";
-import TabContext from "@mui/lab/TabContext";
-import TabPanel from "@mui/lab/TabPanel";
 import { GET_NOTICES } from "@/apollo/user/query";
-import { NoticeGroup } from "@/libs/enum/notice.enum";
 import { Notice } from "@/libs/types/notice/notice";
 import moment from "moment";
 import { DELETE_NOTICES } from "@/apollo/user/mutation";
@@ -482,7 +489,11 @@ const Navbar: NextPage = (props: any) => {
                                                     marginTop: "20px",
                                                     padding: "10px 0",
                                                     fontWeight: "500",
-                                                    fontSize:"16px"
+                                                    fontSize: "16px"
+                                                }}
+                                                onClick={()=>{
+                                                    setAnchorEl4(null)
+                                                    router.push("/member?stage=10")
                                                 }}
                                             >View All</Button>
                                         </Stack>

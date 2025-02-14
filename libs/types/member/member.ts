@@ -1,4 +1,5 @@
 import { MeLiked } from "../comment/comment";
+import { MeFollowed } from "../follow/follow.object";
 
 export enum MemberStatus {
     ACTIVE = "ACTIVE",
@@ -41,5 +42,6 @@ export interface Member {
     memberRank: number,
     memberWarnings: number,
     memberBlocks: number,
-    meLiked: MeLiked[]
+    meLiked?: MeLiked[]
+    meFollowed?: MeFollowed[]
 }

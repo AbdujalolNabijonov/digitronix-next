@@ -9,6 +9,7 @@ import "swiper/css/pagination";
 import "swiper/swiper-bundle.css";
 import "../scss/pc/main.scss"
 import "../scss/app.scss";
+import ContextProvider from "@/libs/components/context/ContextProvider";
 
 export default function App({ Component, pageProps }: AppProps) {
   //@ts-ignore
@@ -18,10 +19,12 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <>
       <ApolloProvider client={client}>
-        <ThemeProvider theme={theme}>
-          <CssBaseline />
-          <Component {...pageProps} />
-        </ThemeProvider>
+        <ContextProvider>
+          <ThemeProvider theme={theme}>
+            <CssBaseline />
+            <Component {...pageProps} />
+          </ThemeProvider>
+        </ContextProvider>
       </ApolloProvider>
     </>
   );

@@ -1,7 +1,7 @@
 import { MeLiked } from "../comment/comment";
 import { Member } from "../member/member";
 
-interface MeFollowed {
+export interface MeFollowed {
     followingId: string;
     followerId: string;
     myFollowing: boolean;

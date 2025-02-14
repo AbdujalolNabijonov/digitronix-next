@@ -159,16 +159,18 @@ const ArticleDetail = (props: any) => {
                             <Box>{articleCategory ?? "".toUpperCase()} BOARD</Box>
                             <Box>Express your opinions freely here without content restrictions</Box>
                         </Stack>
-                        <Button endIcon={<Edit />}>
+                        <Button endIcon={<Edit />} onClick={()=>{
+                            router.push(`/member?stage=6`)
+                        }}>
                             Write
                         </Button>
                     </Stack>
                     <Stack className="article">
-                        <Box className="article-title">Brad pitt</Box>
+                        <Box className="article-title">{article?.articleTitle}</Box>
                         <Stack className="owner-info">
                             <Stack className="article-owner">
                                 <img src={article?.memberData.memberImage ? `${serverApi}/${article.memberData.memberImage}` : "/img/profile/noUser.jpg"} alt="This is user" />
-                                <Button sx={{ color: "white" }} onClick={navigatePageHandler}>{article?.memberData.memberFullName ?? article?.memberData.memberNick}</Button>
+                                <Button sx={{ color: "#F44336", fontWeight:"600",letterSpacing:"1px" }} onClick={navigatePageHandler}>{article?.memberData.memberFullName ?? article?.memberData.memberNick}</Button>
                                 <Divider orientation="vertical" variant="middle" flexItem />
                                 <Box>{moment(article?.createdAt).format("YYYY-MM-DD HH:mm")}</Box>
                             </Stack>

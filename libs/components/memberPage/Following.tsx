@@ -5,11 +5,13 @@ import { MinusCircle, PlusCircle } from "phosphor-react"
 import { useMutation, useQuery, useReactiveVar } from "@apollo/client"
 import { FollowingObj } from "@/libs/types/follow/follow.object"
 import { GET_FOLLOWINGS } from "@/apollo/user/query"
-import { userVar } from "@/apollo/store"
+import { socketVar, userVar } from "@/apollo/store"
 import { Messages, serverApi } from "@/libs/config"
 import { sweetErrorHandling, sweetTopSmallSuccessAlert } from "@/libs/sweetAlert"
 import { SUBSCRIBE_MEMBER, UNSUBSCRIBE_MEMBER } from "@/apollo/user/mutation"
 import { ErrorOutline } from "@mui/icons-material"
+import { useGlobal } from "@/libs/hooks/useGlobal"
+import { NoticeGroup } from "@/libs/enum/notice.enum"
 
 const Following = (props: any) => {
     const router = useRouter()
@@ -17,6 +19,8 @@ const Following = (props: any) => {
     const memberId = router.query.memberId;
     const [followings, setFollowings] = useState<FollowingObj[]>([])
     const [totalFollowings, setTotalFollowings] = useState<number>(0)
+    const { rebuild } = useGlobal()
+    const socket = useReactiveVar(socketVar)
     const [searchObj, setSearchObj] = useState({
         page: 1,
         limit: 5,
@@ -38,7 +42,7 @@ const Following = (props: any) => {
     const [subscribeMember] = useMutation(SUBSCRIBE_MEMBER)
     useEffect(() => {
         getFollowingsRefetch({ input: searchObj }).then()
-    }, [searchObj])
+    }, [searchObj, rebuild])
     const [unsubscribeMember] = useMutation(UNSUBSCRIBE_MEMBER)
 
     const handlePaginationChange = (e: any, page: number) => {
@@ -57,6 +61,19 @@ const Following = (props: any) => {
             await sweetErrorHandling(err)
         }
     }
+    const noticeHandler = (noticeTargetId: any) => {
+        const messageInput = {
+            event: "message",
+            data: {
+                event: "notice",
+                noticeGroup: NoticeGroup.FOLLOW,
+                noticeTitle: `User Followed you`,
+                noticeTargetId: noticeTargetId,
+                noticeContent: `${user.memberNick} started follow you.`
+            }
+        }
+        socket.send(JSON.stringify(messageInput))
+    }
     const subscribeMemberHandler = async (e: any, memberId: any) => {
         try {
             if (!user._id) throw new Error(Messages.error2);
@@ -64,6 +81,7 @@ const Following = (props: any) => {
             await subscribeMember({ variables: { input: memberId } });
             await sweetTopSmallSuccessAlert(Messages.success3);
             await getFollowingsRefetch({ input: searchObj })
+            noticeHandler(memberId)
         } catch (err: any) {
             console.log(`ERROR: subscribeMemberHandler, ${err.message}`);
             await sweetErrorHandling(err)
@@ -71,9 +89,9 @@ const Following = (props: any) => {
     }
     const navigatePageHandler = (e: any, id: any) => {
         if (user._id === id) {
-            router.push(`/memberPage?stage=3`)
+            router.push(`/member?stage=3`)
         } else {
-            router.push(`/memberPage?stage=3&memberId=${id}`)
+            router.push(`/member?stage=3&memberId=${id}`)
         }
     }
     return (
@@ -115,7 +133,7 @@ const Following = (props: any) => {
                                                     <TableCell className={"tb-item"} align="center" colSpan={2}  >
                                                         <Stack flexDirection={"row"} alignItems={"center"} gap={"10px"}>
                                                             <Avatar src={memberImage} />
-                                                            <Button onClick={(e:any)=>navigatePageHandler(e, follow.followingData?._id)}>{follow.followingData?.memberFullName ?? follow.followingData?.memberNick}</Button>
+                                                            <Button onClick={(e: any) => navigatePageHandler(e, follow.followingData?._id)}>{follow.followingData?.memberFullName ?? follow.followingData?.memberNick}</Button>
                                                         </Stack>
                                                     </TableCell>
                                                     <TableCell align="center" className={"tb-item"} >
