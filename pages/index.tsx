@@ -9,6 +9,7 @@ import MonitorAds from "@/libs/components/home/monitorAds";
 import Event from "@/libs/components/home/event";
 import CommunityArticle from "@/libs/components/home/communityArticle";
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import LoopBrand from "@/libs/components/home/mrqueen";
 
 export const getStaticProps = async ({ locale }: any) => ({
   props: {
@@ -27,6 +28,7 @@ const Home: NextPage = (props: any) => {
     return (
       <>
         <Stack className={"home-page"}>
+          <LoopBrand />
           <OurBrands />
           <SortProduct />
           <MonitorAds />
