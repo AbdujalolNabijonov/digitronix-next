@@ -3,6 +3,12 @@
 .pc-wrapper {
   .main {
     .home-page {
+      .brand-loop {
+        img {
+          width: 60px;
+          margin: 0px 20px;
+        }
+      }
       .brands {
         background-color: #201f2f;
         padding: 50px 0;
@@ -510,7 +516,7 @@
               justify-content: center;
               align-items: center;
               cursor: pointer;
-              height:500px;
+              height: 500px;
               width: 330px;
               background-repeat: no-repeat;
               background-size: cover;
@@ -541,11 +547,11 @@
                   border-radius: 10px 0 10px 0;
                   transition: opacity 0.3s ease-in-out;
                 }
-                .event-time{
+                .event-time {
                   align-self: end;
                   padding: 5px 10px;
                 }
-                &:hover{
+                &:hover {
                   opacity: 1;
                 }
               }

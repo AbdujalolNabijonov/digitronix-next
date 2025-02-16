@@ -20,7 +20,9 @@ const LayoutBasic = (Component: NextPage) => {
                     <Stack className="mobile-wrapper">
                         <Navbar {...props} />
                         <Component {...props} />
-                        <Footer />
+                        <Box className="footer">
+                            <Footer />
+                        </Box>
                     </Stack>
                 </>
             )

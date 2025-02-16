@@ -1,11 +1,13 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useState } from "react";
 import LayoutBasic from "@/libs/components/layouts/LayoutBasic";
 import { Box, Button, Checkbox, FormControlLabel, FormGroup, Stack } from "@mui/material";
 import { sweetErrorAlert, sweetTopSmallSuccessAlert } from "@/libs/sweetAlert";
 import { logIn, signUp } from "@/libs/auth";
 import { useRouter } from "next/router";
 import { Messages } from "@/libs/config";
-import { RemoveRedEyeRounded, VisibilityOff, VisibilityOffRounded } from "@mui/icons-material";
+import { RemoveRedEyeRounded, VisibilityOffRounded } from "@mui/icons-material";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import useDeviceDetect from "@/libs/hooks/useDeviceDetector";
 export const getStaticProps = async ({ locale }: any) => ({
     props: {
         ...(await serverSideTranslations(locale, ['common'])),
@@ -13,6 +15,7 @@ export const getStaticProps = async ({ locale }: any) => ({
 });
 const Join = () => {
     //Initilizations
+    const device = useDeviceDetect()
     const [input, setInput] = useState({ nick: '', phone: '', email: '', type: "USER", password: '', })
     const [signIn, toggle] = React.useState(true);
     const [checkPassword, setCheckPassword] = React.useState("");
@@ -143,6 +146,13 @@ const Join = () => {
                                     </Stack>
                                 </Stack>
                                 <Button className={"login-btn"} onClick={handleSignUpRequest} >Sign Up</Button>
+                                {
+                                    device === "mobile" ? (
+                                        <Box sx={{marginTop:"20px"}} onClick={() => toggle(true)}>
+                                            I'm already a member
+                                        </Box>
+                                    ) : null
+                                }
                             </Box>
                         </Box>
                         <Box className={"auth_logIn"}>
@@ -170,6 +180,13 @@ const Join = () => {
                                 </div>
                                 <div className="warn">If you forget your password, you can log in with your signed up email address </div>
                                 <Button onClick={handleLogInRequest}>Sign In</Button>
+                                {
+                                    device === "mobile" ? (
+                                        <Box sx={{marginTop:"20px"}} onClick={() => toggle(false)}>
+                                            Create an account
+                                        </Box>
+                                    ) : null
+                                }
                             </Box>
                         </Box>
                         <Box className={"auth_overlay"} style={signIn ? { backgroundImage: 'url("/img/auth/2.png")' } : { transform: "translateX(-100%)", backgroundImage: 'url("/img/auth/1.png")' }}>

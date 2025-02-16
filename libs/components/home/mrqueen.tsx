@@ -12,15 +12,13 @@ const LoopBrand = () => {
         "/img/icons/rog.png",
     ]
     return (
-        <Marquee autoFill style={{ backgroundColor: "aliceblue" }}>
+        <Marquee autoFill style={{ backgroundColor: "aliceblue" }} className="brand-loop">
             {
                 barandImages.map((imagePath: string, index: number) => (
                     <img
                         src={imagePath}
                         key={index}
                         alt="img"
-                        width={"60px"}
-                        style={{ margin: "0px 20px" }}
                     />
                 ))
             }

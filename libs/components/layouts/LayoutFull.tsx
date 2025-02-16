@@ -19,6 +19,9 @@ const LayoutFull = (Component: NextPage) => {
                     <Stack className="mobile-wrapper">
                         <Component {...props} />
                     </Stack>
+                    <Box className="footer">
+                        <Footer />
+                    </Box>
                 </>
             )
         } else if (device === "desktop") {
@@ -32,7 +35,7 @@ const LayoutFull = (Component: NextPage) => {
                         <Box className="main">
                             <Component {...props} />
                         </Box>
-                        <CommunityChat/>
+                        <CommunityChat />
                         <Box className="footer">
                             <Footer />
                         </Box>

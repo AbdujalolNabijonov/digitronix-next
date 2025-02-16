@@ -17,6 +17,7 @@ import { sweetErrorHandling } from "@/libs/sweetAlert";
 import { userVar } from "@/apollo/store";
 import { Messages } from "@/libs/config";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import useDeviceDetect from "@/libs/hooks/useDeviceDetector";
 export const getStaticProps = async ({ locale }: any) => ({
     props: {
         ...(await serverSideTranslations(locale, ['common'])),
@@ -25,6 +26,7 @@ export const getStaticProps = async ({ locale }: any) => ({
 
 const Community: NextPage = ({ initialProps, ...props }: any) => {
     const router = useRouter()
+    const device = useDeviceDetect()
     const user = useReactiveVar(userVar)
     const [value, setValue] = useState<string>("1")
     const [searchObj, setSearchObj] = useState(initialProps)
@@ -95,64 +97,70 @@ const Community: NextPage = ({ initialProps, ...props }: any) => {
             await sweetErrorHandling(err)
         }
     }
-    return (
-        <Stack className="community-page">
-            <Stack className="container">
-                <TabContext value={value}>
-                    <Stack className="tabs" direction={"row"} justifyContent={"end"}>
-                        <TabList onChange={handleChange} aria-label="lab API tabs example">
-                            <Tab className="tab-item" key={"salom"} label="News" value="1" />
-                            <Tab className="tab-item" label="Free" value="2" />
-                            <Tab className="tab-item" label="Humor" value="3" />
-                            <Tab className="tab-item" label="Recommend" value="4" />
-                        </TabList>
-                    </Stack>
-                    <Stack className="info">
-                        <Stack className="title">
-                            <Box>Board Article</Box>
-                            <Box>Express your opinions freely here without content restrictions</Box>
+    if (device === "mobile") {
+        return (
+            <Box>Mobile Version is Developing</Box>
+        )
+    } else {
+        return (
+            <Stack className="community-page">
+                <Stack className="container">
+                    <TabContext value={value}>
+                        <Stack className="tabs" direction={"row"} justifyContent={"end"}>
+                            <TabList onChange={handleChange} aria-label="lab API tabs example">
+                                <Tab className="tab-item" key={"salom"} label="News" value="1" />
+                                <Tab className="tab-item" label="Free" value="2" />
+                                <Tab className="tab-item" label="Humor" value="3" />
+                                <Tab className="tab-item" label="Recommend" value="4" />
+                            </TabList>
                         </Stack>
-                        <Box>
-                            <Button variant={"contained"} endIcon={<Edit />}>Write</Button>
-                        </Box>
-                    </Stack>
-                    <TabPanel value={value} sx={{ height: "500px" }}>
-                        {
-                            false ? (<Stack justifyContent={"center"} flexDirection={"row"}><CircularProgress /></Stack>)
-                                : (articles && articles.length > 1) ? (
-                                    <>
-                                        <Stack className="articles">
-                                            {articles.map((article: Article, index: number) => (
-                                                <ArticleCard likeTargetArticle={likeTargetArticleHandler} article={article} key={index} />
-                                            ))}
+                        <Stack className="info">
+                            <Stack className="title">
+                                <Box>Board Article</Box>
+                                <Box>Express your opinions freely here without content restrictions</Box>
+                            </Stack>
+                            <Box>
+                                <Button variant={"contained"} endIcon={<Edit />}>Write</Button>
+                            </Box>
+                        </Stack>
+                        <TabPanel value={value} sx={{ height: "500px" }}>
+                            {
+                                false ? (<Stack justifyContent={"center"} flexDirection={"row"}><CircularProgress /></Stack>)
+                                    : (articles && articles.length > 1) ? (
+                                        <>
+                                            <Stack className="articles">
+                                                {articles.map((article: Article, index: number) => (
+                                                    <ArticleCard likeTargetArticle={likeTargetArticleHandler} article={article} key={index} />
+                                                ))}
+                                            </Stack>
+                                            <Box className="article-avb">{totalArticles} Articles Avaible</Box>
+                                            <Stack className="pagination-box">
+                                                <Pagination
+                                                    page={searchObj.page}
+                                                    count={Math.ceil(totalArticles / searchObj.limit)}
+                                                    variant="outlined"
+                                                    shape="rounded"
+                                                    color="secondary"
+                                                />
+                                            </Stack>
+                                        </>
+                                    ) : (
+                                        <Stack
+                                            alignItems={"center"}
+                                            style={{ margin: "30px 0", fontSize: "24px", color: "white" }}
+                                            gap={"10px"}
+                                        >
+                                            <ErrorOutline fontSize="large" />
+                                            <div>No products found!</div>
                                         </Stack>
-                                        <Box className="article-avb">{totalArticles} Articles Avaible</Box>
-                                        <Stack className="pagination-box">
-                                            <Pagination
-                                                page={searchObj.page}
-                                                count={Math.ceil(totalArticles / searchObj.limit)}
-                                                variant="outlined"
-                                                shape="rounded"
-                                                color="secondary"
-                                            />
-                                        </Stack>
-                                    </>
-                                ) : (
-                                    <Stack
-                                        alignItems={"center"}
-                                        style={{ margin: "30px 0", fontSize: "24px", color: "white" }}
-                                        gap={"10px"}
-                                    >
-                                        <ErrorOutline fontSize="large" />
-                                        <div>No products found!</div>
-                                    </Stack>
-                                )
-                        }
-                    </TabPanel>
-                </TabContext>
+                                    )
+                            }
+                        </TabPanel>
+                    </TabContext>
+                </Stack>
             </Stack>
-        </Stack>
-    )
+        )
+    }
 }
 Community.defaultProps = {
     initialProps: {

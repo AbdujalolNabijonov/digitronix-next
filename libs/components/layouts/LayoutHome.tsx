@@ -20,7 +20,9 @@ const LayoutHome = (Component: NextPage) => {
                     <Stack className="mobile-wrapper">
                         <Navbar {...props} />
                         <Component {...props} />
-                        <Footer />
+                        <Box className="footer">
+                            <Footer />
+                        </Box>
                     </Stack>
                 </>
             )
@@ -37,7 +39,7 @@ const LayoutHome = (Component: NextPage) => {
                         <Box className="main">
                             <Component {...props} />
                         </Box>
-                        <CommunityChat/>
+                        <CommunityChat />
                         <Box className="footer">
                             <Footer />
                         </Box>

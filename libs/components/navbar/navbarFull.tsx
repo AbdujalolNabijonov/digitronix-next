@@ -40,6 +40,7 @@ import { DELETE_NOTICES } from "@/apollo/user/mutation";
 import useDeviceDetect from "@/libs/hooks/useDeviceDetector";
 import { RippleBadge } from "@/scss/MaterialTheme/styled";
 import { useTranslation } from "next-i18next";
+import MobileBar from "./mobileBar";
 
 
 const Navbar: NextPage = (props: any) => {
@@ -211,30 +212,7 @@ const Navbar: NextPage = (props: any) => {
     }
     if (device === "mobile") {
         return (
-            <>
-                <Link href={"/"}>
-                    {t('Home')}
-                </Link>
-                <Link href={"/products"}>
-                    {t('Products')}
-                </Link>
-                <Link href={"/agents"}>
-                    {t('Retailers')}
-                </Link>
-                <Link href={"/community"}>
-                    {t('Society')}
-                </Link>
-                {
-                    !user._id ? null : (
-                        <Link href={"/memberPage"}>
-                            {t('My Profile')}
-                        </Link>
-                    )
-                }
-                <Link href={"/cs"}>
-                    {t('CS')}
-                </Link>
-            </>
+            <MobileBar />
         )
     } else if (device === "desktop") {
         const imageUrl = user?.memberImage ? `${serverApi}/${user.memberImage}` : "/img/profile/defaultUser.svg"

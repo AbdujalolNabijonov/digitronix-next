@@ -10,6 +10,8 @@ import Event from "@/libs/components/home/event";
 import CommunityArticle from "@/libs/components/home/communityArticle";
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import LoopBrand from "@/libs/components/home/mrqueen";
+import useDeviceDetect from "@/libs/hooks/useDeviceDetector";
+import MobileBanner from "@/libs/components/home/mobileBanner";
 
 export const getStaticProps = async ({ locale }: any) => ({
   props: {
@@ -17,11 +19,17 @@ export const getStaticProps = async ({ locale }: any) => ({
   },
 });
 const Home: NextPage = (props: any) => {
-  const device: string = "desktop"
+  const device: string = useDeviceDetect()
   if (device === "mobile") {
     return (
       <>
-        <h1>This is mobile device</h1>
+        <MobileBanner />
+        <LoopBrand />
+        <OurBrands />
+        <SortProduct />
+        <MonitorAds />
+        <Event />
+        <CommunityArticle />
       </>
     )
   } else if (device === "desktop") {

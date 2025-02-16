@@ -20,6 +20,7 @@ import { CREATE_COMMENT, LIKE_TARGET_ARTICLE, LIKE_TARGET_COMMENT } from "@/apol
 import { ArticleCategory } from "@/libs/enum/article.enum"
 import { NoticeGroup } from "@/libs/enum/notice.enum"
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import useDeviceDetect from "@/libs/hooks/useDeviceDetector"
 export const getStaticProps = async ({ locale }: any) => ({
     props: {
         ...(await serverSideTranslations(locale, ['common'])),
@@ -28,6 +29,7 @@ export const getStaticProps = async ({ locale }: any) => ({
 const ArticleDetail = (props: any) => {
     const router = useRouter()
     const { query } = useRouter()
+    const device = useDeviceDetect()
     const articleId = query.id;
     const articleCategory = query.category
     const user = useReactiveVar(userVar)
@@ -155,157 +157,163 @@ const ArticleDetail = (props: any) => {
             router.push(`/member?stage=3&memberId=${article?.memberData._id}`)
         }
     }
-    return (
-        <Stack className="article-detail">
-            <Stack className="container">
-                <Stack className="article-main">
-                    <Stack className="title">
-                        <Stack>
-                            <Box>{articleCategory ?? "".toUpperCase()} BOARD</Box>
-                            <Box>Express your opinions freely here without content restrictions</Box>
-                        </Stack>
-                        <Button endIcon={<Edit />} onClick={()=>{
-                            router.push(`/member?stage=6`)
-                        }}>
-                            Write
-                        </Button>
-                    </Stack>
-                    <Stack className="article">
-                        <Box className="article-title">{article?.articleTitle}</Box>
-                        <Stack className="owner-info">
-                            <Stack className="article-owner">
-                                <img src={article?.memberData.memberImage ? `${serverApi}/${article.memberData.memberImage}` : "/img/profile/noUser.jpg"} alt="This is user" />
-                                <Button sx={{ color: "#F44336", fontWeight:"600",letterSpacing:"1px" }} onClick={navigatePageHandler}>{article?.memberData.memberFullName ?? article?.memberData.memberNick}</Button>
-                                <Divider orientation="vertical" variant="middle" flexItem />
-                                <Box>{moment(article?.createdAt).format("YYYY-MM-DD HH:mm")}</Box>
+    if (device === "mobile") {
+        return (
+            <Box>Mobile Version is Developing</Box>
+        )
+    } else {
+        return (
+            <Stack className="article-detail">
+                <Stack className="container">
+                    <Stack className="article-main">
+                        <Stack className="title">
+                            <Stack>
+                                <Box>{articleCategory ?? "".toUpperCase()} BOARD</Box>
+                                <Box>Express your opinions freely here without content restrictions</Box>
                             </Stack>
-                            <Stack direction={"row"} gap={"5px"} alignItems={"center"} justifyContent={"end"}>
-                                <Stack direction={"row"} alignItems={"center"} gap={"5px"}>
-                                    <IconButton disableRipple onClick={(e: any) => { e.stopPropagation() }}>
-                                        <VisibilityOutlined sx={{ fill: "white" }} />
-                                    </IconButton>
-                                    <div>{article?.articleViews}</div>
+                            <Button endIcon={<Edit />} onClick={() => {
+                                router.push(`/member?stage=6`)
+                            }}>
+                                Write
+                            </Button>
+                        </Stack>
+                        <Stack className="article">
+                            <Box className="article-title">{article?.articleTitle}</Box>
+                            <Stack className="owner-info">
+                                <Stack className="article-owner">
+                                    <img src={article?.memberData.memberImage ? `${serverApi}/${article.memberData.memberImage}` : "/img/profile/noUser.jpg"} alt="This is user" />
+                                    <Button sx={{ color: "#F44336", fontWeight: "600", letterSpacing: "1px" }} onClick={navigatePageHandler}>{article?.memberData.memberFullName ?? article?.memberData.memberNick}</Button>
+                                    <Divider orientation="vertical" variant="middle" flexItem />
+                                    <Box>{moment(article?.createdAt).format("YYYY-MM-DD HH:mm")}</Box>
                                 </Stack>
-                                <Stack direction={"row"} alignItems={"center"}>
-                                    <IconButton onClick={() => {
-                                        likeTargetArticleHandler()
-                                        if (!article?.meLiked[0]?.myFavorite) {
-                                            noticeLikeHandler(article?.articleTitle, article?.memberData._id)
-                                        }
-                                    }}>
-                                        <ThumbUpAltRounded sx={article?.meLiked[0]?.myFavorite ? { fill: "#f44336" } : { fill: "white" }} />
-                                    </IconButton>
-                                    <div>{article?.articleLikes}</div>
-                                </Stack>
-                                <Stack direction={"row"} alignItems={"center"}>
-                                    <IconButton>
-                                        <ForumRounded sx={{ fill: "white" }} />
-                                    </IconButton>
-                                    <div>{totalComments}</div>
+                                <Stack direction={"row"} gap={"5px"} alignItems={"center"} justifyContent={"end"}>
+                                    <Stack direction={"row"} alignItems={"center"} gap={"5px"}>
+                                        <IconButton disableRipple onClick={(e: any) => { e.stopPropagation() }}>
+                                            <VisibilityOutlined sx={{ fill: "white" }} />
+                                        </IconButton>
+                                        <div>{article?.articleViews}</div>
+                                    </Stack>
+                                    <Stack direction={"row"} alignItems={"center"}>
+                                        <IconButton onClick={() => {
+                                            likeTargetArticleHandler()
+                                            if (!article?.meLiked[0]?.myFavorite) {
+                                                noticeLikeHandler(article?.articleTitle, article?.memberData._id)
+                                            }
+                                        }}>
+                                            <ThumbUpAltRounded sx={article?.meLiked[0]?.myFavorite ? { fill: "#f44336" } : { fill: "white" }} />
+                                        </IconButton>
+                                        <div>{article?.articleLikes}</div>
+                                    </Stack>
+                                    <Stack direction={"row"} alignItems={"center"}>
+                                        <IconButton>
+                                            <ForumRounded sx={{ fill: "white" }} />
+                                        </IconButton>
+                                        <div>{totalComments}</div>
+                                    </Stack>
                                 </Stack>
                             </Stack>
+                            <Divider />
+                            <Stack className="article-context">
+                                <ToastViewerComponent markDown={article?.articleContext} />
+                                <IconButton onClick={likeTargetArticleHandler}><ThumbUpAltRounded sx={article?.meLiked[0]?.myFavorite ? { fill: "#f44336", marginRight: "5px" } : { fill: "white", marginRight: "5px" }} /> {article?.articleLikes}</IconButton>
+                            </Stack>
                         </Stack>
-                        <Divider />
-                        <Stack className="article-context">
-                            <ToastViewerComponent markDown={article?.articleContext} />
-                            <IconButton onClick={likeTargetArticleHandler}><ThumbUpAltRounded sx={article?.meLiked[0]?.myFavorite ? { fill: "#f44336", marginRight: "5px" } : { fill: "white", marginRight: "5px" }} /> {article?.articleLikes}</IconButton>
-                        </Stack>
-                    </Stack>
-                    <Stack className="comment">
-                        {
-                            comments && comments.length > 0 ? (
-                                <CommentRead
-                                    totalComments={totalComments}
-                                    comments={comments}
-                                    commentSearchObj={commentSearchObj}
-                                    setCommentSearchObj={setCommentSearchObj}
-                                    likeTargetCommentHandler={likeTargetCommentHandler}
-                                    getAllCommentsRefetch={getTargetCommentsRefetch}
-                                />
-                            ) : null
-                        }
-                        <CommunityCommentWrite
-                            commentObj={commentObj}
-                            setCommentObj={setCommentObj}
-                            setRating={setRating}
-                            submitCommentHandler={submitCommentHandler}
-                        />
-                    </Stack>
-                </Stack>
-                <Stack className="community-board">
-                    <Box className="title">Community Article</Box>
-                    <List>
-                        <ListItem onClick={() => {
-                            const searchObj = {
-                                page: 1,
-                                limit: 4,
-                                sort: "createdAt",
-                                direction: "ASC",
-                                search: {
-                                    articleCategory: ArticleCategory.NEWS
-                                }
+                        <Stack className="comment">
+                            {
+                                comments && comments.length > 0 ? (
+                                    <CommentRead
+                                        totalComments={totalComments}
+                                        comments={comments}
+                                        commentSearchObj={commentSearchObj}
+                                        setCommentSearchObj={setCommentSearchObj}
+                                        likeTargetCommentHandler={likeTargetCommentHandler}
+                                        getAllCommentsRefetch={getTargetCommentsRefetch}
+                                    />
+                                ) : null
                             }
-                            const link = `/community?input=${JSON.stringify(searchObj)}`
-                            router.push(link, link, { scroll: false })
-                        }}>
-                            <Button className={articleCategory === ArticleCategory.NEWS ? "on" : "off"}>News</Button>
-                        </ListItem>
-                        <ListItem
-                            onClick={() => {
+                            <CommunityCommentWrite
+                                commentObj={commentObj}
+                                setCommentObj={setCommentObj}
+                                setRating={setRating}
+                                submitCommentHandler={submitCommentHandler}
+                            />
+                        </Stack>
+                    </Stack>
+                    <Stack className="community-board">
+                        <Box className="title">Community Article</Box>
+                        <List>
+                            <ListItem onClick={() => {
                                 const searchObj = {
                                     page: 1,
                                     limit: 4,
                                     sort: "createdAt",
                                     direction: "ASC",
                                     search: {
-                                        articleCategory: ArticleCategory.FREE
+                                        articleCategory: ArticleCategory.NEWS
                                     }
                                 }
                                 const link = `/community?input=${JSON.stringify(searchObj)}`
                                 router.push(link, link, { scroll: false })
-                            }}
-                        >
-                            <Button className={articleCategory === ArticleCategory.FREE ? "on" : "off"}>Free</Button>
-                        </ListItem>
-                        <ListItem
-                            onClick={() => {
-                                const searchObj = {
-                                    page: 1,
-                                    limit: 4,
-                                    sort: "createdAt",
-                                    direction: "ASC",
-                                    search: {
-                                        articleCategory: ArticleCategory.HUMOR
+                            }}>
+                                <Button className={articleCategory === ArticleCategory.NEWS ? "on" : "off"}>News</Button>
+                            </ListItem>
+                            <ListItem
+                                onClick={() => {
+                                    const searchObj = {
+                                        page: 1,
+                                        limit: 4,
+                                        sort: "createdAt",
+                                        direction: "ASC",
+                                        search: {
+                                            articleCategory: ArticleCategory.FREE
+                                        }
                                     }
-                                }
-                                const link = `/community?input=${JSON.stringify(searchObj)}`
-                                router.push(link, link, { scroll: false })
-                            }}
-                        >
-                            <Button className={articleCategory === ArticleCategory.HUMOR ? "on" : "off"}>Humor</Button>
-                        </ListItem>
-                        <ListItem
-                            onClick={() => {
-                                const searchObj = {
-                                    page: 1,
-                                    limit: 4,
-                                    sort: "createdAt",
-                                    direction: "ASC",
-                                    search: {
-                                        articleCategory: ArticleCategory.RECOMMEND
+                                    const link = `/community?input=${JSON.stringify(searchObj)}`
+                                    router.push(link, link, { scroll: false })
+                                }}
+                            >
+                                <Button className={articleCategory === ArticleCategory.FREE ? "on" : "off"}>Free</Button>
+                            </ListItem>
+                            <ListItem
+                                onClick={() => {
+                                    const searchObj = {
+                                        page: 1,
+                                        limit: 4,
+                                        sort: "createdAt",
+                                        direction: "ASC",
+                                        search: {
+                                            articleCategory: ArticleCategory.HUMOR
+                                        }
                                     }
-                                }
-                                const link = `/community?input=${JSON.stringify(searchObj)}`
-                                router.push(link, link, { scroll: false })
-                            }}
-                        >
-                            <Button className={articleCategory === ArticleCategory.RECOMMEND ? "on" : "off"}>Recomendation</Button>
-                        </ListItem>
-                    </List>
+                                    const link = `/community?input=${JSON.stringify(searchObj)}`
+                                    router.push(link, link, { scroll: false })
+                                }}
+                            >
+                                <Button className={articleCategory === ArticleCategory.HUMOR ? "on" : "off"}>Humor</Button>
+                            </ListItem>
+                            <ListItem
+                                onClick={() => {
+                                    const searchObj = {
+                                        page: 1,
+                                        limit: 4,
+                                        sort: "createdAt",
+                                        direction: "ASC",
+                                        search: {
+                                            articleCategory: ArticleCategory.RECOMMEND
+                                        }
+                                    }
+                                    const link = `/community?input=${JSON.stringify(searchObj)}`
+                                    router.push(link, link, { scroll: false })
+                                }}
+                            >
+                                <Button className={articleCategory === ArticleCategory.RECOMMEND ? "on" : "off"}>Recomendation</Button>
+                            </ListItem>
+                        </List>
+                    </Stack>
                 </Stack>
             </Stack>
-        </Stack>
-    )
+        )
+    }
 }
 
 export default LayoutBasic(ArticleDetail)

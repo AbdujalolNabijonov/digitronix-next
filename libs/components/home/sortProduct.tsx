@@ -5,7 +5,7 @@ import { ErrorOutline, Memory, RemoveRedEyeRounded, SdCard, ThumbUpAltRounded } 
 import { Box, Button, CircularProgress, Divider, IconButton, Stack } from "@mui/material"
 import { NextPage } from "next"
 import { ArrowSquareOut, Cpu, HardDrive, HardDrives, Laptop, Monitor } from "phosphor-react"
-import { useEffect, useState } from "react"
+import { useDebugValue, useEffect, useState } from "react"
 import { Keyboard, Mousewheel, Navigation } from "swiper/modules"
 import { Swiper, SwiperSlide } from "swiper/react"
 import { useMutation, useQuery, useReactiveVar } from "@apollo/client"
@@ -18,6 +18,7 @@ import { LIKE_TARGET_PRODUCT } from "@/apollo/user/mutation"
 import { sweetErrorHandling, sweetTopSmallSuccessAlert } from "@/libs/sweetAlert"
 import { socketVar, userVar } from "@/apollo/store"
 import { NoticeGroup } from "@/libs/enum/notice.enum"
+import useDeviceDetect from "@/libs/hooks/useDeviceDetector"
 
 const SortProduct: NextPage = ({ initialProps, ...props }: any) => {
     //Initialization
@@ -29,11 +30,12 @@ const SortProduct: NextPage = ({ initialProps, ...props }: any) => {
     const [targetProducts, setTargetProducts] = useState<Product[]>([])
     const router = useRouter()
     const user = useReactiveVar(userVar)
+    const device = useDeviceDetect()
 
     //LifeCircle
     useEffect(() => {
         const handleScroll = () => {
-            setScroll(window.scrollY > 1000)
+            setScroll(window.scrollY > (device === "mobile" ? 450 : 1000))
         }
         window.addEventListener("scroll", handleScroll)
     }, [])
@@ -102,7 +104,6 @@ const SortProduct: NextPage = ({ initialProps, ...props }: any) => {
                             <Stack
                                 className="control-panel"
                                 direction={"row"}
-                                gap={"20px"}
                                 justifyContent={"center"}
                             >
                                 <Button
@@ -132,7 +133,7 @@ const SortProduct: NextPage = ({ initialProps, ...props }: any) => {
                                 </Button>
                             </Stack>
                             <Stack
-                                className="control-panel"
+                                className="control-panel panel-sort"
                                 direction={"row"}
                                 gap={"20px"}
                                 justifyContent={"center"}

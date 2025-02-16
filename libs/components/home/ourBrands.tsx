@@ -11,6 +11,7 @@ import { useQuery } from "@apollo/client";
 import { GET_MEMBERS } from "@/apollo/user/query";
 import { Member, MemberType } from "@/libs/types/member/member";
 import { serverApi } from "@/libs/config";
+import { useRouter } from "next/router";
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -56,6 +57,7 @@ const OurBrands = () => {
     //Initialization
     const [value, setValue] = useState<number>(1)
     const [retailers, setRetailers] = useState([])
+    const router = useRouter()
 
     const { } = useQuery(GET_MEMBERS, {
         fetchPolicy: "cache-and-network",
@@ -105,7 +107,7 @@ const OurBrands = () => {
                         </Tabs>
                         {
                             retailers.map((member: Member, num: number) => {
-                                const memberImage = member.memberImage?`${serverApi}/${member.memberImage}`:"/img/profile/image.svg"
+                                const memberImage = member.memberImage ? `${serverApi}/${member.memberImage}` : "/img/profile/image.svg"
                                 return (
                                     <TabPanel value={value} index={num}>
                                         <Stack className="brand-info" direction={"row"}>
@@ -120,7 +122,10 @@ const OurBrands = () => {
                                                     <Place />
                                                     <div>{member.memberAddress}</div>
                                                 </Stack>
-                                                <Button>
+                                                <Button onClick={() => {
+                                                    const link = `/retailers/detail?id=${member._id}`
+                                                    router.push(link, link, { scroll: false })
+                                                }}>
                                                     View Retailer
                                                 </Button>
                                             </Stack>
