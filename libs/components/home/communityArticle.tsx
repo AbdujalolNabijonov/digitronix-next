@@ -51,7 +51,7 @@ const CommunityArticle: NextPage = ({ initialProps, ...props }: any) => {
                     <div className="title">
                         Community Article
                     </div>
-                    <Stack direction={"row"} gap={"20px"}>
+                    <Stack direction={"row"} className="cards">
                         <Stack direction={"row"} gap="20px">
                             {
                                 newsArticles.map((article: Article, index: number) => (

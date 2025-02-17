@@ -20,6 +20,7 @@ import MyPanel from "@/libs/components/memberPage/MyPanel";
 import OtherPanel from "@/libs/components/memberPage/OtherPanel";
 import Notifications from "@/libs/components/memberPage/Notifications";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import useDeviceDetect from "@/libs/hooks/useDeviceDetector";
 export const getStaticProps = async ({ locale }: any) => ({
     props: {
         ...(await serverSideTranslations(locale, ['common'])),
@@ -27,6 +28,7 @@ export const getStaticProps = async ({ locale }: any) => ({
 });
 const MemberPage: NextPage = (props: any) => {
     const router = useRouter()
+    const device = useDeviceDetect()
     const memberId = router.query.memberId
     const stage = router.query.stage
     const [value, setValue] = useState<string>(stage as string ?? "1")
@@ -51,56 +53,62 @@ const MemberPage: NextPage = (props: any) => {
         }
         router.push(url, url, { scroll: false })
     }
-    return (
-        <Stack className="my-page">
-            <Stack className="container">
-                <TabContext value={value}>
-                    <Stack flexDirection={"row"} sx={{ margin: "40px 0" }}>
-                        <TabPanel value={"1"} className="tab-panel">
-                            <Favorities />
-                        </TabPanel>
-                        <TabPanel value={"2"} className="tab-panel">
-                            <Visited />
-                        </TabPanel>
-                        <TabPanel value={"3"} className="tab-panel">
-                            <Follower />
-                        </TabPanel>
-                        <TabPanel value={"4"} className="tab-panel">
-                            <Following />
-                        </TabPanel>
-                        <TabPanel value={"5"} className="tab-panel">
-                            <Articles />
-                        </TabPanel>
-                        <TabPanel value={"6"} className="tab-panel">
-                            <WriteArticle />
-                        </TabPanel>
-                        <TabPanel value={"7"} className="tab-panel">
-                            <MyProfile />
-                        </TabPanel>
-                        <TabPanel value={"8"} className="tab-panel">
-                            <AddProduct />
-                        </TabPanel>
-                        <TabPanel value={"9"} className="tab-panel">
-                            <AllProducts />
-                        </TabPanel>
-                        <TabPanel value={"9"} className="tab-panel">
-                            <AllProducts />
-                        </TabPanel>
-                        <TabPanel value={"10"} className="tab-panel">
-                            <Notifications />
-                        </TabPanel>
-                        {
-                            memberId ? (
-                                <OtherPanel navigateSelectHandler={navigateSelectHandler} />
-                            ) : (
-                                <MyPanel navigateSelectHandler={navigateSelectHandler} />
-                            )
-                        }
-                    </Stack>
-                </TabContext>
+    if (device === "mobile") {
+        return (
+            <h1>Mobile version is developing...</h1>
+        )
+    } else {
+        return (
+            <Stack className="my-page">
+                <Stack className="container">
+                    <TabContext value={value}>
+                        <Stack flexDirection={"row"} sx={{ margin: "40px 0" }}>
+                            <TabPanel value={"1"} className="tab-panel">
+                                <Favorities />
+                            </TabPanel>
+                            <TabPanel value={"2"} className="tab-panel">
+                                <Visited />
+                            </TabPanel>
+                            <TabPanel value={"3"} className="tab-panel">
+                                <Follower />
+                            </TabPanel>
+                            <TabPanel value={"4"} className="tab-panel">
+                                <Following />
+                            </TabPanel>
+                            <TabPanel value={"5"} className="tab-panel">
+                                <Articles />
+                            </TabPanel>
+                            <TabPanel value={"6"} className="tab-panel">
+                                <WriteArticle />
+                            </TabPanel>
+                            <TabPanel value={"7"} className="tab-panel">
+                                <MyProfile />
+                            </TabPanel>
+                            <TabPanel value={"8"} className="tab-panel">
+                                <AddProduct />
+                            </TabPanel>
+                            <TabPanel value={"9"} className="tab-panel">
+                                <AllProducts />
+                            </TabPanel>
+                            <TabPanel value={"9"} className="tab-panel">
+                                <AllProducts />
+                            </TabPanel>
+                            <TabPanel value={"10"} className="tab-panel">
+                                <Notifications />
+                            </TabPanel>
+                            {
+                                memberId ? (
+                                    <OtherPanel navigateSelectHandler={navigateSelectHandler} />
+                                ) : (
+                                    <MyPanel navigateSelectHandler={navigateSelectHandler} />
+                                )
+                            }
+                        </Stack>
+                    </TabContext>
+                </Stack>
             </Stack>
-        </Stack>
-    )
+        )
+    }
 }
 
 export default LayoutBasic(MemberPage)

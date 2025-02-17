@@ -179,7 +179,7 @@ export default function MobileBar() {
                                             </MenuItem>
                                         </AccordionDetails>
                                     </Accordion>
-                                    <MenuItem className='list-item'>
+                                    <MenuItem className='list-item' onClick={() => navigateHandler('/retailers?input={"page":1,"limit":8,"sort":"createdAt","search":{"memberType":"RETAILER"}}')}>
                                         <IconButton disableRipple>
                                             <Handshake style={{ color: "white" }} />
                                         </IconButton>
@@ -187,7 +187,7 @@ export default function MobileBar() {
                                             {t('Retailer')}
                                         </Box>
                                     </MenuItem>
-                                    <MenuItem className='list-item'>
+                                    <MenuItem className='list-item'  onClick={() => navigateHandler("/community")}>
                                         <IconButton disableRipple>
                                             <Groups sx={{ fill: "white" }} />
                                         </IconButton>
@@ -195,7 +195,7 @@ export default function MobileBar() {
                                             {t('Society')}
                                         </Box>
                                     </MenuItem>
-                                    <MenuItem className='list-item'>
+                                    <MenuItem className='list-item'  onClick={() => navigateHandler("/cs")}>
                                         <IconButton disableRipple>
                                             <SupportAgent sx={{ fill: "white" }} />
                                         </IconButton>

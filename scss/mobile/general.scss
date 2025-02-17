@@ -1,9 +1,25 @@
 .mobile-wrapper {
+  min-height: 100vh;
   .mobile-navbar {
     background-color: #201f2f;
   }
+  .main {
+    flex: 1;
+    position: relative;
+    .community-chat {
+      position: fixed;
+      z-index: 1000;
+      right: 10px;
+      bottom: 10px;
+      .community-icon {
+        background-color: #fbf3f3;
+        width: 60px;
+        height: 60px;
+      }
+    }
+  }
   .footer {
-    padding: 30px 0;
+    padding: 10px 0;
     background-color: #201f2f;
     .footer-main {
       padding: 0 10px;
@@ -11,28 +27,27 @@
         flex: 1;
         margin-bottom: 20px;
         .brand-name {
-          font-size: 30px;
+          font-size: 20px;
           letter-spacing: 1px;
           font-weight: bold;
           color: white;
         }
         ul {
           padding: 0;
-          margin-top: 30px;
+          margin-top: 20px;
           li {
             list-style: none;
             &:not(:last-child) {
               margin-bottom: 10px;
             }
             a {
-              font-size: 16px;
+              font-size: 13;
               text-transform: capitalize;
               color: white;
               text-decoration: none;
               font-weight: 500;
               display: block;
               transition: all 0.3s ease;
-
               &:hover {
                 color: #ffffff;
                 padding-left: 8px;
@@ -42,25 +57,27 @@
           width: 100%;
         }
 
-        .social-links a {
-          display: inline-block;
-          height: 40px;
-          width: 40px;
-          background-color: rgba(255, 255, 255, 0.2);
-          margin: 20px 20px 10px 0;
-          text-align: center;
-          line-height: 40px;
-          border-radius: 20%;
-          transition: all 0.5s ease;
+        .social-links {
+          justify-content: space-between;
+          a {
+            display: inline-block;
+            height: 40px;
+            width: 40px;
+            background-color: rgba(255, 255, 255, 0.2);
+            margin: 20px 20px 10px 0;
+            text-align: center;
+            line-height: 40px;
+            border-radius: 20%;
+            transition: all 0.5s ease;
+            button {
+              color: white;
+            }
 
-          button {
-            color: white;
-          }
-
-          &:hover {
-            color: #24262b;
-            opacity: 0.6;
-            transform: translateY(-7px);
+            &:hover {
+              color: #24262b;
+              opacity: 0.6;
+              transform: translateY(-7px);
+            }
           }
         }
       }
@@ -74,7 +91,7 @@
           padding: 10px 15px;
           border-radius: 10px;
           width: 100%;
-          font-size: 20px;
+          font-size: 14px;
           color: rgb(70, 70, 70);
           &:focus {
             outline: none;
@@ -88,7 +105,7 @@
           padding: 10px 15px;
           transition: all 0.3s ease-in-out;
           color: white;
-          font-weight: 600;
+          font-weight: 500;
           letter-spacing: 1px;
           &:hover {
             background-position: 0% 100%;
@@ -121,7 +138,7 @@
     text-align: center;
     padding: 10px 0;
   }
-  .list-item-accor{
+  .list-item-accor {
     background-color: #201f2f;
     color: white;
     margin: 0;
@@ -132,4 +149,53 @@
     align-items: center;
   }
 }
-
+.menu-item {
+  height: auto;
+  padding: 0;
+  .menu-title {
+    flex-direction: row;
+    align-items: center;
+    gap: 20px;
+    justify-content: center;
+    width: 280px;
+    color: white;
+    padding: 10px 0;
+    div:nth-child(1) {
+      font-size: 25px;
+      font-weight: 600;
+      letter-spacing: 1px;
+    }
+  }
+  .menu-body {
+    height: 350px;
+    overflow-y: auto;
+    width: 360px;
+    .msg-left {
+      flex-direction: row;
+      gap: 5px;
+      align-items: end;
+      margin: 10px 5px;
+      .msg-item{
+        color: white;
+        width: 200px;
+        overflow-wrap: break-word;
+        word-break: break-word; 
+        white-space: normal;
+        background-color: #838080;
+        height: auto;
+        padding: 10px;
+        margin-bottom: 10px;
+        div:nth-child(2){
+            align-self: end;
+            font-size: 12px;
+        }
+      }
+    }
+    .msg-middle{
+      margin: 10px 0;
+      color: white;
+      text-align: center;
+      font-size: 14px;
+    }
+  }
+}

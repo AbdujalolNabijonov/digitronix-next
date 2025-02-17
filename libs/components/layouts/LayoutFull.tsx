@@ -17,7 +17,10 @@ const LayoutFull = (Component: NextPage) => {
                         <title>Digitronix</title>
                     </Head>
                     <Stack className="mobile-wrapper">
-                        <Component {...props} />
+                        <Stack className="main">
+                            <Component {...props} />
+                            <CommunityChat />
+                        </Stack>
                     </Stack>
                     <Box className="footer">
                         <Footer />

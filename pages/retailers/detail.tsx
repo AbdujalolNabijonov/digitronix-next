@@ -20,6 +20,7 @@ import { socketVar, userVar } from "@/apollo/store"
 import { Messages, serverApi } from "@/libs/config"
 import { NoticeGroup } from "@/libs/enum/notice.enum"
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import useDeviceDetect from "@/libs/hooks/useDeviceDetector"
 export const getStaticProps = async ({ locale }: any) => ({
     props: {
         ...(await serverSideTranslations(locale, ['common'])),
@@ -28,6 +29,7 @@ export const getStaticProps = async ({ locale }: any) => ({
 const Detail = (props: any) => {
     const router = useRouter()
     const memberId = router.query.id
+    const device = useDeviceDetect()
     const user = useReactiveVar(userVar)
     const socket = useReactiveVar(socketVar)
     const [member, setMember] = useState<Member>()
@@ -189,108 +191,114 @@ const Detail = (props: any) => {
         searchObj.page = page
         setSearchObj({ ...searchObj })
     }
-    return (
-        <Stack className="retailer-detail">
-            <Stack className="container">
-                <Stack className="retailer-body">
-                    <Stack className="retailer-products">
-                        {products && products.length > 0 ?
-                            products.map((product: Product, index: number) => (
-                                < ProductCard product={product} key={index} likeTargetProductHandler={likeTargetProductHandler} />
-                            )) :
-                            (
-                                <Stack
-                                    alignItems={"center"}
-                                    style={{ margin: "200px auto", fontSize: "24px", color: "white" }}
-                                    gap={"10px"}
-                                >
-                                    <ErrorOutline fontSize="large" />
-                                    <div>No products found!</div>
-                                </Stack>
-                            )
-                        }
-                    </Stack>
-                    {
-                        products.length > 0 ? (
-                            <Stack className="pagination-box">
-                                <Pagination
-                                    page={searchObj.page}
-                                    count={Math.ceil(totalProducts / searchObj.limit)}
-                                    variant="outlined"
-                                    onChange={paginationSelectHandler}
-                                    shape="rounded"
-                                    color="secondary"
-                                />
-                            </Stack>
-                        ) : null
-                    }
-                    {
-                        comments && comments.length > 0 ? (
-                            <CommentRead
-                                setCommentSearchObj={setSearchCommentObj}
-                                comments={comments}
-                                totalComments={comments.length}
-                                commentSearchObj={searchCommentObj}
-                                getAllCommentsRefetch={getAllCommentsRefetch}
-                                likeTargetCommentHandler={likeTargetCommentHandler}
-                            />
-                        ) : null
-                    }
-                    <CommentWrite
-                        commentObj={commentObj}
-                        setRating={setRating}
-                        setCommentObj={setCommentObj}
-                        submitCommentHandler={submitCommentHandler}
-                    />
-                </Stack>
-                <Stack className="retailer-info">
-                    <img src={member?.memberImage ? `${serverApi}/${member.memberImage}` : "/img/profile/noUser.jpg"} alt="" />
-                    <Stack className="info-body">
-                        <Box className="title">{member?.memberFullName ?? member?.memberNick}</Box>
-                        <Stack className="contact-info">
-                            <Stack className={"contact-info-item"}>
-                                <Devices size={32} style={{ fill: "rgb(48, 47, 47)" }} />
-                                <Box>Avaible products {member?.memberProducts}</Box>
-                            </Stack>
-                            <Stack className={"contact-info-item"}>
-                                <MapPin size={32} style={{ fill: "rgb(48, 47, 47)" }} />
-                                <Box>{member?.memberAddress ?? "No address provided"}</Box>
-                            </Stack>
-                            <Stack className={"contact-info-item"}>
-                                <Phone size={32} style={{ fill: "rgb(48, 47, 47)" }} />
-                                <Box>{member?.memberPhone ?? "No phone provided"}</Box>
-                            </Stack>
-                            <Stack className={"contact-info-item"}>
-                                <Mailbox size={32} style={{ fill: "rgb(48, 47, 47)" }} />
-                                <Box>{member?.memberEmail ?? "No email Provided"}</Box>
-                            </Stack>
+    if (device === "mobile") {
+        return (
+            <h1>Mobile version is developing</h1>
+        )
+    } else {
+        return (
+            <Stack className="retailer-detail">
+                <Stack className="container">
+                    <Stack className="retailer-body">
+                        <Stack className="retailer-products">
+                            {products && products.length > 0 ?
+                                products.map((product: Product, index: number) => (
+                                    < ProductCard product={product} key={index} likeTargetProductHandler={likeTargetProductHandler} />
+                                )) :
+                                (
+                                    <Stack
+                                        alignItems={"center"}
+                                        style={{ margin: "200px auto", fontSize: "24px", color: "white" }}
+                                        gap={"10px"}
+                                    >
+                                        <ErrorOutline fontSize="large" />
+                                        <div>No products found!</div>
+                                    </Stack>
+                                )
+                            }
                         </Stack>
-                        <Divider sx={{ borderBottomWidth: "2px" }} />
-                        <Stack direction={"row"} alignItems={"center"} justifyContent={"end"} fontSize={"20px"} padding={"2px"}>
-                            <Stack direction={"row"} alignItems={"center"} gap={"2px"}>
-                                <IconButton disableRipple >
-                                    <RemoveRedEyeRounded />
-                                </IconButton>
-                                <Box>{member?.memberViews}</Box>
+                        {
+                            products.length > 0 ? (
+                                <Stack className="pagination-box">
+                                    <Pagination
+                                        page={searchObj.page}
+                                        count={Math.ceil(totalProducts / searchObj.limit)}
+                                        variant="outlined"
+                                        onChange={paginationSelectHandler}
+                                        shape="rounded"
+                                        color="secondary"
+                                    />
+                                </Stack>
+                            ) : null
+                        }
+                        {
+                            comments && comments.length > 0 ? (
+                                <CommentRead
+                                    setCommentSearchObj={setSearchCommentObj}
+                                    comments={comments}
+                                    totalComments={comments.length}
+                                    commentSearchObj={searchCommentObj}
+                                    getAllCommentsRefetch={getAllCommentsRefetch}
+                                    likeTargetCommentHandler={likeTargetCommentHandler}
+                                />
+                            ) : null
+                        }
+                        <CommentWrite
+                            commentObj={commentObj}
+                            setRating={setRating}
+                            setCommentObj={setCommentObj}
+                            submitCommentHandler={submitCommentHandler}
+                        />
+                    </Stack>
+                    <Stack className="retailer-info">
+                        <img src={member?.memberImage ? `${serverApi}/${member.memberImage}` : "/img/profile/noUser.jpg"} alt="" />
+                        <Stack className="info-body">
+                            <Box className="title">{member?.memberFullName ?? member?.memberNick}</Box>
+                            <Stack className="contact-info">
+                                <Stack className={"contact-info-item"}>
+                                    <Devices size={32} style={{ fill: "rgb(48, 47, 47)" }} />
+                                    <Box>Avaible products {member?.memberProducts}</Box>
+                                </Stack>
+                                <Stack className={"contact-info-item"}>
+                                    <MapPin size={32} style={{ fill: "rgb(48, 47, 47)" }} />
+                                    <Box>{member?.memberAddress ?? "No address provided"}</Box>
+                                </Stack>
+                                <Stack className={"contact-info-item"}>
+                                    <Phone size={32} style={{ fill: "rgb(48, 47, 47)" }} />
+                                    <Box>{member?.memberPhone ?? "No phone provided"}</Box>
+                                </Stack>
+                                <Stack className={"contact-info-item"}>
+                                    <Mailbox size={32} style={{ fill: "rgb(48, 47, 47)" }} />
+                                    <Box>{member?.memberEmail ?? "No email Provided"}</Box>
+                                </Stack>
                             </Stack>
-                            <Stack direction={"row"} alignItems={"center"} gap={"2px"}>
-                                <IconButton onClick={(e) => {
-                                    likeTargetHandler(e, member?._id as string)
-                                    //@ts-ignore
-                                    if (!member?.meLiked[0]?.myFavorite) {
-                                        noticeLikeHandler(member?._id)
-                                    }
-                                }}>
-                                    <ThumbUpAltRounded sx={member?.meLiked && member?.meLiked[0]?.myFavorite ? { fill: "#f44336" } : { fill: "gray" }} />
-                                </IconButton>
-                                <Box>{member?.memberLikes}</Box>
+                            <Divider sx={{ borderBottomWidth: "2px" }} />
+                            <Stack direction={"row"} alignItems={"center"} justifyContent={"end"} fontSize={"20px"} padding={"2px"}>
+                                <Stack direction={"row"} alignItems={"center"} gap={"2px"}>
+                                    <IconButton disableRipple >
+                                        <RemoveRedEyeRounded />
+                                    </IconButton>
+                                    <Box>{member?.memberViews}</Box>
+                                </Stack>
+                                <Stack direction={"row"} alignItems={"center"} gap={"2px"}>
+                                    <IconButton onClick={(e) => {
+                                        likeTargetHandler(e, member?._id as string)
+                                        //@ts-ignore
+                                        if (!member?.meLiked[0]?.myFavorite) {
+                                            noticeLikeHandler(member?._id)
+                                        }
+                                    }}>
+                                        <ThumbUpAltRounded sx={member?.meLiked && member?.meLiked[0]?.myFavorite ? { fill: "#f44336" } : { fill: "gray" }} />
+                                    </IconButton>
+                                    <Box>{member?.memberLikes}</Box>
+                                </Stack>
                             </Stack>
                         </Stack>
                     </Stack>
                 </Stack>
             </Stack>
-        </Stack>
-    )
+        )
+    }
 }
 
 export default LayoutBasic(Detail)

@@ -3,11 +3,14 @@ import { useEffect, useRef } from "react"
 import { NextPage } from "next"
 import { Email, Facebook, Instagram, LinkedIn, LockClock, MyLocation, Phone, Twitter } from "@mui/icons-material"
 import Link from "next/link"
+import { useReactiveVar } from "@apollo/client"
+import { userVar } from "@/apollo/store"
 
 
 const Footer: NextPage = (props: any) => {
     //Initializations
     const refs: any = useRef([])
+    const user = useReactiveVar(userVar)
     //
     useEffect(() => {
         window.scrollTo(0, 0)
@@ -21,21 +24,17 @@ const Footer: NextPage = (props: any) => {
                         <Stack direction={"row"} gap={"70px"}>
                             <ul>
                                 <li><a href="/">HOME</a></li>
-                                <li><a href="/">SELLERS</a></li>
-                                <li><a href="/products">PRODUCTS</a></li>
-                                <li><a href="/community">COMMUNITY</a></li>
-                                <li><a href="/mypage">MY PAGE</a></li>
+                                <li><a href='/retailers?input={"page":1,"limit":8,"sort":"createdAt","search":{"memberType":"RETAILER"}}'>RETAILERS</a></li>
+                                <li><a href='/products?input={"page":1,"limit":6,"sort":"createdAt","search":{"productCategory":"LAPTOP"}}'>PRODUCTS</a></li>
+                                {
+                                    user._id ? (
+                                        <li><a href="/member?stage=7">MY PROFILE</a></li>
+                                    ) : null
+                                }
                             </ul>
                             <ul>
                                 <li><a href="/cs">CS</a></li>
-                                <li><a href="/myPage?category=MY_SETTING">MY SETTINGS</a></li>
-                                <li><a
-                                    className="text-light"
-                                    style={{ cursor: "pointer" }}>WISHLIST</a></li>
-                                <li><a
-                                    className="text-light"
-                                    style={{ cursor: "pointer" }}
-                                >MY POSTS</a></li>
+                                <li><a href="/community">SOCIETY</a></li>
                             </ul>
                         </Stack>
                         <Stack

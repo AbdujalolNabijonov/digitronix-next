@@ -23,6 +23,7 @@ import { socketVar, userVar } from "@/apollo/store";
 import { LIKE_TARGET_MEMBER } from "@/apollo/user/mutation";
 import { NoticeGroup } from "@/libs/enum/notice.enum";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import useDeviceDetect from "@/libs/hooks/useDeviceDetector";
 export const getStaticProps = async ({ locale }: any) => ({
     props: {
         ...(await serverSideTranslations(locale, ['common'])),
@@ -32,6 +33,7 @@ const Retailers: NextPage = (props: any) => {
     const [totalRetailers, setTotalRetailer] = useState<number>(10)
     const [retailers, setRetailers] = useState<Member[]>([])
     const router = useRouter()
+    const device = useDeviceDetect()
     const user = useReactiveVar(userVar)
     const socket = useReactiveVar(socketVar)
     const [searchObj, setSearchObj] = useState<SearchRetailer>({
@@ -131,114 +133,120 @@ const Retailers: NextPage = (props: any) => {
         }
         socket.send(JSON.stringify(messageInput))
     }
-    return (
-        <Box className="container">
-            <Stack className="retailer-page">
-                <Stack className={"retailer-filter"}>
-                    <Stack className={"retailer-sort"}>
-                        <Box>Sort by</Box>
-                        <Select value={searchObj.sort} onChange={handleSelectSort}>
-                            <MenuItem value={"createdAt"}>Recent</MenuItem>
-                            <MenuItem value={"memberLikes"}>Famous</MenuItem>
-                            <MenuItem value={"memberViews"}>Most Viewed</MenuItem>
-                        </Select>
-                    </Stack>
-                    <Box className="retailer-search">
-                        <TextField
-                            id="outlined-basic"
-                            placeholder="Search for a retailer"
-                            variant="outlined"
-                            onChange={textSearchHandler}
-                        />
-                    </Box>
-                </Stack>
-                {retailers && retailers.length > 0 ? (
-                    <>
-                        <Stack className={"retailers"}>
-                            {
-                                retailers.map((member: Member, index: number) => {
-                                    const imageUrl = member.memberImage ? `${serverApi}/${member.memberImage}` : "/img/profile/noUser.jpg"
-                                    return (
-                                        <Stack className="retailer-card" key={index} onClick={() => {
-                                            const url = `/retailers/detail?id=${member._id}`
-                                            router.push(url, url, { scroll: false })
-                                        }}>
-                                            <Box className={"card-head"}>
-                                                <img src={imageUrl} alt="" />
-                                                <Stack className={"card-head-items"}>
-                                                    <Stack direction={"row"} alignItems={"center"} gap={"2px"}>
-                                                        <IconButton disableRipple onClick={(e) => { e.stopPropagation() }}>
-                                                            <RemoveRedEyeRounded />
-                                                        </IconButton>
-                                                        <Box>{member.memberViews}</Box>
-                                                    </Stack>
-                                                    <Stack direction={"row"} alignItems={"center"} gap={"2px"}>
-                                                        <IconButton onClick={(e) => { 
-                                                            likeTargetHandler(e, member._id) 
-                                                            //@ts-ignore
-                                                            if(!member.meLiked[0]?.myFavorite){
-                                                                noticeHandler(member._id)
-                                                            }
-                                                            }}>
-                                                            <ThumbUpAltRounded sx={member.meLiked && member.meLiked[0]?.myFavorite ? { fill: "#f44336" } : { fill: "gray" }} />
-                                                        </IconButton>
-                                                        <Box>{member.memberLikes}</Box>
-                                                    </Stack>
-                                                </Stack>
-                                            </Box>
-                                            <Stack className={"card-body"}>
-                                                <Box className="card-title">{member.memberFullName ?? member.memberNick}</Box>
-                                                <Box className="card-subtitle">{member.memberEmail ?? "No email provided"}</Box>
-                                                <Stack direction={"row"} className="card-info">
-                                                    <Stack className="card-info-item">
-                                                        <Box>{member.memberProducts}</Box>
-                                                        <Box>Products</Box>
-                                                    </Stack>
-                                                    <Stack className="card-info-item">
-                                                        <Box>{member.memberFollowings}</Box>
-                                                        <Box>Followings</Box>
-                                                    </Stack>
-                                                    <Stack className="card-info-item">
-                                                        <Box>{member.memberFollowers}</Box>
-                                                        <Box>Followers</Box>
-                                                    </Stack>
-                                                </Stack>
-                                            </Stack>
-                                            <Stack className={"card-footer"} direction={"row"}>
-                                                <Button variant="outlined">
-                                                    View
-                                                </Button>
-                                            </Stack>
-                                        </Stack>
-                                    )
-                                })
-                            }
+    if (device === "mobile") {
+        return (
+            <h1>Mobile version is developing...</h1>
+        )
+    } else {
+        return (
+            <Box className="container">
+                <Stack className="retailer-page">
+                    <Stack className={"retailer-filter"}>
+                        <Stack className={"retailer-sort"}>
+                            <Box>Sort by</Box>
+                            <Select value={searchObj.sort} onChange={handleSelectSort}>
+                                <MenuItem value={"createdAt"}>Recent</MenuItem>
+                                <MenuItem value={"memberLikes"}>Famous</MenuItem>
+                                <MenuItem value={"memberViews"}>Most Viewed</MenuItem>
+                            </Select>
                         </Stack>
-                        <Box sx={{ textAlign: "center", color: "white" }}>Total {totalRetailers} retailers avaible</Box>
-                        <Stack className="pagination-box">
-                            <Pagination
-                                page={searchObj.page}
-                                count={Math.ceil(totalRetailers / searchObj.limit)}
+                        <Box className="retailer-search">
+                            <TextField
+                                id="outlined-basic"
+                                placeholder="Search for a retailer"
                                 variant="outlined"
-                                onChange={paginationHandler}
-                                shape="rounded"
-                                color="secondary"
+                                onChange={textSearchHandler}
                             />
-                        </Stack>
-                    </>
-                ) : (
-                    <Stack
-                        alignSelf={"center"}
-                        gap={"10px"}
-                    >
-                        <ErrorOutline fontSize="large" />
-                        <div>No products found!</div>
+                        </Box>
                     </Stack>
-                )
-                }
-            </Stack>
-        </Box>
-    )
+                    {retailers && retailers.length > 0 ? (
+                        <>
+                            <Stack className={"retailers"}>
+                                {
+                                    retailers.map((member: Member, index: number) => {
+                                        const imageUrl = member.memberImage ? `${serverApi}/${member.memberImage}` : "/img/profile/noUser.jpg"
+                                        return (
+                                            <Stack className="retailer-card" key={index} onClick={() => {
+                                                const url = `/retailers/detail?id=${member._id}`
+                                                router.push(url, url, { scroll: false })
+                                            }}>
+                                                <Box className={"card-head"}>
+                                                    <img src={imageUrl} alt="" />
+                                                    <Stack className={"card-head-items"}>
+                                                        <Stack direction={"row"} alignItems={"center"} gap={"2px"}>
+                                                            <IconButton disableRipple onClick={(e) => { e.stopPropagation() }}>
+                                                                <RemoveRedEyeRounded />
+                                                            </IconButton>
+                                                            <Box>{member.memberViews}</Box>
+                                                        </Stack>
+                                                        <Stack direction={"row"} alignItems={"center"} gap={"2px"}>
+                                                            <IconButton onClick={(e) => {
+                                                                likeTargetHandler(e, member._id)
+                                                                //@ts-ignore
+                                                                if (!member.meLiked[0]?.myFavorite) {
+                                                                    noticeHandler(member._id)
+                                                                }
+                                                            }}>
+                                                                <ThumbUpAltRounded sx={member.meLiked && member.meLiked[0]?.myFavorite ? { fill: "#f44336" } : { fill: "gray" }} />
+                                                            </IconButton>
+                                                            <Box>{member.memberLikes}</Box>
+                                                        </Stack>
+                                                    </Stack>
+                                                </Box>
+                                                <Stack className={"card-body"}>
+                                                    <Box className="card-title">{member.memberFullName ?? member.memberNick}</Box>
+                                                    <Box className="card-subtitle">{member.memberEmail ?? "No email provided"}</Box>
+                                                    <Stack direction={"row"} className="card-info">
+                                                        <Stack className="card-info-item">
+                                                            <Box>{member.memberProducts}</Box>
+                                                            <Box>Products</Box>
+                                                        </Stack>
+                                                        <Stack className="card-info-item">
+                                                            <Box>{member.memberFollowings}</Box>
+                                                            <Box>Followings</Box>
+                                                        </Stack>
+                                                        <Stack className="card-info-item">
+                                                            <Box>{member.memberFollowers}</Box>
+                                                            <Box>Followers</Box>
+                                                        </Stack>
+                                                    </Stack>
+                                                </Stack>
+                                                <Stack className={"card-footer"} direction={"row"}>
+                                                    <Button variant="outlined">
+                                                        View
+                                                    </Button>
+                                                </Stack>
+                                            </Stack>
+                                        )
+                                    })
+                                }
+                            </Stack>
+                            <Box sx={{ textAlign: "center", color: "white" }}>Total {totalRetailers} retailers avaible</Box>
+                            <Stack className="pagination-box">
+                                <Pagination
+                                    page={searchObj.page}
+                                    count={Math.ceil(totalRetailers / searchObj.limit)}
+                                    variant="outlined"
+                                    onChange={paginationHandler}
+                                    shape="rounded"
+                                    color="secondary"
+                                />
+                            </Stack>
+                        </>
+                    ) : (
+                        <Stack
+                            alignSelf={"center"}
+                            gap={"10px"}
+                        >
+                            <ErrorOutline fontSize="large" />
+                            <div>No products found!</div>
+                        </Stack>
+                    )
+                    }
+                </Stack>
+            </Box>
+        )
+    }
 }
 
 export default LayoutBasic(Retailers)

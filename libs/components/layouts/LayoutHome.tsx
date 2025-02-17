@@ -19,7 +19,10 @@ const LayoutHome = (Component: NextPage) => {
                     </Head>
                     <Stack className="mobile-wrapper">
                         <Navbar {...props} />
-                        <Component {...props} />
+                        <Stack className="main">
+                            <Component {...props} />
+                            <CommunityChat />
+                        </Stack>
                         <Box className="footer">
                             <Footer />
                         </Box>

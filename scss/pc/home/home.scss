@@ -147,10 +147,9 @@
       .home-ads {
         background-image: url("/img/banner/pxfuel.jpg");
         padding: 50px 0 100px 0;
-        padding-top: 50px;
         .container {
           position: relative;
-          height: 80vh;
+          height: 70vh;
           video {
             height: 100%;
             width: 100%;
@@ -564,6 +563,9 @@
         padding: 30px 0 50px 0;
         background: linear-gradient(white, gray);
         .container {
+          .cards{
+            gap: 20px;
+          }
           .title {
             text-align: start;
             font-weight: bold;

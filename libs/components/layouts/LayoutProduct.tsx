@@ -25,8 +25,8 @@ const LayoutProduct = (Component: NextPage) => {
                         <Navbar {...props} />
                         <Box className="main">
                             <Component {...props} />
+                            <CommunityChat />
                         </Box>
-                        <CommunityChat />
                         <Box className="footer">
                             <Footer />
                         </Box>
