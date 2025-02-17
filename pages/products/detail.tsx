@@ -19,7 +19,7 @@ import { numberSplitterHandler } from "@/libs/features/splitter"
 import Zoom from 'react-medium-image-zoom'
 import { CommentGroup } from "@/libs/enum/comment.enum"
 import { Comment } from "@/libs/types/comment/comment"
-import { sweetErrorHandling, sweetTopSmallSuccessAlert } from "@/libs/sweetAlert"
+import { sweetErrorHandling, sweetTopSmallSuccessAlert, sweetTopSuccessAlert } from "@/libs/sweetAlert"
 import { CREATE_COMMENT, LIKE_TARGET_COMMENT, LIKE_TARGET_PRODUCT } from "@/apollo/user/mutation"
 import { socketVar, userVar } from "@/apollo/store"
 import 'react-medium-image-zoom/dist/styles.css'
@@ -28,6 +28,7 @@ import CommentRead from "@/libs/components/others/commentRead"
 import { NoticeGroup } from "@/libs/enum/notice.enum"
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import useDeviceDetect from "@/libs/hooks/useDeviceDetector"
+import { useGlobal } from "@/libs/hooks/useGlobal"
 export const getStaticProps = async ({ locale }: any) => ({
     props: {
         ...(await serverSideTranslations(locale, ['common'])),
@@ -43,11 +44,18 @@ const Detail: NextPage = () => {
     const [product, setProduct] = useState<Product | null>(null)
     const [relatedProducts, setRelatedProducts] = useState([])
     const [rating, setRating] = useState<number>(0)
+    const {setRebuild}=useGlobal()
     const [commentObj, setCommentObj] = useState({
         commentGroup: CommentGroup.PRODUCT,
         commentRank: 0,
         commentContent: "",
         commentTargetId: "",
+    })
+    const [clientInfo, setClientInfo] = useState({
+        name: "",
+        phone: "",
+        email: "",
+        desc: ""
     })
     const [commentSearchObj, setCommentSearchObj] = useState({
         page: 1,
@@ -198,6 +206,45 @@ const Detail: NextPage = () => {
             await getAllCommentsRefetch({ input: commentSearchObj })
         } catch (err: any) {
             console.log(`Error: likeTargetCommentHandler, ${err.message}`);
+            await sweetErrorHandling(err)
+        }
+    }
+    const submitClientInfoHandler = async () => {
+        try {
+            if(!user._id) throw new Error(Messages.error2)
+            if (!clientInfo.name || !clientInfo.phone || !clientInfo.email || !clientInfo.desc) {
+                throw new Error(Messages.error3)
+            }
+            if (clientInfo.name.length < 2) throw new Error("Name should be at least 3 letters")
+            if (clientInfo.phone.length < 2) throw new Error("Phone should be at least 11 numbers")
+            if (clientInfo.email.length < 2 || !clientInfo.email.includes("@")) throw new Error("Not Valid Email")
+            if (clientInfo.desc.length < 5) throw new Error("Description should be at least 5 letters")
+            const messageInput = {
+                event: "message",
+                data: {
+                    event: "notice",
+                    noticeGroup: NoticeGroup.MEMBER,
+                    noticeTitle: `Client message!`,
+                    noticeTargetId: product?.memberData?._id,
+                    noticeContent: `
+                    Name: ${clientInfo.name},
+                    Phone: ${clientInfo.phone},
+                    Email: ${clientInfo.email},
+                    Desc: ${clientInfo.desc}
+                    `
+                }
+            }
+            socket.send(JSON.stringify(messageInput))
+            await sweetTopSuccessAlert("Successfully submited!")
+            setRebuild(new Date())
+            setClientInfo({
+                name: "",
+                phone: "",
+                email: "",
+                desc: ""
+            })
+        } catch (err: any) {
+            console.log(`ERROR: submitClientInfoHandler, ${err.message}`)
             await sweetErrorHandling(err)
         }
     }
@@ -424,21 +471,55 @@ const Detail: NextPage = () => {
                                 </Stack>
                                 <Stack className="contact-name">
                                     <Box>Name</Box>
-                                    <input type="text" placeholder="Your Name" />
+                                    <input
+                                        value={clientInfo.name}
+                                        onChange={(e: any) => {
+                                            clientInfo.name = e.target.value
+                                            setClientInfo({ ...clientInfo })
+                                        }}
+                                        min={3}
+                                        type="text"
+                                        placeholder="Your Name"
+                                    />
                                 </Stack>
                                 <Stack className="contact-name">
                                     <Box>Phone</Box>
-                                    <input type="text" placeholder="Your Name" />
+                                    <input
+                                        value={clientInfo.phone}
+                                        onChange={(e: any) => {
+                                            let value = e.target.value.replace(/\D/g, "");
+                                            clientInfo.phone = value
+                                            setClientInfo({ ...clientInfo })
+                                        }}
+                                        type="text"
+                                        placeholder="Your Phone"
+                                    />
                                 </Stack>
                                 <Stack className="contact-name">
                                     <Box>Email</Box>
-                                    <input type="text" placeholder="Your Name" />
+                                    <input
+                                        value={clientInfo.email}
+                                        onChange={(e: any) => {
+                                            clientInfo.email = e.target.value
+                                            setClientInfo({ ...clientInfo })
+                                        }}
+                                        type="text"
+                                        placeholder="Your Email"
+                                    />
                                 </Stack>
                                 <Stack className="contact-name">
                                     <Box>Message</Box>
-                                    <textarea placeholder="Message" rows={5}></textarea>
+                                    <textarea
+                                        value={clientInfo.desc}
+                                        onChange={(e: any) => {
+                                            clientInfo.desc = e.target.value
+                                            setClientInfo({ ...clientInfo })
+                                        }}
+                                        placeholder="Message"
+                                        rows={5}
+                                    ></textarea>
                                 </Stack>
-                                <Button variant="contained">Send Message<LaunchRounded /></Button>
+                                <Button variant="contained" onClick={submitClientInfoHandler}>Send Message<LaunchRounded /></Button>
                             </Stack>
                         </Stack>
                     </Stack >
