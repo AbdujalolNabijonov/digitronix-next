@@ -1,0 +1,20 @@
+services:
+  digitronix-next:
+    container_name: digitronix-next
+    restart: always
+    image: node:20.10.0
+    ports:
+      - 3000:3000
+    volumes:
+      - ./:/usr/src/digitronix-next
+    working_dir: /usr/src/digitronix-next
+
+    networks:
+      - digitronix-next
+    
+    command: bash -c "yarn install && yarn run build && yarn run start"
+  
+networks:
+  digitronix-next:
+    driver: bridge
+    
