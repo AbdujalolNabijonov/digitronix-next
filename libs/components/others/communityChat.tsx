@@ -75,7 +75,7 @@ const CommunityChat = () => {
                             {
                                 messages.map((message: any, index: number) => {
                                     const imageMember = message.memberData && message.memberData.memberImage ? `${serverApi}/${message.memberData.memberImage}` : "/img/profile/noUser.jpg"
-                                    if (message.event === "message" && message.memberData?._id !== user._id) {
+                                    if (message.event === "message" && message.memberData?._id == user._id) {
                                         return (
                                             <Stack className="msg-left">
                                                 <Avatar src={imageMember} alt="image" />
@@ -87,7 +87,7 @@ const CommunityChat = () => {
                                                 </Stack>
                                             </Stack>
                                         )
-                                    } else if (message.event === "message" && message.memberData?._id === user._id) {
+                                    } else if (message.event === "message" && message.memberData?._id !== user._id) {
                                         return (
                                             <Stack className="msg-left" justifyContent={"end"}>
                                                 <Stack className="msg-item" sx={{ borderRadius: "5px 5px 0px 5px" }}>

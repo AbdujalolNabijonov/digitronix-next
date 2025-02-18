@@ -35,7 +35,7 @@ const SortProduct: NextPage = ({ initialProps, ...props }: any) => {
     //LifeCircle
     useEffect(() => {
         const handleScroll = () => {
-            setScroll(window.scrollY > (device === "mobile" ? 300 : 1000))
+            setScroll(window.scrollY > (device === "mobile" ? 200 : 1000))
         }
         window.addEventListener("scroll", handleScroll)
     }, [])
@@ -182,7 +182,7 @@ const SortProduct: NextPage = ({ initialProps, ...props }: any) => {
                                                         className={scroll ? "product-card aos-animate" : "product-card"}
                                                     >
                                                         <Stack className="card-head" alignItems={"center"}>
-                                                            <img src={"/img/products/400.png"} alt="" />
+                                                            <img src={product_img} alt="" />
                                                         </Stack>
                                                         <Box>
                                                             <Divider variant="middle" sx={{ borderColor: "gray" }} />
