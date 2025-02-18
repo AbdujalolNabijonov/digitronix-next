@@ -35,49 +35,12 @@ html {
 .menu-item {
   height: auto;
   padding: 0;
+  width: 380px;
+  background-color: #201f2f;
   .menu-title {
-    flex-direction: row;
-    align-items: center;
-    gap: 20px;
-    justify-content: center;
-    width: 380px;
-    color: white;
-    padding: 10px 0;
-    div:nth-child(1) {
-      font-size: 25px;
-      font-weight: 600;
-      letter-spacing: 1px;
-    }
+    width: 100%;
   }
-  .menu-body {
-    height: 350px;
-    overflow-y: auto;
-    .msg-left {
-      flex-direction: row;
-      gap: 5px;
-      align-items: end;
-      margin: 10px 5px;
-      .msg-item{
-        color: white;
-        width: 200px;
-        overflow-wrap: break-word;
-        word-break: break-word; 
-        white-space: normal;
-        background-color: #838080;
-        height: auto;
-        padding: 10px;
-        margin-bottom: 10px;
-        div:nth-child(2){
-            align-self: end;
-            font-size: 12px;
-        }
-      }
-    }
-    .msg-middle{
-      margin: 10px 0;
-      color: white;
-      text-align: center;
-      font-size: 14px;
-    }
+  .menu-body{
+    width: 100%;
   }
 }

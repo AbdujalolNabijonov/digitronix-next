@@ -64,14 +64,14 @@ const CommunityChat = () => {
                 open={Boolean(anchorEl)}
                 onClose={toggleMenuHandler}
             >
-                <MenuItem disableRipple className="menu-item">
-                    <Stack sx={{ backgroundColor: "#201F2F" }}>
-                        <Stack className="menu-title">
+                <Stack  className="menu-item">
+                    <Stack>
+                        <Stack className="menu-title" justifyContent={"center"}>
                             <Box>Online Chat</Box>
                             <RippleBadge badgeContent={totalClients} />
                         </Stack>
                         <Divider sx={{ borderBottomColor: "white" }} />
-                        <Stack className="menu-body" justifyContent={"start"}>
+                        <Stack className="menu-body">
                             {
                                 messages.map((message: any, index: number) => {
                                     const imageMember = message.memberData && message.memberData.memberImage ? `${serverApi}/${message.memberData.memberImage}` : "/img/profile/noUser.jpg"
@@ -135,7 +135,7 @@ const CommunityChat = () => {
                             </CssVarsProvider>
                         </Stack>
                     </Stack>
-                </MenuItem>
+                </Stack>
             </Menu>
         </Stack>
     )
