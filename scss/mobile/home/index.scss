@@ -161,13 +161,14 @@
     height: 500px;
     .swiper {
       width: 100%;
-      padding: 40px 30px;
+      padding: 20px 30px;
       .product-card {
         font-size: 14px;
         justify-content: space-evenly;
         box-shadow: 0 0 10px rgb(53, 53, 53);
         cursor: pointer;
         height: auto;
+        margin-left: 50px;
         width: 250px;
         background-color: whitesmoke;
         border-radius: 10px;
@@ -246,19 +247,19 @@
         }
       }
       .event-swiper {
-        padding: 30px 20px;
+        padding: 30px 0px;
         width: 100%;
         display: flex;
-        justify-content: space-between;
         .swiper-button-prev,
         .swiper-button-next {
           background-color: rgb(115, 111, 111);
-          height: 30px;
-          width: 30px;
+          height: 25px;
+          width: 25px;
           border-radius: 20px;
           transition: transform 0.3s ease-in-out;
           &::after {
             color: white;
+            font-size: 14px;
           }
           &:hover {
             transform: scale(1.1);
@@ -276,7 +277,7 @@
           justify-content: center;
           align-items: center;
           cursor: pointer;
-          height: 310px;
+          height: 31s0px;
           width: 200px;
           background-repeat: no-repeat;
           background-size: cover;
@@ -287,7 +288,7 @@
             background-color: whitesmoke;
             margin: 10px;
             border-radius: 10px;
-            height: 250px;
+            height: 270px;
             .title {
               font-size: 11px;
               margin: 0px 10px;
@@ -329,7 +330,7 @@
       }
       .horizontal-card {
         padding: 7px;
-        height: 200px;
+        height: auto;
         width: 100%;
         border-radius: 20px;
         overflow: hidden;

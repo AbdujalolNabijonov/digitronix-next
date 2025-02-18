@@ -42,8 +42,11 @@
             .desc {
               color: gray;
               width: 650px;
+              height: 180px;
+              overflow-y: auto;
             }
             button {
+              margin-top: 20px;
               display: inline;
               color: white;
               background-color: #d77b3d;
@@ -108,7 +111,7 @@
                   justify-content: space-evenly;
                   box-shadow: 0 0 10px rgb(53, 53, 53);
                   cursor: pointer;
-                  height: 530px;
+                  height: 560px;
                   width: 350px;
                   background-color: whitesmoke;
                   border-radius: 20px;
@@ -149,7 +152,7 @@
         padding: 50px 0 100px 0;
         .container {
           position: relative;
-          height: 70vh;
+          height: 80vh;
           video {
             height: 100%;
             width: 100%;

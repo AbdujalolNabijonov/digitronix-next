@@ -6,7 +6,7 @@ import TabList from '@mui/lab/TabList';
 import { Box, Button, Fab, IconButton, Menu, MenuItem, Pagination, Stack, Table, TableBody, TableCell, TableHead, TableRow } from "@mui/material"
 import { numberSplitterHandler } from "@/libs/features/splitter";
 import moment from "moment";
-import { Pen, Trash } from "phosphor-react";
+import { Eye, Pen, Trash } from "phosphor-react";
 import { Product } from "@/libs/types/product/product";
 import { ErrorOutline } from "@mui/icons-material";
 import { useReactiveVar, useQuery, useMutation } from "@apollo/client"
@@ -91,6 +91,10 @@ const AllProducts = () => {
     const handlePaginationChange = (e: any, page: number) => {
         searchObj.page = page;
         setSearchObj({ ...searchObj })
+    }
+    const navigatetoHandler = (productId: string) => {
+        const link = `/products/detail?id=${productId}`
+        router.push(link, link, { scroll: false })
     }
 
     const statusChangeHandler = async (e: any, status: string, productId?: string) => {
@@ -220,7 +224,7 @@ const AllProducts = () => {
                                                     <TableCell className="trow-item" align="center">
                                                         <Stack className="action-btn">
                                                             <IconButton onClick={() => {
-                                                                router.push(`/memberPage?stage=8&productId=${product._id}`)
+                                                                router.push(`/member?stage=8&productId=${product._id}`)
                                                             }}>
                                                                 <Pen />
                                                             </IconButton>
@@ -228,6 +232,11 @@ const AllProducts = () => {
                                                                 statusChangeHandler(e, ProductStatus.DELETE, product._id)
                                                             }}>
                                                                 <Trash />
+                                                            </IconButton>
+                                                            <IconButton onClick={(e: any) => {
+                                                                navigatetoHandler(product._id)
+                                                            }}>
+                                                                <Eye />
                                                             </IconButton>
                                                         </Stack>
                                                     </TableCell>

@@ -97,6 +97,15 @@ const Community: NextPage = ({ initialProps, ...props }: any) => {
             await sweetErrorHandling(err)
         }
     }
+    const navigateGoHandler = () => {
+        try {
+            if (!user._id) throw new Error(Messages.error2)
+            const link = `/member?stage=6`
+            router.push(link, link, { scroll: false })
+        } catch (err: any) {
+            sweetErrorHandling(err).then()
+        }
+    }
     if (device === "mobile") {
         return (
             <Box>Mobile Version is Developing</Box>
@@ -120,7 +129,7 @@ const Community: NextPage = ({ initialProps, ...props }: any) => {
                                 <Box>Express your opinions freely here without content restrictions</Box>
                             </Stack>
                             <Box>
-                                <Button variant={"contained"} endIcon={<Edit />}>Write</Button>
+                                <Button variant={"contained"} endIcon={<Edit />} onClick={navigateGoHandler}>Write</Button>
                             </Box>
                         </Stack>
                         <TabPanel value={value} sx={{ height: "500px" }}>

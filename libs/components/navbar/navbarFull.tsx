@@ -371,7 +371,7 @@ const Navbar: NextPage = (props: any) => {
                                     !user._id ? null : (
                                         <Link
                                             href={"/member?stage=7"}
-                                            className={router.pathname.includes("memberPage") ? "active" : ""}
+                                            className={router.pathname.includes("member") ? "active" : ""}
                                         >
                                             {t('My Profile')}
                                         </Link>

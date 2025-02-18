@@ -94,7 +94,7 @@ const TuiEditor = () => {
             })
             await sweetTopSmallSuccessAlert("Article is created successfully", 700);
             await router.push({
-                pathname: "/memberPage",
+                pathname: "/member",
                 query: { stage: '5' }
             })
 

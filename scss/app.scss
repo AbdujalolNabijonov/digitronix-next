@@ -44,3 +44,11 @@ html {
     width: 100%;
   }
 }
+.pagination-box {
+  align-items: center;
+  margin-top: 30px;
+  .css-15k5uk4-MuiButtonBase-root-MuiPaginationItem-root {
+    color: rgb(212, 206, 206);
+    border-color: rgb(78, 75, 75);
+  }
+}

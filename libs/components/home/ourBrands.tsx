@@ -118,10 +118,6 @@ const OurBrands = () => {
                                                 <div className="desc">
                                                     {member.memberDesc}
                                                 </div>
-                                                <Stack className={"address"} direction={"row"}>
-                                                    <Place />
-                                                    <div>{member.memberAddress}</div>
-                                                </Stack>
                                                 <Button onClick={() => {
                                                     const link = `/retailers/detail?id=${member._id}`
                                                     router.push(link, link, { scroll: false })

@@ -35,7 +35,7 @@ const SortProduct: NextPage = ({ initialProps, ...props }: any) => {
     //LifeCircle
     useEffect(() => {
         const handleScroll = () => {
-            setScroll(window.scrollY > (device === "mobile" ? 450 : 1000))
+            setScroll(window.scrollY > (device === "mobile" ? 350 : 1000))
         }
         window.addEventListener("scroll", handleScroll)
     }, [])
@@ -159,7 +159,7 @@ const SortProduct: NextPage = ({ initialProps, ...props }: any) => {
                             {getTargetProductsLoading ? <Box sx={{ alignSelf: "center" }}><CircularProgress size={"3rem"} /></Box> :
                                 targetProducts && targetProducts.length > 0 ? (
                                     <Swiper
-                                        slidesPerView={3}
+                                        slidesPerView={device == "mobile" ? 1 : 3}
                                         spaceBetween={30}
                                         pagination={{
                                             clickable: true,

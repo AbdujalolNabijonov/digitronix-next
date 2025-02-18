@@ -24,7 +24,7 @@ const AddProduct = () => {
     const requiredFields: Record<string, string[]> = {
         LAPTOP: ["productName", "productBrand", "productPrice", "productCore", "productDisplay", "productGraphics", "productImages", "productMemory", "productOS", "productSerie", "productStorage"],
         DESKTOP: ["productName", "productBrand", "productPrice", "productCore", "productGraphics", "productImages", "productMemory", "productOS", "productSerie", "productStorage"],
-        GRAPHICS: ["productName", "productBrand", "productPrice", "productGraphics", "productImages", "productSerie", "productStorage"],
+        GRAPHICS: ["productName", "productBrand", "productPrice", "productImages", "productSerie", "productStorage"],
         KEYBOARD: ["productName", "productBrand", "productPrice", "productConnectivity", "productImages", "productSerie"],
         MICE: ["productName", "productBrand", "productPrice", "productConnectivity", "productImages", "productSerie"],
         CHAIR: ["productName", "productBrand", "productPrice", "productImages", "productWeight"]
@@ -137,6 +137,7 @@ const AddProduct = () => {
             if (confirm) {
                 await createProduct({ variables: { input: productObj } });
                 await sweetTopSmallSuccessAlert("Product created successfully!")
+                router.push("/member?stage=9")
             }
         } catch (err: any) {
             console.log(`Error: submitHandler, ${err.message}`)
@@ -166,7 +167,7 @@ const AddProduct = () => {
             if (confirm) {
                 await updateProduct({ variables: { input: { ...productObj, _id: productId } } });
                 await sweetTopSmallSuccessAlert("Product updated successfully!")
-                router.push("/memberPage?stage=9")
+                router.push("/member?stage=9")
             }
         } catch (err: any) {
             console.log(`ERROR: updateProductHandler, ${err.message}`)
@@ -605,6 +606,8 @@ const AddProduct = () => {
                                         <Select
                                             placeholder="Select a brand"
                                             indicator={<KeyboardArrowDown />}
+                                            onChange={serieSelectHandler}
+                                            value={productObj.productSerie}
                                             sx={{
                                                 padding: "10px",
                                                 [`& .${selectClasses.indicator}`]: {
@@ -622,13 +625,13 @@ const AddProduct = () => {
                                     </FormControl>
                                     <FormControl sx={{ flex: 1 }}>
                                         <FormLabel className={"add-label"}>
-                                            Memory Ram
+                                            VRAM Storage
                                         </FormLabel>
                                         <Select
                                             placeholder="Select a brand"
                                             indicator={<KeyboardArrowDown />}
-                                            onChange={memorySelectHandler}
-                                            value={productObj.productMemory}
+                                            value={productObj.productStorage}
+                                            onChange={storageSelectHandler}
                                             sx={{
                                                 padding: "10px",
                                                 [`& .${selectClasses.indicator}`]: {
@@ -639,7 +642,7 @@ const AddProduct = () => {
                                                 },
                                             }}
                                         >
-                                            {[2, 4, 8, 16, 32, 64, 128, 256].map((memory: number, index: number) => (
+                                            {[2, 4, 6, 8, 10, 12, 16, 20, 24, 32, 48].map((memory: number, index: number) => (
                                                 <Option value={memory} key={memory}>{memory}GB</Option>
                                             ))}
                                         </Select>
