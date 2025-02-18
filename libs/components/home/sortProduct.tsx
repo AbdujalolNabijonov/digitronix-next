@@ -6,7 +6,7 @@ import { Box, Button, CircularProgress, Divider, IconButton, Stack } from "@mui/
 import { NextPage } from "next"
 import { ArrowSquareOut, Cpu, HardDrive, HardDrives, Laptop, Monitor } from "phosphor-react"
 import { useDebugValue, useEffect, useState } from "react"
-import { Keyboard, Mousewheel, Navigation } from "swiper/modules"
+import { Keyboard, Mousewheel, Navigation, Pagination } from "swiper/modules"
 import { Swiper, SwiperSlide } from "swiper/react"
 import { useMutation, useQuery, useReactiveVar } from "@apollo/client"
 import { GET_ALL_PRODUCTS } from "@/apollo/user/query"
@@ -35,7 +35,7 @@ const SortProduct: NextPage = ({ initialProps, ...props }: any) => {
     //LifeCircle
     useEffect(() => {
         const handleScroll = () => {
-            setScroll(window.scrollY > (device === "mobile" ? 200 : 1000))
+            setScroll(window.scrollY > 1000)
         }
         window.addEventListener("scroll", handleScroll)
     }, [])
@@ -165,7 +165,7 @@ const SortProduct: NextPage = ({ initialProps, ...props }: any) => {
                                             clickable: true,
                                         }}
                                         keyboard={true}
-                                        modules={[Keyboard, Navigation]}
+                                        modules={[Keyboard, Navigation, Pagination]}
                                         className="swiper"
                                     >
                                         {targetProducts.map((product: Product, index: number) => {
@@ -179,7 +179,7 @@ const SortProduct: NextPage = ({ initialProps, ...props }: any) => {
                                                         }}
                                                         data-aos="fade-up"
                                                         data-aos-duration={`${3000 * index}`}
-                                                        className={scroll ? "product-card aos-animate" : "product-card"}
+                                                        className={scroll || device==="mobile" ? "product-card aos-animate" : "product-card"}
                                                     >
                                                         <Stack className="card-head" alignItems={"center"}>
                                                             <img src={product_img} alt="" />
