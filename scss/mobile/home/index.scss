@@ -81,6 +81,7 @@
       padding: 20px 0;
       flex: 1;
       .control-panel {
+        width: 30%;
         .css-y8iohq-MuiTabs-indicator {
           background-color: white;
           width: 3px;
@@ -88,7 +89,7 @@
       }
       .brand-info {
         padding-left: 10px;
-        width: 150px;
+        flex: 1;
         .title {
           font-size: 20px;
           color: white;

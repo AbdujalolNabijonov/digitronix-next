@@ -10,6 +10,7 @@ export const Messages = {
 	error6: "Successfully log out!",
 	error7: "You can not like yourself",
 	error8: "You can not upload more than 5 images",
+	error9: "This is not valid email!",
 	warn1: "You are blocked, Contact with admin",
 	success1: "Youa are successfully log in!",
 	success2: "Sucessfully commented!",

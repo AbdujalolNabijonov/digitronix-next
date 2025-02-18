@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import LayoutBasic from "@/libs/components/layouts/LayoutBasic"
 import ProductCard from "@/libs/components/products/productCard"
 import { Product } from "@/libs/types/product/product"
-import { Box, Divider, IconButton, Pagination, Stack } from "@mui/material"
+import { Box, Button, Divider, IconButton, Pagination, Stack } from "@mui/material"
 import { Devices, Mailbox } from "@phosphor-icons/react"
 import { useRouter } from "next/router"
 import { MapPin, Phone } from "phosphor-react"
@@ -191,6 +191,13 @@ const Detail = (props: any) => {
         searchObj.page = page
         setSearchObj({ ...searchObj })
     }
+    const navigatePageHandler = () => {
+        if (user._id === member?._id) {
+            router.push(`/member?stage=3`)
+        } else {
+            router.push(`/member?stage=3&memberId=${member?._id}`)
+        }
+    }
     if (device === "mobile") {
         return (
             <h1>Mobile version is developing</h1>
@@ -251,7 +258,7 @@ const Detail = (props: any) => {
                         />
                     </Stack>
                     <Stack className="retailer-info">
-                        <img src={member?.memberImage ? `${serverApi}/${member.memberImage}` : "/img/profile/noUser.jpg"} alt="" />
+                        <img src={member?.memberImage ? `${serverApi}/${member?.memberImage}` : "/img/profile/model5.jpeg"} alt="" />
                         <Stack className="info-body">
                             <Box className="title">{member?.memberFullName ?? member?.memberNick}</Box>
                             <Stack className="contact-info">
@@ -273,24 +280,29 @@ const Detail = (props: any) => {
                                 </Stack>
                             </Stack>
                             <Divider sx={{ borderBottomWidth: "2px" }} />
-                            <Stack direction={"row"} alignItems={"center"} justifyContent={"end"} fontSize={"20px"} padding={"2px"}>
-                                <Stack direction={"row"} alignItems={"center"} gap={"2px"}>
-                                    <IconButton disableRipple >
-                                        <RemoveRedEyeRounded />
-                                    </IconButton>
-                                    <Box>{member?.memberViews}</Box>
-                                </Stack>
-                                <Stack direction={"row"} alignItems={"center"} gap={"2px"}>
-                                    <IconButton onClick={(e) => {
-                                        likeTargetHandler(e, member?._id as string)
-                                        //@ts-ignore
-                                        if (!member?.meLiked[0]?.myFavorite) {
-                                            noticeLikeHandler(member?._id)
-                                        }
-                                    }}>
-                                        <ThumbUpAltRounded sx={member?.meLiked && member?.meLiked[0]?.myFavorite ? { fill: "#f44336" } : { fill: "gray" }} />
-                                    </IconButton>
-                                    <Box>{member?.memberLikes}</Box>
+                            <Stack justifyContent={"space-between"} flexDirection={"row"} alignItems={"center"}>
+                                <Button className="view-btn" onClick={navigatePageHandler}>
+                                    View Profile
+                                </Button>
+                                <Stack direction={"row"} alignItems={"center"} fontSize={"20px"} padding={"2px"}>
+                                    <Stack direction={"row"} alignItems={"center"} gap={"2px"}>
+                                        <IconButton disableRipple >
+                                            <RemoveRedEyeRounded />
+                                        </IconButton>
+                                        <Box>{member?.memberViews}</Box>
+                                    </Stack>
+                                    <Stack direction={"row"} alignItems={"center"} gap={"2px"}>
+                                        <IconButton onClick={(e) => {
+                                            likeTargetHandler(e, member?._id as string)
+                                            //@ts-ignore
+                                            if (!member?.meLiked[0]?.myFavorite) {
+                                                noticeLikeHandler(member?._id)
+                                            }
+                                        }}>
+                                            <ThumbUpAltRounded sx={member?.meLiked && member?.meLiked[0]?.myFavorite ? { fill: "#f44336" } : { fill: "gray" }} />
+                                        </IconButton>
+                                        <Box>{member?.memberLikes}</Box>
+                                    </Stack>
                                 </Stack>
                             </Stack>
                         </Stack>

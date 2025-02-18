@@ -81,16 +81,8 @@ const Join = () => {
         setInput({ ...input, type: event.target.name })
     }
     const validatePhoneNumber = (e: any) => {
-        let newValue = e.key.replace(/\D/g, '')
-        if (input.phone) {
-            newValue = input.phone + newValue
-        }
-        if (e.key == "Backspace") {
-            newValue = newValue.slice(0, newValue.length - 1)
-        }
-        if (newValue.length < 12) {
-            setInput({ ...input, phone: newValue })
-        }
+        let value = e.target.value.replace(/\D/g, "");
+        setInput(prev => ({ ...prev, phone: value }));
     }
 
     const handleHiddenPassword = (cond: boolean) => {
@@ -111,7 +103,7 @@ const Join = () => {
                                 <div className="login_title">Create Account</div>
                                 <input type="text" id="floatingUser" placeholder="User Name" onChange={(e) => { setInput({ ...input, nick: e.target.value }) }} />
                                 <input type="email" id="floatingEmail" placeholder="Email" onChange={(e) => { setInput({ ...input, email: e.target.value }) }} />
-                                <input type="text" maxLength={11} id="floatingphone" placeholder="Phone Number" onKeyDown={validatePhoneNumber} value={input.phone} readOnly />
+                                <input type="text" maxLength={11} id="floatingphone" placeholder="Phone Number" onChange={validatePhoneNumber} value={input.phone} />
                                 <input type="type" id="floatingpassword" placeholder="Password" onChange={(e) => { setInput({ ...input, password: e.target.value }) }} />
                                 <input type="type" className="form-control" id="floatingre" placeholder="Re-enter Password" onKeyDown={handleKeyDownSignUp} onChange={(e) => { setCheckPassword(e.target.value) }} />
                                 <Stack direction={"row"} gap={"10px"} alignItems={"center"}>
@@ -148,7 +140,7 @@ const Join = () => {
                                 <Button className={"login-btn"} onClick={handleSignUpRequest} >Sign Up</Button>
                                 {
                                     device === "mobile" ? (
-                                        <Box sx={{marginTop:"20px"}} onClick={() => toggle(true)}>
+                                        <Box sx={{ marginTop: "20px" }} onClick={() => toggle(true)}>
                                             I'm already a member
                                         </Box>
                                     ) : null
@@ -182,7 +174,7 @@ const Join = () => {
                                 <Button onClick={handleLogInRequest}>Sign In</Button>
                                 {
                                     device === "mobile" ? (
-                                        <Box sx={{marginTop:"20px"}} onClick={() => toggle(false)}>
+                                        <Box sx={{ marginTop: "20px" }} onClick={() => toggle(false)}>
                                             Create an account
                                         </Box>
                                     ) : null

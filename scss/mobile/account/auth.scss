@@ -64,10 +64,7 @@
     }
   }
   .auth_container {
-    border-radius: 20px;
-    box-shadow:
-      0 14px 28px rgba(0, 0, 0, 0.25),
-      0 10px 10px rgba(0, 0, 0, 0.22);
+    border-radius: 10px;
     position: relative;
     overflow: hidden;
     width: 100%;
@@ -85,7 +82,6 @@
     opacity: 0;
     z-index: 1;
   }
-
   .auth_logIn {
     position: absolute;
     top: 0;
@@ -95,7 +91,6 @@
     width: 50%;
     z-index: 2;
   }
-
   .signUp_body,
   .logIn_body {
     display: flex;

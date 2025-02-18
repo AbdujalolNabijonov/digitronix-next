@@ -18,6 +18,7 @@ const MyPanel = (props: any) => {
         try {
             if (!user._id) throw new Error(Messages.error1)
             if (await sweetConfirmAlert('Do you want to logout?')) logOut();
+            router.push('/')
         } catch (err: any) {
             console.log(`Error: logoutHandler, ${err.message}`);
             await sweetErrorHandling(err)

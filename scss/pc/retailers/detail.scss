@@ -26,7 +26,7 @@
         .retailer-info {
           position: relative;
           width: 400px;
-          height: 480px;
+          height: 485px;
           background-color: white;
           box-shadow: 0 0 5px white;
           img {
@@ -53,6 +53,12 @@
                 gap: 10px;
                 align-items: center;
               }
+            }
+            .view-btn{
+              padding: 10px 15px;
+              background-color: #64bcdc;
+              border-radius: 5px;
+              color: white;
             }
           }
         }

@@ -90,9 +90,6 @@ const MemberPage: NextPage = (props: any) => {
                             <TabPanel value={"9"} className="tab-panel">
                                 <AllProducts />
                             </TabPanel>
-                            <TabPanel value={"9"} className="tab-panel">
-                                <AllProducts />
-                            </TabPanel>
                             <TabPanel value={"10"} className="tab-panel">
                                 <Notifications />
                             </TabPanel>

@@ -5,6 +5,9 @@ import { Email, Facebook, Instagram, LinkedIn, LockClock, MyLocation, Phone, Twi
 import Link from "next/link"
 import { useReactiveVar } from "@apollo/client"
 import { userVar } from "@/apollo/store"
+import { sweetErrorHandling, sweetTopSmallSuccessAlert } from "@/libs/sweetAlert"
+import { useValidEmail } from "@/libs/hooks/useValidEmail"
+import { Messages } from "@/libs/config"
 
 
 const Footer: NextPage = (props: any) => {
@@ -15,6 +18,17 @@ const Footer: NextPage = (props: any) => {
     useEffect(() => {
         window.scrollTo(0, 0)
     }, [])
+    async function handleSubmitEmail() {
+        try {
+            const email = refs.current["email"].value;
+            const result = useValidEmail(email)
+            if(!result)throw new Error(Messages.error9)
+            sweetTopSmallSuccessAlert("successfully submited!", 1000, false)
+            refs.current["email"].value = ""
+        } catch (err) {
+            await sweetErrorHandling(err)
+        }
+    }
     return (
         <Stack>
             <Stack className="container">
@@ -67,8 +81,8 @@ const Footer: NextPage = (props: any) => {
                     <Box className="email-col">
                         <div className="title">If you have questions. Feel free contact with us.</div>
                         <Stack direction={"row"} gap={"30px"}>
-                            <input type="text" placeholder="Enter an email" />
-                            <Button>Subscribe</Button>
+                            <input type="text" placeholder="Enter an email" ref={(ele:any) => refs.current["email"] = ele}/>
+                            <Button onClick={handleSubmitEmail}>Subscribe</Button>
                         </Stack>
                         <Stack className="contact-info" gap={2}>
                             <Stack gap={1} direction={"row"}>
