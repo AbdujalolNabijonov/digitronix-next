@@ -1,7 +1,7 @@
 import { Direction } from "@/libs/enum/common.enum"
 import { ProductCategory, ProductSort } from "@/libs/enum/product.enum"
 import { ProductsInquiry } from "@/libs/types/product/product.input"
-import { ErrorOutline, Memory, RemoveRedEyeRounded, SdCard, ThumbUpAltRounded } from "@mui/icons-material"
+import { ErrorOutline, RemoveRedEyeRounded, ThumbUpAltRounded } from "@mui/icons-material"
 import { Box, Button, CircularProgress, Divider, IconButton, Stack } from "@mui/material"
 import { NextPage } from "next"
 import { ArrowSquareOut, Cpu, HardDrive, HardDrives, Laptop, Monitor } from "phosphor-react"
@@ -35,7 +35,7 @@ const SortProduct: NextPage = ({ initialProps, ...props }: any) => {
     //LifeCircle
     useEffect(() => {
         const handleScroll = () => {
-            setScroll(window.scrollY > (device === "mobile" ? 350 : 1000))
+            setScroll(window.scrollY > (device === "mobile" ? 300 : 1000))
         }
         window.addEventListener("scroll", handleScroll)
     }, [])
@@ -182,7 +182,7 @@ const SortProduct: NextPage = ({ initialProps, ...props }: any) => {
                                                         className={scroll ? "product-card aos-animate" : "product-card"}
                                                     >
                                                         <Stack className="card-head" alignItems={"center"}>
-                                                            <img src={product_img} alt="" />
+                                                            <img src={"/img/products/400.png"} alt="" />
                                                         </Stack>
                                                         <Box>
                                                             <Divider variant="middle" sx={{ borderColor: "gray" }} />
