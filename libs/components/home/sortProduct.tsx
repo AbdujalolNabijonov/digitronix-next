@@ -159,7 +159,7 @@ const SortProduct: NextPage = ({ initialProps, ...props }: any) => {
                             {getTargetProductsLoading ? <Box sx={{ alignSelf: "center" }}><CircularProgress size={"3rem"} /></Box> :
                                 targetProducts && targetProducts.length > 0 ? (
                                     <Swiper
-                                        slidesPerView={device == "mobile" ? 1 : 3}
+                                        slidesPerView={device == "mobile" ? 1 : 4}
                                         spaceBetween={30}
                                         pagination={{
                                             clickable: true,
@@ -170,6 +170,7 @@ const SortProduct: NextPage = ({ initialProps, ...props }: any) => {
                                     >
                                         {targetProducts.map((product: Product, index: number) => {
                                             const product_img = `${serverApi}/${product.productImages[0]}`
+                                            const product_img2 = `${serverApi}/${product.productImages[1]}`
                                             return (
                                                 <SwiperSlide key={product._id} >
                                                     <Stack
@@ -182,7 +183,12 @@ const SortProduct: NextPage = ({ initialProps, ...props }: any) => {
                                                         className={scroll || device==="mobile" ? "product-card aos-animate" : "product-card"}
                                                     >
                                                         <Stack className="card-head" alignItems={"center"}>
-                                                            <img src={product_img} alt="" />
+                                                            <img src={product_img} alt="" className="toogle-img1"/>
+                                                            {
+                                                                product_img2?(
+                                                                    <img src={product_img2} alt="" className="toogle-img2" />
+                                                                ):null
+                                                            }
                                                         </Stack>
                                                         <Box>
                                                             <Divider variant="middle" sx={{ borderColor: "gray" }} />

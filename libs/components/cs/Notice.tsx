@@ -5,6 +5,7 @@ import { useState } from "react"
 import { useQuery } from "@apollo/client"
 import { GET_NOTICES } from "@/apollo/user/query"
 import { ErrorOutline } from "@mui/icons-material"
+import { NoticeGroup } from "@/libs/enum/notice.enum"
 
 const Notice = () => {
     const [notices, setNotices] = useState<NoticeObj[]>([])
@@ -16,6 +17,7 @@ const Notice = () => {
                 page: 1,
                 limit: 10,
                 search: {
+                    noticeGroup:NoticeGroup.ADMIN
                 }
             }
         },

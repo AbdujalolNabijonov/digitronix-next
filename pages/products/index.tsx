@@ -35,7 +35,6 @@ export const getStaticProps = async ({ locale }: any) => ({
 const Products: NextPage = ({ initialProps, ...props }: any) => {
     const device = useDeviceDetect()
     const router = useRouter();
-    const socket = useReactiveVar(socketVar)
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [productsInquiry, setProductsInquiry] = useState<ProductsInquiry>(initialProps);
     const [products, setProducts] = useState<Product[]>([])
@@ -138,6 +137,7 @@ const Products: NextPage = ({ initialProps, ...props }: any) => {
                                         <MenuItem value={"createdAt"}>New</MenuItem>
                                         <MenuItem value={"productViews"}>Popular</MenuItem>
                                         <MenuItem value={"productLikes"}>Trend</MenuItem>
+                                        <MenuItem value={"productRank"}>Height Ranked</MenuItem>
                                     </Select>
                                 </Stack>
                             </Stack>
