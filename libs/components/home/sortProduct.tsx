@@ -183,28 +183,28 @@ const SortProduct: NextPage = ({ initialProps, ...props }: any) => {
                                                         className={scroll || device==="mobile" ? "product-card aos-animate" : "product-card"}
                                                     >
                                                         <Stack className="card-head" alignItems={"center"}>
-                                                            <img src={product_img} alt="" className="toogle-img1"/>
+                                                            <img src={"/img/products/400.png"} alt="" className="toogle-img1"/>
                                                             {
                                                                 product_img2?(
-                                                                    <img src={product_img2} alt="" className="toogle-img2" />
+                                                                    <img src={"/img/products/400.png"} alt="" className="toogle-img2" />
                                                                 ):null
                                                             }
                                                         </Stack>
                                                         <Box>
                                                             <Divider variant="middle" sx={{ borderColor: "gray" }} />
                                                             <Stack className="card-body" gap={"5px"}>
-                                                                <Stack direction={"row"} gap={"10px"} alignItems={"center"} className="name">
+                                                                <Stack direction={"row"} gap={"10px"} alignItems={"center"} sx={{fontWeight:"600"}} className="name">
                                                                     <Laptop size={30} />
                                                                     <div>{product.productName}</div>
                                                                 </Stack>
                                                                 {
                                                                     product.productCategory === ProductCategory.DESKTOP || product.productCategory === ProductCategory.LAPTOP ? (
                                                                         <>
-                                                                            <Stack direction={"row"} gap={"10px"} alignItems={"center"} className="cpu">
+                                                                            <Stack direction={"row"} gap={"10px"} alignItems={"center"} className="name">
                                                                                 <Cpu size={30} />
                                                                                 <div>{product.productCore}</div>
                                                                             </Stack>
-                                                                            <Stack direction={"row"} gap={"10px"} alignItems={"center"} className="graphics">
+                                                                            <Stack direction={"row"} gap={"10px"} alignItems={"center"} className="name">
                                                                                 <GraphicsCard size={30} />
                                                                                 <div>{product.productGraphics}</div>
                                                                             </Stack>

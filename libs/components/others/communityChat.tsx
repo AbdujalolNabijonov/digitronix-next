@@ -109,13 +109,7 @@ const CommunityChat = () => {
                                             </Stack>
                                         )
                                     } else {
-                                        return (
-                                            <Stack className="msg-middle" flexDirection={"row"}>
-                                                <Divider sx={{ borderBottomColor: "white", flex: 1 }} />
-                                                <Box>{message.memberData?.memberNick ?? "GUEST"} has connected</Box>
-                                                <Divider sx={{ borderBottomColor: "white", flex: 1 }} />
-                                            </Stack>
-                                        )
+                                        return null
                                     }
                                 })
                             }

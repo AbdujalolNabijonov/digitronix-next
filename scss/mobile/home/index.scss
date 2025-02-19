@@ -161,7 +161,7 @@
   }
   .target-products {
     margin-top: 20px;
-    height: 500px;
+    height: auto;
     .swiper {
       width: 100%;
       padding: 20px 30px 40px 30px;
@@ -180,14 +180,25 @@
         .card-head {
           img {
             width: 100%;
+            display: none;
           }
         }
+        &:not(:hover) .toogle-img1 {
+          display: block;
+        } 
+        &:hover .toogle-img2 {
+          display: block;
+        }
         .card-body {
-          margin: 10px 0;
+          margin: 5px 0;
           .name {
             font-size: 14px;
-            font-weight: 600;
-            letter-spacing: 1px;
+            div:nth-child(1){
+              width: 20%;
+            }
+            div:nth-child(2){
+              width: 80%;
+            }
           }
         }
         .product-status {
