@@ -37,21 +37,31 @@ const CommunityChat = () => {
             setAnchorEl1(null)
         }
     }
+
     useEffect(() => {
-        socket.onmessage = ({ data }) => {
-            const payload = JSON.parse(data as string);
+        const handleMessage = ({ data }: MessageEvent) => {
+            const payload = JSON.parse(data);
             if (payload.event === "info") {
                 setTotalClients(payload.totalClients);
             }
             if (payload.event === "messages") {
-                setMessages([...payload.messages])
+                setMessages([...payload.messages]);
             }
             if (payload.event === "message") {
-                messages.push(payload)
-                setMessages([...messages])
+                setMessages((prev) => [...prev, payload]);
             }
+        };
+
+        if (socket) {
+            socket.onmessage = handleMessage;
         }
-    }, [socket])
+
+        return () => {
+            if (socket) {
+                socket.onmessage = null; // Cleanup
+            }
+        };
+    }, [socket]);
 
     const submitMessageHandler = async () => {
         try {
@@ -87,7 +97,7 @@ const CommunityChat = () => {
                                     const imageMember = message.memberData && message.memberData.memberImage ? `${serverApi}/${message.memberData.memberImage}` : "/img/profile/noUser.jpg"
                                     if (message.event === "message" && message.memberData?._id !== user._id) {
                                         return (
-                                            <Stack className="msg-left">
+                                            <Stack className="msg-left" key={index}>
                                                 <Avatar src={imageMember} alt="image" />
                                                 <Stack className="msg-item" sx={{ borderRadius: "5px 5px 5px 0px" }}>
                                                     <Box>
@@ -99,7 +109,7 @@ const CommunityChat = () => {
                                         )
                                     } else if (message.event === "message" && message.memberData?._id === user._id) {
                                         return (
-                                            <Stack className="msg-left" justifyContent={"end"}>
+                                            <Stack className="msg-left" justifyContent={"end"} key={index}>
                                                 <Stack className="msg-item" sx={{ borderRadius: "5px 5px 0px 5px" }}>
                                                     <Box>
                                                         {message.text}
