@@ -108,8 +108,6 @@ const CommunityChat = () => {
                                                 </Stack>
                                             </Stack>
                                         )
-                                    } else {
-                                        return null
                                     }
                                 })
                             }
