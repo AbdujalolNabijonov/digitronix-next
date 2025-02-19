@@ -183,10 +183,10 @@ const SortProduct: NextPage = ({ initialProps, ...props }: any) => {
                                                         className={scroll || device==="mobile" ? "product-card aos-animate" : "product-card"}
                                                     >
                                                         <Stack className="card-head" alignItems={"center"}>
-                                                            <img src={"/img/products/400.png"} alt="" className="toogle-img1"/>
+                                                            <img src={product_img} alt="" className="toogle-img1"/>
                                                             {
                                                                 product_img2?(
-                                                                    <img src={"/img/products/400.png"} alt="" className="toogle-img2" />
+                                                                    <img src={product_img2} alt="" className="toogle-img2" />
                                                                 ):null
                                                             }
                                                         </Stack>

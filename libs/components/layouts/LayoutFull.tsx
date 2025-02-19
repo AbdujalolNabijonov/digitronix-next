@@ -17,14 +17,15 @@ const LayoutFull = (Component: NextPage) => {
                         <title>Digitronix</title>
                     </Head>
                     <Stack className="mobile-wrapper">
+                        <Navbar />
                         <Stack className="main">
                             <Component {...props} />
                             <CommunityChat />
                         </Stack>
+                        <Box className="footer">
+                            <Footer />
+                        </Box>
                     </Stack>
-                    <Box className="footer">
-                        <Footer />
-                    </Box>
                 </>
             )
         } else if (device === "desktop") {
