@@ -1,18 +1,21 @@
 import React, { useCallback, useState } from "react";
 import LayoutBasic from "@/libs/components/layouts/LayoutBasic";
-import { Box, Button, Checkbox, FormControlLabel, FormGroup, Stack } from "@mui/material";
+import { Box, Button, Checkbox, Divider, FormControlLabel, FormGroup, Stack } from "@mui/material";
 import { sweetErrorAlert, sweetTopSmallSuccessAlert } from "@/libs/sweetAlert";
 import { logIn, signUp } from "@/libs/auth";
 import { useRouter } from "next/router";
 import { Messages } from "@/libs/config";
-import { RemoveRedEyeRounded, VisibilityOffRounded } from "@mui/icons-material";
+import { GitHub, Google, RemoveRedEyeRounded, VisibilityOffRounded } from "@mui/icons-material";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import useDeviceDetect from "@/libs/hooks/useDeviceDetector";
+import { useGoogleLogin } from "@react-oauth/google"
+import { jwtDecode } from "jwt-decode"
 export const getStaticProps = async ({ locale }: any) => ({
     props: {
         ...(await serverSideTranslations(locale, ['common'])),
     },
 });
+
 const Join = () => {
     //Initilizations
     const device = useDeviceDetect()
@@ -49,6 +52,16 @@ const Join = () => {
             console.log("handleLogInRequest:", err.message)
         }
     }, [input2])
+
+    const googleAuth = useGoogleLogin({
+        onSuccess: (code) => {
+            const member = jwtDecode(code.access_token);
+            console.log("user:", member)
+        },
+        onError: () => {
+            console.log("Failed to login")
+        }
+    })
 
     const handleLogInUserName = (e: any) => {
         if (!e.target.value.includes("@")) {
@@ -172,13 +185,21 @@ const Join = () => {
                                 </div>
                                 <div className="warn">If you forget your password, you can log in with your signed up email address </div>
                                 <Button onClick={handleLogInRequest}>Sign In</Button>
-                                {
-                                    device === "mobile" ? (
-                                        <Box sx={{ marginTop: "20px" }} onClick={() => toggle(false)}>
-                                            Create an account
-                                        </Box>
-                                    ) : null
-                                }
+                                <Stack sx={{ width: "100%", marginTop: "30px" }} flexDirection={"row"} gap={"10px"} alignItems={"center"}>
+                                    <Divider sx={{ borderColor: "black", flex: "1" }} orientation="horizontal" />
+                                    <Box>
+                                        OR
+                                    </Box>
+                                    <Divider sx={{ borderColor: "black", flex: "1" }} orientation="horizontal" />
+                                </Stack>
+                                <Stack flexDirection={"row"} justifyContent={"space-between"} sx={{marginTop:'20px'}} gap={"20px"}>
+                                    <Button startIcon={<Google/>} sx={{backgroundColor:"red"}} variant="contained" onClick={()=>googleAuth()}>
+                                        Google
+                                    </Button>
+                                    <Button startIcon={<GitHub/>} disabled>
+                                        GitHub
+                                    </Button>
+                                </Stack>
                             </Box>
                         </Box>
                         <Box className={"auth_overlay"} style={signIn ? { backgroundImage: 'url("/img/auth/2.png")' } : { transform: "translateX(-100%)", backgroundImage: 'url("/img/auth/1.png")' }}>
