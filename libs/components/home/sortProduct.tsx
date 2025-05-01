@@ -4,8 +4,8 @@ import { ProductsInquiry } from "@/libs/types/product/product.input"
 import { ErrorOutline, RemoveRedEyeRounded, ThumbUpAltRounded } from "@mui/icons-material"
 import { Box, Button, CircularProgress, Divider, IconButton, Stack } from "@mui/material"
 import { NextPage } from "next"
-import { ArrowSquareOut, Cpu, HardDrive, HardDrives, Laptop, Monitor } from "phosphor-react"
-import { useDebugValue, useEffect, useState } from "react"
+import {  Cpu,  HardDrives, Laptop, Monitor } from "phosphor-react"
+import { useEffect, useState } from "react"
 import { Keyboard, Mousewheel, Navigation, Pagination } from "swiper/modules"
 import { Swiper, SwiperSlide } from "swiper/react"
 import { useMutation, useQuery, useReactiveVar } from "@apollo/client"
@@ -15,12 +15,12 @@ import { Messages, serverApi } from "@/libs/config"
 import { GraphicsCard } from "@phosphor-icons/react"
 import { useRouter } from "next/router"
 import { LIKE_TARGET_PRODUCT } from "@/apollo/user/mutation"
-import { sweetErrorHandling, sweetTopSmallSuccessAlert } from "@/libs/sweetAlert"
+import { sweetErrorHandling } from "@/libs/sweetAlert"
 import { socketVar, userVar } from "@/apollo/store"
 import { NoticeGroup } from "@/libs/enum/notice.enum"
 import useDeviceDetect from "@/libs/hooks/useDeviceDetector"
 
-const SortProduct: NextPage = ({ initialProps, ...props }: any) => {
+const SortProduct: NextPage = ({ initialProps, ...props}: any) => {
     //Initialization
     const socket = useReactiveVar(socketVar)
     const [type, setType] = useState<string>(ProductCategory.LAPTOP);

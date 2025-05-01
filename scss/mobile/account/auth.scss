@@ -1,13 +1,14 @@
 .mobile-wrapper {
   .authMain {
     position: relative;
-    width: 100px;
     border-radius: 10px;
-    background-color: white;
+    background-color: #161f35;
+    color: white;
     input {
       border-radius: 5px;
       padding: 5px 10px;
       font-size: 17px;
+      color: black;
     }
     .auth-overlay {
       position: absolute;
@@ -21,17 +22,7 @@
           .login_title {
             font-weight: bold;
             font-size: 30px;
-          }
-          .login-btn {
-            width: 100%;
-            cursor: pointer;
-            padding: 10px 15px;
-            font-size: 17px;
-            border-radius: 5px;
-            background-color: #eb6753;
-            border: none;
             color: white;
-            letter-spacing: 1px;
           }
         }
       }
@@ -40,6 +31,7 @@
           .title {
             font-weight: bold;
             font-size: 35px;
+            color: white;
           }
           input {
             width: 300px;
@@ -47,16 +39,6 @@
           .warn {
             font-size: 14px;
             margin: 10px 0;
-          }
-          button {
-            width: 100%;
-            cursor: pointer;
-            padding: 10px 15px;
-            letter-spacing: 1px;
-            font-size: 17px;
-            border-radius: 5px;
-            background-color: #eb6753;
-            border: none;
             color: white;
           }
         }
@@ -67,9 +49,8 @@
     border-radius: 10px;
     position: relative;
     overflow: hidden;
-    width: 100%;
-    max-width: 100%;
-    min-height: 500px;
+    width: 90vw;
+    height: 600px;
   }
 
   .auth_signUp {
@@ -163,64 +144,6 @@
           transform: translateX(0);
           transition: transform 0.6s ease-in-out;
           background-color: transparent;
-          .left_overlay_title {
-            font-size: 25px;
-            color: black;
-            font-weight: bold;
-          }
-          p {
-            color: white;
-          }
-          button {
-            padding: 5px 15px;
-            background-color: #929090;
-            border-radius: 5px;
-            color: white;
-            font-size: 20px;
-            margin-top: 10px;
-            font-size: 16x;
-            cursor: pointer;
-          }
-        }
-        .overlay-wrapper {
-          position: absolute;
-          height: 100%;
-          width: 100%;
-          background-color: gray;
-          opacity: 0.7;
-          z-index: -1;
-        }
-      }
-      .righ_overlay {
-        position: absolute;
-        display: flex;
-        right: 10px;
-        .overlay_panel {
-          position: relative;
-          background-color: transparent;
-          padding: 10px;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          z-index: 99;
-          .right_overlay_title {
-            font-size: 25px;
-            color: black;
-            font-weight: bold;
-          }
-          p {
-            color: white;
-          }
-          button {
-            padding: 5px 15px;
-            background-color: #929090;
-            border-radius: 5px;
-            color: white;
-            font-size: 20px;
-            margin-top: 10px;
-            font-size: 16x;
-            cursor: pointer;
-          }
         }
         .overlay-wrapper {
           position: absolute;
@@ -239,13 +162,6 @@
       position: relative;
     }
 
-    .authMain {
-      top: 25%;
-      left: 0% !important;
-      width: 100% !important;
-      height: 300px !important;
-    }
-
     .auth_logIn {
       width: 100%;
     }
@@ -256,7 +172,6 @@
     }
 
     .overlay_panel {
-      /* Adjust the width of the overlay panel for mobile */
       width: 100%;
     }
 

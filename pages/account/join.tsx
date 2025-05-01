@@ -164,38 +164,7 @@ const Join = () => {
                                         {rePasswordHidden ? (<VisibilityOffRounded />) : (<RemoveRedEyeRounded />)}
                                     </Button>
                                 </div>
-                                <Stack direction={"row"} gap={"10px"} alignItems={"center"}>
-                                    <span className={'text'}>I want to be registered as:</span>
-                                    <Stack direction={"row"} alignItems={"center"} gap={"10px"}>
-                                        <FormGroup>
-                                            <FormControlLabel
-                                                control={
-                                                    <Checkbox
-                                                        size="small"
-                                                        name={'USER'}
-                                                        onChange={checkUserTypeHandler}
-                                                        checked={input.type === "USER"}
-                                                    />
-                                                }
-                                                label="User"
-                                            />
-                                        </FormGroup>
-                                        <FormGroup>
-                                            <FormControlLabel
-                                                control={
-                                                    <Checkbox
-                                                        size="small"
-                                                        name={'RETAILER'}
-                                                        onChange={checkUserTypeHandler}
-                                                        checked={input.type === "RETAILER"}
-                                                    />
-                                                }
-                                                label="Retailer"
-                                            />
-                                        </FormGroup>
-                                    </Stack>
-                                </Stack>
-                                <Button className={"login-btn"} onClick={handleSignUpRequest} >Sign Up</Button>
+                                <Button onClick={handleSignUpRequest} className="tarcking-wider font-bold text-white w-full mt-2 py-3 text-xl" variant="contained" color="warning" >Sign Up</Button>
                                 <Box className="self-start mt-3 text-sm text-gray-300">
                                     Have an account already? <a onClick={() => toggle(true)} className="cursor-pointer text-red-200 tracking-wider">Sign In</a>
                                 </Box>
@@ -214,13 +183,6 @@ const Join = () => {
                                         GitHub
                                     </Button>
                                 </Stack>
-                                {
-                                    device === "mobile" ? (
-                                        <Box sx={{ marginTop: "20px" }} onClick={() => toggle(true)}>
-                                            I'm already a member
-                                        </Box>
-                                    ) : null
-                                }
                             </Box>
                         </Box>
                         <Box className={"auth_logIn"}>
