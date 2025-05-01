@@ -13,6 +13,7 @@ import "swiper/swiper-bundle.css";
 import "../scss/pc/main.scss"
 import "../scss/mobile/main.scss"
 import "../scss/app.scss";
+import "./globals.css";
 import { GOOGLE_CLIENT_ID } from "@/libs/config";
 
 

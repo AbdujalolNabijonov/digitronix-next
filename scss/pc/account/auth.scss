@@ -3,11 +3,14 @@
     position: relative;
     width: 1000px;
     border-radius: 10px;
-    background-color: transparent;
+    background-color: #161f35;
+    color: white;
+    overflow: hidden;
     input {
       border-radius: 5px;
       padding: 5px 10px;
       font-size: 17px;
+      color: black;
     }
     .auth-overlay {
       position: absolute;
@@ -40,6 +43,7 @@
           .title {
             font-weight: bold;
             font-size: 35px;
+            color: white;
           }
           input {
             width: 300px;
@@ -48,7 +52,9 @@
             font-size: 14px;
             margin: 10px 0;
           }
-          button {
+          .auth-type{
+          }
+          .sign-btn {
             width: 100%;
             cursor: pointer;
             padding: 10px 15px;
@@ -64,13 +70,12 @@
     }
   }
   .auth_container {
-    border-radius: 20px;
     box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
     position: relative;
     overflow: hidden;
     width: 100%;
     max-width: 100%;
-    min-height: 450px;
+    min-height: 530px;
   }
 
   .auth_signUp {
@@ -120,6 +125,7 @@
       padding: 12px 15px;
       margin: 8px 0;
       width: 100%;
+      color: black;
     }
   }
 
@@ -142,103 +148,6 @@
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
-    .overlay_body {
-      position: relative;
-      color: #ffffff;
-      height: 100%;
-      width: 200%;
-      transform: translateX(0);
-      transition: transform 0.6s ease-in-out;
-      .overlay {
-        position: relative;
-        width: 400px;
-        height: 150px;
-        bottom: 10px;
-        left: 50px;
-        .overlay_panel {
-          position: absolute;
-          display: flex;
-          padding: 10px;
-          border-radius: 0 20px 0 20px;
-          align-items: center;
-          justify-content: center;
-          flex-direction: column;
-          text-align: center;
-          transform: translateX(0);
-          transition: transform 0.6s ease-in-out;
-          background-color: transparent;
-          .left_overlay_title {
-            font-size: 25px;
-            color: black;
-            font-weight: bold;
-          }
-          p {
-            color: white;
-          }
-          button {
-            padding: 5px 15px;
-            background-color: #929090;
-            border-radius: 5px;
-            color: white;
-            font-size: 20px;
-            margin-top: 10px;
-            font-size: 16x;
-            cursor: pointer;
-          }
-        }
-        .overlay-wrapper {
-          position: absolute;
-          border-radius: 0 20px 0 20px;
-          height: 100%;
-          width: 100%;
-          background-color: gray;
-          opacity: 0.7;
-          z-index: -1;
-        }
-      }
-      .righ_overlay {
-        position: absolute;
-        display: flex;
-        right: 10px;
-        .overlay_panel {
-          position: relative;
-          background-color: transparent;
-          padding: 10px;
-          border-radius: 20px 0 20px 0;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          z-index: 99;
-          .right_overlay_title {
-            font-size: 25px;
-            color: black;
-            font-weight: bold;
-          }
-          p {
-            color: white;
-          }
-          button {
-            padding: 5px 15px;
-            background-color: #929090;
-            border-radius: 5px;
-            color: white;
-            font-size: 20px;
-            margin-top: 10px;
-            font-size: 16x;
-            cursor: pointer;
-          }
-        }
-        .overlay-wrapper {
-          position: absolute;
-          border-radius: 20px 0 20px 0;
-          height: 100%;
-          width: 100%;
-          background-color: gray;
-          opacity: 0.7;
-          z-index: -1;
-        }
-      }
-    }
   }
 
   @media only screen and (max-width: 440px) {
