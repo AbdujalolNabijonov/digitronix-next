@@ -1,8 +1,23 @@
 import { gql } from "@apollo/client"
 
-export const GOOGLE_AUTH=gql`
+export const GOOGLE_AUTH = gql`
 mutation GoogleAuthLogin($input:GoogleAuthLoginInput!) {
     googleAuthLogin(input: $input)
+}
+`
+
+export const OTP_REQUEST = gql`
+mutation RequestVerifyEmail($input:String!) {
+    requestVerifyEmail(input:$input) {
+        message
+    }
+}
+`
+export const OTP_CONFIRM = gql`
+mutation CheckOTPConfirmation($input:String!) {
+    checkOTPConfirmation(input: $input) {
+        email_verified
+    }
 }
 `
 

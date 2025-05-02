@@ -18,10 +18,11 @@ export async function signUp({ nick, password, email, phone, type }: { nick: str
         if (jwtToken) {
             updateStorage({ jwtToken })
             updateUserInfo(jwtToken)
+        }else{
+            throw new Error("Token must be provide!")
         }
     } catch (err: any) {
-        console.warn("login err", err);
-        logOut();
+        throw err;
     }
 }
 
@@ -106,8 +107,13 @@ const requestSignUpJwtToken = async ({ nick, password, phone, email, type }:
             case 'Definer: user has been blocked!':
                 await sweetMixinErrorAlert('User has been blocked!');
                 break;
+            case "Used member or phone!":
+                await sweetMixinErrorAlert("Already used member or phone!")
+                break;
+            default:
+                throw new Error('Token must be provided!')
         }
-        throw new Error('token error')
+        throw err;
     }
 }
 

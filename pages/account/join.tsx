@@ -1,19 +1,20 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import LayoutBasic from "@/libs/components/layouts/LayoutBasic";
-import { Box, Button, Divider, Stack } from "@mui/material";
+import { Box, Button, Divider, IconButton, Stack } from "@mui/material";
 import { sweetErrorAlert, sweetTopSmallSuccessAlert } from "@/libs/sweetAlert";
 import { logIn, signUp, updateStorage, updateUserInfo } from "@/libs/auth";
 import { useRouter } from "next/router";
 import { Messages } from "@/libs/config";
-import { GitHub, RemoveRedEyeRounded, VisibilityOffRounded } from "@mui/icons-material";
+import { Circle, GitHub, RemoveRedEyeRounded, VisibilityOffRounded } from "@mui/icons-material";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { GoogleLogin } from "@react-oauth/google"
 import { jwtDecode } from "jwt-decode"
 import WaterDropGrid from "@/libs/components/others/waterDropAnima";
 import useDeviceDetect from "@/libs/hooks/useDeviceDetector";
 import { useMutation } from "@apollo/client";
-import { GOOGLE_AUTH } from "@/apollo/user/mutation";
+import { GOOGLE_AUTH, OTP_CONFIRM, OTP_REQUEST } from "@/apollo/user/mutation";
 import { Member } from "@/libs/types/member/member";
+import { OTPInput } from "@/libs/components/account/OTPInput";
 export const getStaticProps = async ({ locale }: any) => ({
     props: {
         ...(await serverSideTranslations(locale, ['common'])),
@@ -30,26 +31,41 @@ const Join = () => {
     const [hidden, setHidden] = useState<boolean>(true)
     const [rePasswordHidden, setRePasswordHidden] = useState<boolean>(true)
     const [inputType, setInputType] = useState<string>("password")
+    const [otpShow, setOtpShow] = useState(false)
     const [inputType2, setInputType2] = useState<string>("password")
+    const [readyRegisterBtn, setReadyRegisterBtn] = useState(true)
+    const [rebuild, setRebuild] = useState(new Date())
+    const [loadingBtn, setLoadingBtn] = useState(false)
     const router = useRouter()
+
+    useEffect(() => {
+        if (!input.email || !input.phone || !input.password || input.password !== checkPassword) {
+            setReadyRegisterBtn(true)
+        } else {
+            setReadyRegisterBtn(false)
+        }
+    }, [input, rebuild])
 
     //Apollo Request
     const [googleLogin] = useMutation(GOOGLE_AUTH)
+    const [otpRequest] = useMutation(OTP_REQUEST)
+    const [otpConfirm] = useMutation(OTP_CONFIRM)
 
     //Handlers
     const handleSignUpRequest = async () => {
         try {
+            if (!input.email || !input.phone || !input.password || input.password !== checkPassword) {
+                await sweetErrorAlert("Please fill all fields and ensure passwords match!");
+                return;
+            }
             if (input.password !== checkPassword) {
                 throw new Error("Password is not the same!")
-            }
-            if (!handleEmailValidator(input.email)) {
-                throw new Error("Enter valid email address!")
             }
             await signUp(input);
             router.push("/")
         } catch (err: any) {
             console.log("handleSignUpRequest:", err.message)
-            sweetErrorAlert(err.message)
+            router.reload()
         }
     }
     const handleLogInRequest = useCallback(async () => {
@@ -69,20 +85,6 @@ const Join = () => {
             setInput2({ ...input2, email: e.target.value })
         }
     }
-    const handleEmailValidator = async (text: string) => {
-        const validate_emails = ["gmail", "yahoo", "mail", "yandex", "hotman", "outlook", "icloud", "gmx", "hubspot", "pm"]
-        const valid = validate_emails.some((ele) => text.includes(ele));
-        let cat: boolean = false;
-        if (valid) {
-            cat = text.includes("@")
-        }
-        return cat && valid
-    }
-    const handleKeyDownSignUp = (e: any) => {
-        if (e.key == "Enter") {
-            handleSignUpRequest()
-        }
-    }
     const handleKeyDownLogIn = (e: any) => {
         if (e.key == "Enter") {
             handleLogInRequest()
@@ -91,6 +93,7 @@ const Join = () => {
     const validatePhoneNumber = (e: any) => {
         let value = e.target.value.replace(/\D/g, "");
         setInput(prev => ({ ...prev, phone: value }));
+        setRebuild(new Date())
     }
 
     const handleHiddenPassword = (cond: boolean) => {
@@ -110,6 +113,21 @@ const Join = () => {
         setRePasswordHidden(!rePasswordHidden)
     }
 
+    const handleShowOtp = async () => {
+        try {
+            setOtpShow(!otpShow)
+            const { data } = await otpRequest({
+                variables: {
+                    input: input.email
+                }
+            })
+        } catch (err: any) {
+            console.log(err)
+        }
+    }
+    const backtoRegister = () => {
+        setOtpShow(false)
+    }
     const googleAuthLogin = async ({ name, email }: { name: string, email: string }) => {
         try {
             const { data } = await googleLogin({ variables: { input: { name, email } } })
@@ -125,6 +143,19 @@ const Join = () => {
             await sweetErrorAlert(err.message)
         }
     }
+    const handleVerifiedCodes = async (e: any) => {
+        try {
+            const { data } = await otpConfirm({
+                variables: { input: e }
+            })
+            if (data.checkOTPConfirmation.email_verified) {
+                setLoadingBtn(true)
+                await handleSignUpRequest()
+            }
+        } catch (err: any) {
+            await sweetErrorAlert(err);
+        }
+    }
     return (
         <Stack flexDirection={"row"} className="bg-[#0F172B] h-[100vh] relative overflow-hidden" justifyContent={"center"}>
             <Box className="absolute">
@@ -134,52 +165,105 @@ const Join = () => {
                 <Stack className="authMain" >
                     <Box className="auth_container">
                         <Box className={"auth_signUp"} style={signIn ? {} : { transform: "translateX(100%)", opacity: "1", zIndex: "5" }}>
-                            <Box className={"signUp_body"}>
-                                <div className="login_title">Create Account</div>
-                                <input type="text" id="floatingEmail" placeholder="Name" onChange={(e) => { setInput({ ...input, nick: e.target.value }) }} />
-                                <input type="email" id="floatingEmail" placeholder="Email" onChange={(e) => { setInput({ ...input, email: e.target.value }) }} />
-                                <input type="text" maxLength={11} id="floatingphone" placeholder="Phone Number" onChange={validatePhoneNumber} value={input.phone} />
-                                <Stack justifyContent={"space-between"} flexDirection={"row"} gap={"10px"}>
-                                    <div className="form-floating relative w-full">
-                                        <input type={inputType} className="form-control" id="floatingpassord" placeholder="Password" onKeyDown={handleKeyDownSignUp} onChange={(e) => { setInput({ ...input, password: e.target.value }) }} required />
+                            {
+                                otpShow ? (
+                                    <OTPInput handleVerifiedCodes={handleVerifiedCodes} backto={backtoRegister} loading={loadingBtn}/>
+                                ) : (
+                                    <Box className={"signUp_body"}>
+                                        <div className="login_title">Create Account</div>
+                                        <input
+                                            type="text"
+                                            id="floatingEmail"
+                                            placeholder="Name"
+                                            onChange={(e) => {
+                                                setInput({ ...input, nick: e.target.value })
+                                                setRebuild(new Date())
+                                            }}
+                                            value={input.nick}
+                                            required
+                                        />
+                                        <input
+                                            type="email"
+                                            id="floatingEmail"
+                                            placeholder="Email"
+                                            onChange={(e) => {
+                                                setInput({ ...input, email: e.target.value })
+                                                setRebuild(new Date())
+                                            }}
+                                            value={input.email}
+                                            required
+                                        />
+                                        <input
+                                            type="text"
+                                            maxLength={11}
+                                            id="floatingphone"
+                                            placeholder="Phone Number"
+                                            onChange={validatePhoneNumber}
+                                            value={input.phone}
+                                            required
+                                        />
+                                        <Stack justifyContent={"space-between"} flexDirection={"row"} gap={"10px"}>
+                                            <div className="form-floating relative w-full">
+                                                <input
+                                                    type={inputType}
+                                                    className="form-control"
+                                                    id="floatingpassord"
+                                                    placeholder="Password"
+                                                    onChange={(e) => {
+                                                        setInput({ ...input, password: e.target.value })
+                                                        setRebuild(new Date())
+                                                    }} required />
+                                                <Button
+                                                    onClick={() => handleHiddenPassword(!hidden)}
+                                                    style={{
+                                                        position: "absolute",
+                                                        right: "10px",
+                                                        height: "30px",
+                                                        width: "30px",
+                                                        borderRadius: "50%",
+                                                        top: "17px",
+                                                        padding: "5px",
+                                                        backgroundColor: "#aaaaaa"
+                                                    }}>
+                                                    {hidden ? (<VisibilityOffRounded />) : (<RemoveRedEyeRounded />)}
+                                                </Button>
+                                            </div>
+                                            <div className="form-floating relative w-full">
+                                                <input type={inputType2} className="form-control" id="floatingpassord" placeholder="Check Password" onChange={(e) => {
+                                                    setCheckPassword(e.target.value)
+                                                    setRebuild(new Date())
+                                                }} required />
+                                                <Button
+                                                    onClick={() => handleHiddenRePassword(!rePasswordHidden)}
+                                                    style={{
+                                                        position: "absolute",
+                                                        right: "10px",
+                                                        height: "30px",
+                                                        width: "30px",
+                                                        borderRadius: "50%",
+                                                        top: "17px",
+                                                        padding: "5px",
+                                                        backgroundColor: "#aaaaaa"
+                                                    }}>
+                                                    {rePasswordHidden ? (<VisibilityOffRounded />) : (<RemoveRedEyeRounded />)}
+                                                </Button>
+                                            </div>
+                                        </Stack>
                                         <Button
-                                            onClick={() => handleHiddenPassword(!hidden)}
-                                            style={{
-                                                position: "absolute",
-                                                right: "10px",
-                                                height: "30px",
-                                                width: "30px",
-                                                borderRadius: "50%",
-                                                top: "17px",
-                                                padding: "5px",
-                                                backgroundColor: "#aaaaaa"
-                                            }}>
-                                            {hidden ? (<VisibilityOffRounded />) : (<RemoveRedEyeRounded />)}
+                                            onClick={handleShowOtp}
+                                            className="tarcking-wider font-bold text-white w-full mt-2 py-3 text-xl"
+                                            variant="contained"
+                                            color="warning"
+                                            disabled={readyRegisterBtn}
+                                        >
+                                            Verify Email
                                         </Button>
-                                    </div>
-                                    <div className="form-floating relative w-full">
-                                        <input type={inputType2} className="form-control" id="floatingpassord" placeholder="Check Password" onChange={(e) => { setCheckPassword(e.target.value) }} required />
-                                        <Button
-                                            onClick={() => handleHiddenRePassword(!rePasswordHidden)}
-                                            style={{
-                                                position: "absolute",
-                                                right: "10px",
-                                                height: "30px",
-                                                width: "30px",
-                                                borderRadius: "50%",
-                                                top: "17px",
-                                                padding: "5px",
-                                                backgroundColor: "#aaaaaa"
-                                            }}>
-                                            {rePasswordHidden ? (<VisibilityOffRounded />) : (<RemoveRedEyeRounded />)}
-                                        </Button>
-                                    </div>
-                                </Stack>
-                                <Button onClick={handleSignUpRequest} className="tarcking-wider font-bold text-white w-full mt-2 py-3 text-xl" variant="contained" color="warning" >Sign Up</Button>
-                                <Box className="self-start mt-3 text-sm text-gray-300">
-                                    Have an account already? <a onClick={() => toggle(true)} className="cursor-pointer text-red-200 tracking-wider">Sign In</a>
-                                </Box>
-                            </Box>
+                                        <Box className="self-start mt-3 text-sm text-gray-300">
+                                            Have an account already? <a onClick={() => toggle(true)} className="cursor-pointer text-red-200 tracking-wider">Sign In</a>
+                                        </Box>
+                                    </Box>
+                                )
+                            }
                         </Box>
                         <Stack className={"auth_logIn"} justifyContent={"center"}>
                             <Box className={"logIn_body"} style={signIn ? {} : { transform: "translateX(100%)", display: "none" }}>

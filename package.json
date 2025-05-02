@@ -31,10 +31,14 @@
     "apollo-upload-client": "17.0.0",
     "autoprefixer": "^10.4.21",
     "axios": "^1.7.4",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
     "emoji-picker-react": "^4.12.0",
     "global": "^4.4.0",
     "i18next": "^21.6.11",
+    "input-otp": "^1.4.2",
     "jwt-decode": "^4.0.0",
+    "lucide-react": "^0.503.0",
     "moment": "^2.30.1",
     "next": "14.2.5",
     "next-i18next": "^14.0.3",
@@ -52,6 +56,7 @@
     "subscriptions-transport-ws": "^0.11.0",
     "sweetalert2": "11.7.27",
     "swiper": "^10.0.0",
+    "tailwind-merge": "^3.2.0",
     "tailwindcss": "^4.1.5",
     "three": "^0.167.0",
     "valtio": "^1.13.2"
@@ -64,6 +69,7 @@
     "@types/react-medium-image-zoom": "^3.0.3",
     "@types/swiper": "^6.0.0",
     "@types/three": "^0.167.1",
+    "tw-animate-css": "^1.2.8",
     "typescript": "^5"
   }
 }
