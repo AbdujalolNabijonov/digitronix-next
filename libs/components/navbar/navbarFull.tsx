@@ -201,7 +201,7 @@ const Navbar: NextPage = (props: any) => {
     const handleLogOut = async () => {
         logOut()
         await sweetTopSuccessAlert(Messages.error6)
-        router.push("/")
+        router.reload()
     }
     const toggleNotificationHandler = (e: any) => {
         if (!anchorEl4) {

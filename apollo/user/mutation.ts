@@ -1,5 +1,11 @@
 import { gql } from "@apollo/client"
 
+export const GOOGLE_AUTH=gql`
+mutation GoogleAuthLogin($input:GoogleAuthLoginInput!) {
+    googleAuthLogin(input: $input)
+}
+`
+
 export const SIGN_UP = gql`
 mutation Signup($input: MemberInput!) {
     signup(input: $input) {

@@ -1,16 +1,19 @@
 import React, { useCallback, useState } from "react";
 import LayoutBasic from "@/libs/components/layouts/LayoutBasic";
-import { Box, Button, Checkbox, Divider, FormControlLabel, FormGroup, Stack } from "@mui/material";
+import { Box, Button, Divider, Stack } from "@mui/material";
 import { sweetErrorAlert, sweetTopSmallSuccessAlert } from "@/libs/sweetAlert";
-import { logIn, signUp } from "@/libs/auth";
+import { logIn, signUp, updateStorage, updateUserInfo } from "@/libs/auth";
 import { useRouter } from "next/router";
 import { Messages } from "@/libs/config";
-import { GitHub, Google, RemoveRedEyeRounded, VisibilityOffRounded } from "@mui/icons-material";
+import { GitHub, RemoveRedEyeRounded, VisibilityOffRounded } from "@mui/icons-material";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import useDeviceDetect from "@/libs/hooks/useDeviceDetector";
-import { useGoogleLogin } from "@react-oauth/google"
+import { GoogleLogin } from "@react-oauth/google"
 import { jwtDecode } from "jwt-decode"
 import WaterDropGrid from "@/libs/components/others/waterDropAnima";
+import useDeviceDetect from "@/libs/hooks/useDeviceDetector";
+import { useMutation } from "@apollo/client";
+import { GOOGLE_AUTH } from "@/apollo/user/mutation";
+import { Member } from "@/libs/types/member/member";
 export const getStaticProps = async ({ locale }: any) => ({
     props: {
         ...(await serverSideTranslations(locale, ['common'])),
@@ -29,6 +32,9 @@ const Join = () => {
     const [inputType, setInputType] = useState<string>("password")
     const [inputType2, setInputType2] = useState<string>("password")
     const router = useRouter()
+
+    //Apollo Request
+    const [googleLogin] = useMutation(GOOGLE_AUTH)
 
     //Handlers
     const handleSignUpRequest = async () => {
@@ -56,16 +62,6 @@ const Join = () => {
         }
     }, [input2])
 
-    const googleAuth = useGoogleLogin({
-        onSuccess: (code) => {
-            const member = jwtDecode(code.access_token);
-            console.log("user:", member)
-        },
-        onError: () => {
-            console.log("Failed to login")
-        }
-    })
-
     const handleLogInUserName = (e: any) => {
         if (!e.target.value.includes("@")) {
             setInput2({ ...input2, nick: e.target.value })
@@ -92,10 +88,6 @@ const Join = () => {
             handleLogInRequest()
         }
     }
-
-    const checkUserTypeHandler = (event: any) => {
-        setInput({ ...input, type: event.target.name })
-    }
     const validatePhoneNumber = (e: any) => {
         let value = e.target.value.replace(/\D/g, "");
         setInput(prev => ({ ...prev, phone: value }));
@@ -115,7 +107,23 @@ const Join = () => {
         } else {
             setInputType2("text")
         }
-        setRePasswordHidden(!hidden)
+        setRePasswordHidden(!rePasswordHidden)
+    }
+
+    const googleAuthLogin = async ({ name, email }: { name: string, email: string }) => {
+        try {
+            const { data } = await googleLogin({ variables: { input: { name, email } } })
+            const jwtToken = data.googleAuthLogin as String;
+            if (jwtToken) {
+                updateStorage({ jwtToken });
+                updateUserInfo(jwtToken);
+                router.push("/");
+            } else {
+                throw new Error("Not authorized")
+            }
+        } catch (err: any) {
+            await sweetErrorAlert(err.message)
+        }
     }
     return (
         <Stack flexDirection={"row"} className="bg-[#0F172B] h-[100vh] relative overflow-hidden" justifyContent={"center"}>
@@ -128,10 +136,58 @@ const Join = () => {
                         <Box className={"auth_signUp"} style={signIn ? {} : { transform: "translateX(100%)", opacity: "1", zIndex: "5" }}>
                             <Box className={"signUp_body"}>
                                 <div className="login_title">Create Account</div>
+                                <input type="text" id="floatingEmail" placeholder="Name" onChange={(e) => { setInput({ ...input, nick: e.target.value }) }} />
                                 <input type="email" id="floatingEmail" placeholder="Email" onChange={(e) => { setInput({ ...input, email: e.target.value }) }} />
                                 <input type="text" maxLength={11} id="floatingphone" placeholder="Phone Number" onChange={validatePhoneNumber} value={input.phone} />
-                                <div className="form-floating relative w-full">
-                                    <input type={inputType} className="form-control" id="floatingpassord" placeholder="Password" onKeyDown={handleKeyDownSignUp} onChange={(e) => { setInput({ ...input, password: e.target.value }) }} required />
+                                <Stack justifyContent={"space-between"} flexDirection={"row"} gap={"10px"}>
+                                    <div className="form-floating relative w-full">
+                                        <input type={inputType} className="form-control" id="floatingpassord" placeholder="Password" onKeyDown={handleKeyDownSignUp} onChange={(e) => { setInput({ ...input, password: e.target.value }) }} required />
+                                        <Button
+                                            onClick={() => handleHiddenPassword(!hidden)}
+                                            style={{
+                                                position: "absolute",
+                                                right: "10px",
+                                                height: "30px",
+                                                width: "30px",
+                                                borderRadius: "50%",
+                                                top: "17px",
+                                                padding: "5px",
+                                                backgroundColor: "#aaaaaa"
+                                            }}>
+                                            {hidden ? (<VisibilityOffRounded />) : (<RemoveRedEyeRounded />)}
+                                        </Button>
+                                    </div>
+                                    <div className="form-floating relative w-full">
+                                        <input type={inputType2} className="form-control" id="floatingpassord" placeholder="Check Password" onChange={(e) => { setCheckPassword(e.target.value) }} required />
+                                        <Button
+                                            onClick={() => handleHiddenRePassword(!rePasswordHidden)}
+                                            style={{
+                                                position: "absolute",
+                                                right: "10px",
+                                                height: "30px",
+                                                width: "30px",
+                                                borderRadius: "50%",
+                                                top: "17px",
+                                                padding: "5px",
+                                                backgroundColor: "#aaaaaa"
+                                            }}>
+                                            {rePasswordHidden ? (<VisibilityOffRounded />) : (<RemoveRedEyeRounded />)}
+                                        </Button>
+                                    </div>
+                                </Stack>
+                                <Button onClick={handleSignUpRequest} className="tarcking-wider font-bold text-white w-full mt-2 py-3 text-xl" variant="contained" color="warning" >Sign Up</Button>
+                                <Box className="self-start mt-3 text-sm text-gray-300">
+                                    Have an account already? <a onClick={() => toggle(true)} className="cursor-pointer text-red-200 tracking-wider">Sign In</a>
+                                </Box>
+                            </Box>
+                        </Box>
+                        <Stack className={"auth_logIn"} justifyContent={"center"}>
+                            <Box className={"logIn_body"} style={signIn ? {} : { transform: "translateX(100%)", display: "none" }}>
+                                <div className="title mb-3">Sign in</div>
+                                <input type="text" className="mb-2" id="floatinguser" placeholder="Email" onChange={handleLogInUserName} required />
+                                <Stack className="w-full" style={{ position: "relative" }}>
+                                    <input type={inputType} className="w-full" id="floatingpassord" placeholder="Password" onKeyDown={handleKeyDownLogIn} onChange={(e) => setInput2({ ...input2, password: e.target.value })} required />
+                                    <div className="self-end mb-4 text-sm text-blue-200 tracking-wider">Forgot password?</div>
                                     <Button
                                         onClick={() => handleHiddenPassword(!hidden)}
                                         style={{
@@ -140,73 +196,13 @@ const Join = () => {
                                             height: "30px",
                                             width: "30px",
                                             borderRadius: "50%",
-                                            top: "17px",
+                                            top: "10px",
                                             padding: "5px",
                                             backgroundColor: "#aaaaaa"
                                         }}>
                                         {hidden ? (<VisibilityOffRounded />) : (<RemoveRedEyeRounded />)}
                                     </Button>
-                                </div>
-                                <div className="form-floating relative w-full">
-                                    <input type={inputType2} className="form-control" id="floatingpassord" placeholder="Re-enter Password" onChange={(e) => { setCheckPassword(e.target.value) }} required />
-                                    <Button
-                                        onClick={() => handleHiddenRePassword(!rePasswordHidden)}
-                                        style={{
-                                            position: "absolute",
-                                            right: "10px",
-                                            height: "30px",
-                                            width: "30px",
-                                            borderRadius: "50%",
-                                            top: "17px",
-                                            padding: "5px",
-                                            backgroundColor: "#aaaaaa"
-                                        }}>
-                                        {rePasswordHidden ? (<VisibilityOffRounded />) : (<RemoveRedEyeRounded />)}
-                                    </Button>
-                                </div>
-                                <Button onClick={handleSignUpRequest} className="tarcking-wider font-bold text-white w-full mt-2 py-3 text-xl" variant="contained" color="warning" >Sign Up</Button>
-                                <Box className="self-start mt-3 text-sm text-gray-300">
-                                    Have an account already? <a onClick={() => toggle(true)} className="cursor-pointer text-red-200 tracking-wider">Sign In</a>
-                                </Box>
-                                <Stack sx={{ width: "100%" }} flexDirection={"row"} gap={"10px"} alignItems={"center"} className="mt-2">
-                                    <Divider sx={{ borderColor: "white", flex: "1" }} orientation="horizontal" />
-                                    <Box>
-                                        OR
-                                    </Box>
-                                    <Divider sx={{ borderColor: "white", flex: "1" }} orientation="horizontal" />
                                 </Stack>
-                                <Stack flexDirection={"row"} justifyContent={"space-between"} sx={{ marginTop: '20px' }} gap={"20px"}>
-                                    <Button startIcon={<Google />} variant="outlined" onClick={() => googleAuth()} sx={{ color: "white", flex: 1 }}>
-                                        Google
-                                    </Button>
-                                    <Button startIcon={<GitHub />} variant="outlined" color="warning" sx={{ color: "whitesmoke", flex: 1 }}>
-                                        GitHub
-                                    </Button>
-                                </Stack>
-                            </Box>
-                        </Box>
-                        <Box className={"auth_logIn"}>
-                            <Box className={"logIn_body"} style={signIn ? {} : { transform: "translateX(100%)", display: "none" }}>
-                                <div className="title">Sign in</div>
-                                <input type="text" id="floatinguser" placeholder="User Name" onChange={handleLogInUserName} required />
-                                <div className="form-floating" style={{ position: "relative" }}>
-                                    <input type={inputType} className="form-control" id="floatingpassord" placeholder="Password" onKeyDown={handleKeyDownLogIn} onChange={(e) => setInput2({ ...input2, password: e.target.value })} required />
-                                    <Button
-                                        onClick={() => handleHiddenRePassword(!rePasswordHidden)}
-                                        style={{
-                                            position: "absolute",
-                                            right: "10px",
-                                            height: "30px",
-                                            width: "30px",
-                                            borderRadius: "50%",
-                                            top: "17px",
-                                            padding: "5px",
-                                            backgroundColor: "#aaaaaa"
-                                        }}>
-                                        {rePasswordHidden ? (<VisibilityOffRounded />) : (<RemoveRedEyeRounded />)}
-                                    </Button>
-                                </div>
-                                <div className="warn">If you forget your password, you can log in with your signed up email address </div>
                                 <Button onClick={handleLogInRequest} variant="contained" color="warning" className="h-[40px] w-full text-white font-bold tracking-wider text-xl">Sign In</Button>
                                 <Box className="self-start mt-3 text-sm text-gray-300">
                                     Don't you have an account yet? <a onClick={() => toggle(false)} className="cursor-pointer text-red-200 tracking-wider">Create an account</a>
@@ -219,7 +215,22 @@ const Join = () => {
                                     <Divider sx={{ borderColor: "white", flex: "1" }} orientation="horizontal" />
                                 </Stack>
                                 <Stack flexDirection={"row"} justifyContent={"space-between"} sx={{ marginTop: '20px' }} gap={"20px"}>
-                                    <Button startIcon={<Google />} variant="outlined" onClick={() => googleAuth()} sx={{ color: "white", flex: 1 }}>
+                                    <Button
+                                        className="text-white"
+                                        color="secondary"
+                                        variant="outlined"
+                                        startIcon={
+                                            <GoogleLogin
+                                                onSuccess={async (code) => {
+                                                    const member = jwtDecode(code.credential as string) as any;
+                                                    await googleAuthLogin({ name: member.name, email: member.email })
+                                                }
+                                                }
+                                                onError={() => console.log("")}
+                                                shape="circle"
+                                                type="icon"
+                                            />
+                                        }>
                                         Google
                                     </Button>
                                     <Button startIcon={<GitHub />} variant="outlined" color="warning" sx={{ color: "whitesmoke", flex: 1 }}>
@@ -227,7 +238,7 @@ const Join = () => {
                                     </Button>
                                 </Stack>
                             </Box>
-                        </Box>
+                        </Stack>
                         <Box className={"auth_overlay"} style={signIn ? { backgroundImage: 'url("/img/auth/2.png")' } : { transform: "translateX(-100%)", backgroundImage: 'url("/img/auth/1.png")' }}>
                         </Box>
                     </Box>

@@ -21,6 +21,8 @@
     .auth_container {
       .auth_signUp {
         .signUp_body {
+          width: 90%;
+          margin: 0 auto;
           .login_title {
             font-weight: bold;
             font-size: 30px;
@@ -40,19 +42,19 @@
       }
       .auth_logIn {
         .logIn_body {
+          width: 90%;
+          margin: 0 auto;
+          input {
+            width: 100%;
+          }
           .title {
             font-weight: bold;
             font-size: 35px;
             color: white;
           }
-          input {
-            width: 300px;
-          }
           .warn {
             font-size: 14px;
             margin: 10px 0;
-          }
-          .auth-type{
           }
           .sign-btn {
             width: 100%;
@@ -123,8 +125,6 @@
       background-color: #eee;
       border: none;
       padding: 12px 15px;
-      margin: 8px 0;
-      width: 100%;
       color: black;
     }
   }
