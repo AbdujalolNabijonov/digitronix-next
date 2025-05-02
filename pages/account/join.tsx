@@ -167,7 +167,7 @@ const Join = () => {
                         <Box className={"auth_signUp"} style={signIn ? {} : { transform: "translateX(100%)", opacity: "1", zIndex: "5" }}>
                             {
                                 otpShow ? (
-                                    <OTPInput handleVerifiedCodes={handleVerifiedCodes} backto={backtoRegister} loading={loadingBtn}/>
+                                    <OTPInput handleVerifiedCodes={handleVerifiedCodes} backto={backtoRegister} loading={loadingBtn} />
                                 ) : (
                                     <Box className={"signUp_body"}>
                                         <div className="login_title">Create Account</div>
@@ -270,7 +270,15 @@ const Join = () => {
                                 <div className="title mb-3">Sign in</div>
                                 <input type="text" className="mb-2" id="floatinguser" placeholder="Email" onChange={handleLogInUserName} required />
                                 <Stack className="w-full" style={{ position: "relative" }}>
-                                    <input type={inputType} className="w-full" id="floatingpassord" placeholder="Password" onKeyDown={handleKeyDownLogIn} onChange={(e) => setInput2({ ...input2, password: e.target.value })} required />
+                                    <input
+                                        type={inputType}
+                                        className="w-full m-0"
+                                        id="floatingpassord"
+                                        placeholder="Password"
+                                        onKeyDown={handleKeyDownLogIn}
+                                        onChange={(e) => setInput2({ ...input2, password: e.target.value })}
+                                        required
+                                    />
                                     <div className="self-end mb-4 text-sm text-blue-200 tracking-wider">Forgot password?</div>
                                     <Button
                                         onClick={() => handleHiddenPassword(!hidden)}
