@@ -61,6 +61,7 @@ export function OTPInput(props: OTPProps) {
                         color="warning"
                         disabled={fullFilled}
                         onClick={() => { handleVerifiedCodes(otp) }}
+                        disableElevation
                     >
                         Register
                     </Button>

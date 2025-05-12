@@ -255,6 +255,7 @@ const Join = () => {
                                             variant="contained"
                                             color="warning"
                                             disabled={readyRegisterBtn}
+                                            disableElevation
                                         >
                                             Verify Email
                                         </Button>
@@ -295,7 +296,15 @@ const Join = () => {
                                         {hidden ? (<VisibilityOffRounded />) : (<RemoveRedEyeRounded />)}
                                     </Button>
                                 </Stack>
-                                <Button onClick={handleLogInRequest} variant="contained" color="warning" className="h-[40px] w-full text-white font-bold tracking-wider text-xl">Sign In</Button>
+                                <Button
+                                    onClick={handleLogInRequest}
+                                    variant="contained"
+                                    color="warning"
+                                    className="tarcking-wider font-bold text-white w-[90%] mt-2 py-2 text-xl"
+                                    disableElevation
+                                >
+                                    Sign In
+                                </Button>
                                 <Box className="self-start mt-3 text-sm text-gray-300">
                                     Don't you have an account yet? <a onClick={() => toggle(false)} className="cursor-pointer text-red-200 tracking-wider">Create an account</a>
                                 </Box>
@@ -322,7 +331,9 @@ const Join = () => {
                                                 shape="circle"
                                                 type="icon"
                                             />
-                                        }>
+                                        }
+                                        sx={{ color: "whitesmoke", flex: 1 }}
+                                    >
                                         Google
                                     </Button>
                                     <Button startIcon={<GitHub />} variant="outlined" color="warning" sx={{ color: "whitesmoke", flex: 1 }}>
