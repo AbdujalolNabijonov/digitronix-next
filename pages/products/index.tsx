@@ -4,6 +4,7 @@ import ProductFilter from "@/libs/components/products/productFilter";
 import { ErrorOutline, SwapVertOutlined } from "@mui/icons-material";
 import {
     Box,
+    CircularProgress,
     MenuItem,
     Pagination,
     Select,
@@ -45,7 +46,8 @@ const Products: NextPage = ({ initialProps, ...props }: any) => {
 
     //Apollo Request
     const {
-        refetch: getAllProductsRefetch
+        refetch: getAllProductsRefetch,
+        loading: productLoading
     } = useQuery(GET_ALL_PRODUCTS, {
         fetchPolicy: "network-only",
         notifyOnNetworkStatusChange: true,
@@ -98,7 +100,7 @@ const Products: NextPage = ({ initialProps, ...props }: any) => {
             e.stopPropagation()
             if (!user._id) throw new Error(Messages.error2);
             if (!productId) throw new Error(Messages.error1);
-            const pro =await likeTargetProduct({ variables: { input: productId } });
+            const pro = await likeTargetProduct({ variables: { input: productId } });
             await getAllProductsRefetch({ input: productsInquiry })
         } catch (err: any) {
             console.log(`Error: likeTargetProductHandler, ${err.message}`);
@@ -146,7 +148,11 @@ const Products: NextPage = ({ initialProps, ...props }: any) => {
                             <ProductFilter setProductsInquiry={setProductsInquiry} productsInquiry={productsInquiry} />
                             <Stack>
                                 {
-                                    products && products[0] ? (
+                                    productLoading ? (
+                                        <Stack justifyContent={"center"} alignItems={"center"} className="h-[40%]">
+                                            <CircularProgress/>
+                                        </Stack>
+                                    ) : products && products[0] ? (
                                         <Stack
                                             className="product-list"
                                             direction={"row"}

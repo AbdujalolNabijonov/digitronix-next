@@ -69,8 +69,17 @@ const MyProfile = (props: any) => {
         setMemberUpdate({ ...memberUpdate })
     }
     const changePhoneHandler = (e: any) => {
-        memberUpdate.memberPhone = e.target.value
-        setMemberUpdate({ ...memberUpdate })
+        let value = e.target.value.replace(/[^0-9]/g, '');
+
+        if (value.length <= 3) {
+            value = value;
+        } else if (value.length <= 7) {
+            value = `${value.slice(0, 3)}-${value.slice(3)}`;
+        } else {
+            value = `${value.slice(0, 3)}-${value.slice(3, 7)}-${value.slice(7, 11)}`;
+        }
+
+        setMemberUpdate({ ...memberUpdate, memberPhone: value });
     }
     const changeFullNameHandler = (e: any) => {
         memberUpdate.memberFullName = e.target.value
@@ -88,6 +97,9 @@ const MyProfile = (props: any) => {
     const submitUpdateMember = async () => {
         try {
             if (!user._id) throw new Error(Messages.error2)
+            if (memberUpdate.memberPhone && memberUpdate.memberPhone.length < 10) {
+                throw new Error("Invalid phone number")
+            }
             Object.keys(memberUpdate).map((key: string) => {
                 //@ts-ignore
                 if (!memberUpdate[key]) delete memberUpdate[key];
@@ -97,6 +109,11 @@ const MyProfile = (props: any) => {
             await updateStorage({ jwtToken });
             await updateUserInfo(jwtToken);
             await sweetMixinSuccessAlert("Information Updated Successfully")
+            for (let key in memberUpdate) {
+                //@ts-ignore
+                memberUpdate[key] = ""
+            }
+            setMemberUpdate({ ...memberUpdate })
         } catch (err: any) {
             console.log(`ERROR: submitUpdateMember, ${err.message}`);
             await sweetErrorHandling(err)
@@ -117,8 +134,12 @@ const MyProfile = (props: any) => {
                 <Stack className="member-image">
                     <Stack className="member-set">
                         <Avatar
-                            sx={{ height: "150px", width: "150px", border: "4px solid white" }}
-                            src={memberUpdate.memberImage ? `${serverApi}/${memberUpdate.memberImage}` : "img/profile/noUser.jpg"}
+                            sx={{
+                                height: "150px",
+                                width: "150px",
+                                border: "4px solid white"
+                            }}
+                            src={user.memberImage ? `${serverApi}/${memberUpdate.memberImage}` : "img/profile/noUser.jpg"}
                         />
                         <Fab
                             color="primary"
@@ -129,7 +150,7 @@ const MyProfile = (props: any) => {
                             <input type="file" onChange={changeImageHandler} />
                         </Fab>
                     </Stack>
-                    <Button onClick={submitUpdateMember}>
+                    <Button onClick={submitUpdateMember} color="warning">
                         Save
                     </Button>
                 </Stack>
@@ -142,7 +163,7 @@ const MyProfile = (props: any) => {
                             </FormControl>
                             <FormControl sx={{ flex: 1 }}>
                                 <FormLabel sx={{ fontWeight: 500, fontSize: "18px" }}>Phone</FormLabel>
-                                <Input placeholder={user.memberPhone} variant="soft" onChange={changePhoneHandler} />
+                                <Input placeholder={user.memberPhone} variant="soft" onChange={changePhoneHandler} value={memberUpdate.memberPhone} />
                             </FormControl>
                         </CssVarsProvider>
                     </Stack>

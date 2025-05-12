@@ -232,12 +232,14 @@ const ProductFilter = (props: ProductProps) => {
     const handleChangeText = async (e: any) => {
         const value = e.target.value;
         setSearchText(value)
-        await router.push(
-            `products/?input=${JSON.stringify({ ...productsInquiry, search: { ...productsInquiry.search, text: value } })}`,
-            `products/?input=${JSON.stringify({ ...productsInquiry, search: { ...productsInquiry.search, text: value } })}`,
-            { scroll: false }
-        )
-        setRebuild(new Date())
+        setTimeout(async () => {
+            await router.push(
+                `products/?input=${JSON.stringify({ ...productsInquiry, search: { ...productsInquiry.search, text: value } })}`,
+                `products/?input=${JSON.stringify({ ...productsInquiry, search: { ...productsInquiry.search, text: value } })}`,
+                { scroll: false }
+            )
+            setRebuild(new Date())
+        }, 500)
     }
     return (
         <Stack className="control-panel">

@@ -240,6 +240,8 @@
                   }
                 }
                 button {
+                  position: relative;
+                  z-index: 10;
                   background-color: #d77b3d;
                   width: 150px;
                   padding: 10px;

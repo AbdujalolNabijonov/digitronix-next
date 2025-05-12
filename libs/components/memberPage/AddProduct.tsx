@@ -710,7 +710,7 @@ const AddProduct = () => {
                 </CssVarsProvider>
                 <Stack className={"product-desc"}>
                     <Box className={"add-title"}>Product Description</Box>
-                    <textarea rows={10} placeholder="Product Description ..." onChange={setDescHandler} value={productObj.productDesc}></textarea>
+                    <textarea rows={10} placeholder="Product Description ..." onChange={setDescHandler} value={productObj.productDesc} className="text-white border tracking-wider"></textarea>
                 </Stack>
                 <Divider sx={{ borderColor: "white", marginTop: "20px" }} />
                 <Stack>
