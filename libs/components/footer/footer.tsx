@@ -91,11 +91,11 @@ const Footer: NextPage = (props: any) => {
                             </Stack>
                             <Stack gap={1} direction={"row"}>
                                 <Email />
-                                <span>abdujalolnabijonov20@gmail.com</span>
+                                <span>mrarnoldunlimited@gmail.com</span>
                             </Stack>
                             <Stack gap={1} direction={"row"}>
                                 <MyLocation />
-                                <span>South Korea, Yeosu-si</span>
+                                <span>South Korea, Seoul</span>
                             </Stack>
                             <Stack gap={1} direction={"row"}>
                                 <LockClock />
@@ -104,7 +104,7 @@ const Footer: NextPage = (props: any) => {
                         </Stack>
                     </Box>
                 </Stack>
-                <hr />
+                <hr className="mt-3"/>
                 <Stack className="privacies">
                     <Stack className="privacy-items">
                         <div>Website Terms</div>
@@ -117,7 +117,7 @@ const Footer: NextPage = (props: any) => {
                         <div>|</div>
                         <div>Do Not Sell</div>
                     </Stack>
-                    <Box>&copy;2024 Digitronix. All Rights Reserved.</Box>
+                    <Box>&copy;2025 Digitronix. All Rights Reserved.</Box>
                 </Stack>
             </Stack>
         </Stack>

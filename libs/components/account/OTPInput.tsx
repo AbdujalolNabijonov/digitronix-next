@@ -52,20 +52,24 @@ export function OTPInput(props: OTPProps) {
             {
                 loading ? (
                     <Button className="w-[90%] py-4 text-white mt-7" variant="outlined" color="warning">
-                        <CircularProgress color="success"/>
+                        <CircularProgress color="success" />
                     </Button>
-                ) : (
-                    <Button
-                        className="w-[90%]  py-4 text-white tracking-wider font-bold mt-7"
-                        variant="contained"
-                        color="warning"
-                        disabled={fullFilled}
+                ) : !fullFilled ? (
+                    <button
+                        className="tarcking-wider font-bold text-white w-[90%] mt-4 py-2 text-xl bg-[#D77B3D] rounded hover:bg-[#AF3E45] transition duration-300 cursor-pointer"
                         onClick={() => { handleVerifiedCodes(otp) }}
-                        disableElevation
                     >
                         Register
-                    </Button>
+                    </button>
+                ) : (
+                    <button
+                        disabled
+                        className="tarcking-wider font-bold text-white w-[90%] mt-4 py-2 text-xl bg-gray-500 rounded cursor-not-allowed"
+                    >
+                        Register
+                    </button>
                 )
+
             }
         </Stack>
     )
