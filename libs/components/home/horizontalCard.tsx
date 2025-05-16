@@ -1,17 +1,22 @@
 import { serverApi } from "@/libs/config"
 import { Article } from "@/libs/types/article/article"
-import {  ArrowOutward } from "@mui/icons-material"
+import { ArrowOutward } from "@mui/icons-material"
 import { Avatar, Box, IconButton, Stack } from "@mui/material"
 import moment from "moment"
 
-const HorizontalCard = (props: { article: Article, navigatetoPageHandler:any }) => {
-    const { article,navigatetoPageHandler } = props
+interface HorizontalCardProps {
+    article: Article;
+    navigatetoPageHandler: any;
+}
+
+const HorizontalCard = (props: HorizontalCardProps) => {
+    const { article, navigatetoPageHandler } = props
     const memberImage = article.memberData?.memberImage ? `${serverApi}/${article.memberData?.memberImage}` : "/img/profile/defaultUser.svg"
     const articleImage = article.articleImage ? `${serverApi}/${article.articleImage}` : ""
     return (
         <Stack className="horizontal-card" direction={"row"} alignItems={"center"}>
             <div className="card-img">
-                <img src={articleImage} alt="" />
+                <img src={articleImage ? articleImage : "/img/profile/image.svg"} alt="" />
             </div>
             <Box className="card-body">
                 <div className="category">
@@ -39,7 +44,9 @@ const HorizontalCard = (props: { article: Article, navigatetoPageHandler:any }) 
                             <div className="old">{moment(article.createdAt).format("YYYY-MM-DD")}</div>
                         </Stack>
                     </Stack>
-                    <IconButton className="link" onClick={(e:any)=>navigatetoPageHandler(article._id, article.articleCategory)}>
+                    <IconButton className="link" onClick={() => {
+                        navigatetoPageHandler(article._id, article.articleCategory)
+                    }}>
                         <ArrowOutward />
                     </IconButton>
                 </Stack>

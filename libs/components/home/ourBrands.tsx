@@ -1,17 +1,17 @@
-import { Place } from "@mui/icons-material";
 import {
     Box,
-    Button,
     Stack,
     Tab,
     Tabs,
 } from "@mui/material"
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useQuery } from "@apollo/client";
 import { GET_MEMBERS } from "@/apollo/user/query";
 import { Member, MemberType } from "@/libs/types/member/member";
 import { serverApi } from "@/libs/config";
 import { useRouter } from "next/router";
+import HoverButton from "../others/HoverButton";
+import useDeviceDetect from "@/libs/hooks/useDeviceDetector";
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -57,7 +57,19 @@ const OurBrands = () => {
     //Initialization
     const [value, setValue] = useState<number>(1)
     const [retailers, setRetailers] = useState([])
+    const [scrollEnable, setScrollEnable] = useState(false)
     const router = useRouter()
+    const device = useDeviceDetect();
+
+    useEffect(() => {
+        const handleScrollAos = () => {
+            setScrollEnable(window.scrollY > 170)
+        }
+        window.addEventListener("scroll", handleScrollAos)
+        return () => {
+            window.removeEventListener("scroll", handleScrollAos)
+        }
+    }, [])
 
     const { } = useQuery(GET_MEMBERS, {
         fetchPolicy: "cache-and-network",
@@ -83,7 +95,7 @@ const OurBrands = () => {
     }
     return (
         <>
-            <Stack className={"brands"}>
+            <Stack className={device === "mobile" ? "brands aos-animate" : scrollEnable ? "brands aos-animate transition duration-1000" : "brands transition duration-1000"} data-aos="fade-down">
                 <Stack className="container">
                     <Stack className="info" alignItems={"center"}>
                         <div className="title">Our Retailers</div>
@@ -116,14 +128,15 @@ const OurBrands = () => {
                                                     {member.memberNick}
                                                 </div>
                                                 <div className="desc">
-                                                    {member.memberDesc}
+                                                    {member.memberDesc ?? "No Description"}
                                                 </div>
-                                                <Button onClick={() => {
-                                                    const link = `/retailers/detail?id=${member._id}`
-                                                    router.push(link, link, { scroll: false })
-                                                }}>
-                                                    View Retailer
-                                                </Button>
+                                                <Box
+                                                    onClick={() => {
+                                                        const link = `/retailers/detail?id=${member._id}`
+                                                        router.push(link, link, { scroll: false })
+                                                    }}>
+                                                    <HoverButton />
+                                                </Box>
                                             </Stack>
                                             <Stack className={"brand-img"}>
                                                 <img src={memberImage} alt="" />

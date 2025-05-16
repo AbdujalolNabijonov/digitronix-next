@@ -5,9 +5,10 @@ import {
     InputOTPGroup,
     InputOTPSlot,
 } from "@/components/ui/input-otp"
-import { Box, Button, CircularProgress, IconButton, Stack } from "@mui/material"
+import { Box, IconButton, Stack } from "@mui/material"
 import { ArrowLeft } from "phosphor-react"
 import { useState } from "react"
+import Loader from "../others/Loader"
 
 interface OTPProps {
     handleVerifiedCodes: any,
@@ -51,9 +52,11 @@ export function OTPInput(props: OTPProps) {
             </InputOTP>
             {
                 loading ? (
-                    <Button className="w-[90%] py-4 text-white mt-7" variant="outlined" color="warning">
-                        <CircularProgress color="success" />
-                    </Button>
+                    <Box
+                        className="w-[90%] flex justify-center mt-4 py-2  bg-gray-600 rounded cursor-not-allowed"
+                    >
+                        <Loader size="30px" />
+                    </Box>
                 ) : !fullFilled ? (
                     <button
                         className="tarcking-wider font-bold text-white w-[90%] mt-4 py-2 text-xl bg-[#D77B3D] rounded hover:bg-[#AF3E45] transition duration-300 cursor-pointer"

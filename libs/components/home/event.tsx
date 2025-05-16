@@ -1,8 +1,11 @@
 import { NextPage } from "next";
 import { Box, Divider, Stack } from "@mui/material";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Autoplay, EffectCoverflow, Navigation } from "swiper/modules";
 import { EventObj } from "@/libs/types/event/event";
+import { Navigation, Pagination } from "swiper/modules";
+import { ArrowBackIosOutlined, ArrowForwardIosOutlined } from "@mui/icons-material";
+import { useEffect, useState } from "react";
+import useDeviceDetect from "@/libs/hooks/useDeviceDetector";
 
 const events = [
     {
@@ -23,6 +26,18 @@ const events = [
 ]
 
 const Event: NextPage = () => {
+    const [scrollAos, setScrollAos] = useState(false)
+    const device = useDeviceDetect()
+
+    useEffect(() => {
+        const handleScrollAos = () => {
+            setScrollAos(window.scrollY > 3000)
+        }
+        window.addEventListener("scroll", handleScrollAos);
+        return () => {
+            window.removeEventListener("scroll", handleScrollAos)
+        }
+    }, [])
     return (
         <>
             <Stack className="event">
@@ -30,28 +45,31 @@ const Event: NextPage = () => {
                     <div className="title">
                         Explore <span>Events</span>
                     </div>
-                    <div>
+                    <Box className="relative">
+                        <div className="prev-navii absolute left-0 top-[40%] z-20 cursor-pointer w-[60px] h-[60px] bg-gray-200 flex justify-center items-center rounded-full hover:bg-gray-500">
+                            <ArrowBackIosOutlined />
+                        </div>
+                        <div className="next-navii absolute right-0 top-[40%] z-20 cursor-pointer w-[60px] h-[60px] bg-gray-200 flex justify-center items-center rounded-full hover:bg-gray-500">
+                            <ArrowForwardIosOutlined />
+                        </div>
                         <Swiper
-                            effect={'coverflow'}
-                            centeredSlides={true}
-                            slidesPerView={3}
-                            coverflowEffect={{
-                                rotate: 50,
-                                stretch: 0,
-                                depth: 100,
-                                modifier: 1,
-                                slideShadows: false,
+                            slidesPerView={device === "mobile" ? 1 : 3}
+                            spaceBetween={30}
+                            pagination={{
+                                clickable: true,
                             }}
-                            navigation={true}
-                            pagination={true}
-                            modules={[EffectCoverflow, Navigation, Autoplay]}
+                            navigation={{
+                                nextEl: ".next-navii",
+                                prevEl: ".prev-navii"
+                            }}
+                            keyboard={true}
+                            modules={[Navigation]}
                             className="event-swiper"
-                            initialSlide={0}
                         >
                             {
                                 events.map((ele: EventObj, index: number) => (
-                                    <SwiperSlide key={index} >
-                                        <Box className={"card"} style={{ backgroundImage: `url(${ele.eventImage})` }}>
+                                    <SwiperSlide key={index}>
+                                        <Box style={{ backgroundImage: `url(${ele.eventImage})` }} className={device === "mobile" ? "card aos-animate" : scrollAos ? "aos-animate transition duration-2000 card" : "transition duration-2000 card"} data-aos="fade-left" data-aos-duration={`${3000 * index}`}>
                                             <Stack className="card-info">
                                                 <div className="title">
                                                     {ele.eventTitle}
@@ -59,7 +77,7 @@ const Event: NextPage = () => {
                                                 <div className="context">
                                                     {ele.eventContent}
                                                 </div>
-                                                <Divider variant="middle" sx={{borderColor:"black"}}/>
+                                                <Divider variant="middle" sx={{ borderColor: "black" }} />
                                                 <div className="event-time">
                                                     10:27
                                                 </div>
@@ -69,7 +87,7 @@ const Event: NextPage = () => {
                                 ))
                             }
                         </Swiper>
-                    </div>
+                    </Box>
                 </Stack>
             </Stack>
         </>

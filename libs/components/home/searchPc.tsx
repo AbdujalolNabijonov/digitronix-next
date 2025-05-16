@@ -1,13 +1,24 @@
 import { Stack } from "@mui/material"
 import { NextPage } from "next"
 import HomeFilter from "./homeFilter"
+import { useEffect, useState } from "react"
 
 const SearchPc: NextPage = (props: any) => {
+    const [aosEnable, setAosEnable] = useState(false)
+    useEffect(() => {
+        const handleScroll = () => {
+            setAosEnable(window.scrollY > 2500);
+        }
+        window.addEventListener("scroll", handleScroll)
+        return () => {
+            window.removeEventListener("scroll", handleScroll)
+        }
+    }, [])
     return (
         <>
             <Stack className={"gaming-pc"}>
                 <Stack className="container" direction={"row"} justifyContent={"space-between"}>
-                    <Stack className="images" direction={"row"} gap={"15px"}>
+                    <Stack direction={"row"} gap={"15px"} data-aos="fade-right" className={aosEnable ? "aos-animate transition images duration-1000" : "images duration-1000"}>
                         <div className={"img-big"}>
                             <img src="/img/products/gaming.avif" alt="" />
                         </div>
@@ -20,11 +31,11 @@ const SearchPc: NextPage = (props: any) => {
                             </div>
                         </Stack>
                     </Stack>
-                    <Stack alignItems={"center"}>
-                        <div className="title">
+                    <Stack alignItems={"center"} className={aosEnable ? "aos-animate transition duration-1000" : "duration-1000"} data-aos="fade-left" >
+                        <div className="title text-white">
                             Search your own gaming PC
                         </div>
-                        <div className="subtitle">
+                        <div className="subtitle text-white">
                             We are passionate about teaming up with gamers to fearlessly challenge the limits and win ultimate glory.
                         </div>
                         <div className="filter-search">

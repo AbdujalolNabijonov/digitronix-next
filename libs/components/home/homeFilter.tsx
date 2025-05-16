@@ -157,7 +157,10 @@ const HomeFilter = (props: any) => {
                         {Object.values(ProductCategory).map((category: string, index: number) => {
                             return (
                                 <div
-                                    style={{ backgroundImage: `url(/img/banner/${category.toLowerCase()}.jpg)` }}
+                                    style={category==="KEYBOARD" ?
+                                        { backgroundImage: `url(/img/banner/${category.toLowerCase()}.jpeg)` }
+                                        : { backgroundImage: `url(/img/banner/${category.toLowerCase()}.jpg)` }
+                                    }
                                     onClick={() => productCategorySelectHandler(category)}
                                     key={index}
                                 >

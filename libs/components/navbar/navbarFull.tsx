@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
 import {
-    AccountCircleRounded,
     Chair,
     ErrorOutline,
     Keyboard,
@@ -8,6 +7,7 @@ import {
     Logout,
     Mouse,
     NotificationsOutlined,
+    RocketLaunchOutlined,
 } from "@mui/icons-material";
 import {
     Avatar,
@@ -41,6 +41,7 @@ import useDeviceDetect from "@/libs/hooks/useDeviceDetector";
 import { RippleBadge } from "@/scss/MaterialTheme/styled";
 import { useTranslation } from "next-i18next";
 import MobileBar from "./mobileBar";
+import RingBell from "./RingBell";
 
 
 const Navbar: NextPage = (props: any) => {
@@ -416,17 +417,21 @@ const Navbar: NextPage = (props: any) => {
                                             )
                                             :
                                             (
-                                                <Button className={"register-btn"} onClick={() => router.push("/account/join")}>
-                                                    <AccountCircleRounded style={{ fontSize: "45px", fill: "white" }} />
-                                                    <p>{t('Login / Register')}</p>
+                                                <Button
+                                                    className="register-btn"
+                                                    startIcon={<RocketLaunchOutlined />}
+                                                    onClick={() => {
+                                                        router.push("/account/join")
+                                                    }}
+                                                >
+                                                    {t("Register")}
                                                 </Button>
                                             )}
                                 </div>
                                 <Stack className="notify">
-                                    <Button className="notify-ring" onClick={toggleNotificationHandler}>
-                                        <NotificationsOutlined style={{ fontSize: "25px", fill: "white" }} />
-                                        {totalNotices ? (<RippleBadge badgeContent={totalNotices} style={{ height: "20px", color: 'red' }} />) : null}
-                                    </Button>
+                                    <Box className="notify-ring" onClick={toggleNotificationHandler}>
+                                        <RingBell />
+                                    </Box>
                                     <Menu
                                         anchorEl={anchorEl4}
                                         open={Boolean(anchorEl4)}

@@ -201,21 +201,17 @@
         .navbar-features {
           .register-box {
             .register-btn {
-              display: flex;
-              align-items: center;
-              gap: 10px;
-              cursor: pointer;
-              background-color: #d77b3d;
-              padding: 4px 10px;
-              border-radius: 10px;
-              p {
-                font-weight: 600;
-                color: white;
-              }
-              img {
-                height: 40px;
-                width: 40px;
-                border-radius: 50%;
+              border: 4px solid gray;
+              border-radius: 20px;
+              padding: 10px 15px;
+              background-color: rgb(31, 30, 30);
+              color: white;
+              font-weight: bold;
+              letter-spacing: 1px;
+              font-size: inherit;
+              transition: background-color 0.2 ease-in-out;
+              &:hover {
+                background-color: #343434;
               }
             }
           }
@@ -223,6 +219,53 @@
             position: relative;
             .notify-ring {
               position: relative;
+              .ring-btn {
+                width: 50px;
+                height: 50px;
+                position: relative;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                transition-duration: 0.3s;
+                border: none;
+                &:hover {
+                  .bell {
+                    display: none;
+                  }
+                  .bell-ring {
+                    display: block;
+                    animation: bellRing 0.9s both;
+                  }
+                }
+                &:active{
+                  transform: scale(0.8);
+                }
+                .bell-ring {
+                  display: none;
+                }
+              }
+              @keyframes bellRing {
+                0%,
+                100% {
+                  transform-origin: top;
+                }
+                15% {
+                  transform: rotateZ(10deg);
+                }
+                30% {
+                  transform: rotateZ(-10deg);
+                }
+                45% {
+                  transform: rotateZ(5deg);
+                }
+                60% {
+                  transform: rotateZ(-5deg);
+                }
+                75% {
+                  transform: rotateZ(2deg);
+                }
+              }
               .badge {
                 display: flex;
                 align-items: center;
