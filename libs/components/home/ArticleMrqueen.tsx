@@ -4,44 +4,6 @@ import { useEffect, useState } from "react";
 import useDeviceDetect from "@/libs/hooks/useDeviceDetector";
 import { Article } from "@/libs/types/article/article";
 
-const reviews = [
-    {
-        name: "Jack",
-        username: "@jack",
-        body: "I've never seen anything like this before. It's amazing. I love it.",
-        img: "https://avatar.vercel.sh/jack",
-    },
-    {
-        name: "Jill",
-        username: "@jill",
-        body: "I don't know what to say. I'm speechless. This is amazing.",
-        img: "https://avatar.vercel.sh/jill",
-    },
-    {
-        name: "John",
-        username: "@john",
-        body: "I'm at a loss for words. This is amazing. I love it.",
-        img: "https://avatar.vercel.sh/john",
-    },
-    {
-        name: "Jane",
-        username: "@jane",
-        body: "I'm at a loss for words. This is amazing. I love it.",
-        img: "https://avatar.vercel.sh/jane",
-    },
-    {
-        name: "Jenny",
-        username: "@jenny",
-        body: "I'm at a loss for words. This is amazing. I love it.",
-        img: "https://avatar.vercel.sh/jenny",
-    },
-    {
-        name: "James",
-        username: "@james",
-        body: "I'm at a loss for words. This is amazing. I love it.",
-        img: "https://avatar.vercel.sh/james",
-    },
-];
 
 
 interface ArticleLoopProps {
@@ -57,6 +19,7 @@ export function ArticleLoop(props: ArticleLoopProps) {
     const { navigatetoPageHandler, newsArticles, humarArticles, freeArticles } = props
     const [scrollAos, setScrollAos] = useState(false)
     const device = useDeviceDetect()
+    
     useEffect(() => {
         const handleScrollAos = () => {
             setScrollAos(window.scrollY > 3700)

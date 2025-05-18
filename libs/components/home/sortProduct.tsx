@@ -39,7 +39,10 @@ const SortProduct: NextPage = ({ initialProps, ...props }: any) => {
         const handleScroll = () => {
             setScroll(window.scrollY > 1000)
         }
-        window.addEventListener("scroll", handleScroll)
+        window.addEventListener("scroll", handleScroll);
+        return () => {
+            window.removeEventListener("scroll", handleScroll)
+        }
     }, [])
 
     const {

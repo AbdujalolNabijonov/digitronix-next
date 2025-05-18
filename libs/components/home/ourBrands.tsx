@@ -121,7 +121,7 @@ const OurBrands = () => {
                             retailers.map((member: Member, num: number) => {
                                 const memberImage = member.memberImage ? `${serverApi}/${member.memberImage}` : "/img/profile/image.svg"
                                 return (
-                                    <TabPanel value={value} index={num}>
+                                    <TabPanel value={value} index={num} key={num}>
                                         <Stack className="brand-info" direction={"row"}>
                                             <Stack>
                                                 <div className="title">
