@@ -9,7 +9,7 @@ import SentimentVerySatisfiedIcon from '@mui/icons-material/SentimentVerySatisfi
 
 const StyledRating = styled(Rating)(({ theme }) => ({
     '& .MuiRating-iconEmpty .MuiSvgIcon-root': {
-        color: theme.palette.action.disabled,
+        color: "#b6b4b4",
     },
 }));
 
@@ -20,11 +20,11 @@ const customIcons: {
     };
 } = {
     1: {
-        icon: <SentimentVeryDissatisfiedIcon color="error" />,
+        icon: <SentimentVeryDissatisfiedIcon color="error"/>,
         label: 'Very Dissatisfied',
     },
     2: {
-        icon: <SentimentDissatisfiedIcon color="error" />,
+        icon: <SentimentDissatisfiedIcon color="error" sx={{fill:"white"}}/>,
         label: 'Dissatisfied',
     },
     3: {

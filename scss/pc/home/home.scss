@@ -99,7 +99,13 @@
               .swiper {
                 width: 100%;
                 position: relative;
-                padding: 10px 70px;
+                padding: 30px 70px 50px 70px;
+                .swiper-pagination{
+                  .swiper-pagination-bullet{
+                    background-color: rgb(170, 169, 169);
+                    padding: 5px;
+                  }
+                }
                 .product-card {
                   box-shadow: 0 0 10px rgb(53, 53, 53);
                   justify-content: space-between;

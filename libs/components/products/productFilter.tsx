@@ -3,6 +3,7 @@ import { AmdCoreList, BrandsList, DisplayResolution, IntelCoreList } from "@/lib
 import { ProductsInquiry } from "@/libs/types/product/product.input"
 import { CancelRounded, Computer, ExpandMore, HomeWorkOutlined, KeyboardDoubleArrowDownOutlined, KeyboardDoubleArrowUpOutlined, Memory, Refresh, Search, Tab, TabOutlined } from "@mui/icons-material"
 import { Accordion, AccordionDetails, AccordionSummary, Box, Checkbox, FormControlLabel, IconButton, OutlinedInput, Stack, Tooltip, Typography } from "@mui/material"
+import { GraphicsCard } from "@phosphor-icons/react"
 import { useRouter } from "next/router"
 import { handleClientScriptLoad } from "next/script"
 import { Monitor } from "phosphor-react"
@@ -446,8 +447,8 @@ const ProductFilter = (props: ProductProps) => {
                 )
             }
             <Box className="core-sec">
-                <Stack direction={"row"}>
-                    <img src="/img/icons/graphics-card-white.svg" alt="" />
+                <Stack direction={"row"} alignItems={"center"}>
+                    <GraphicsCard size={25}/>
                     <>Graphics</>
                 </Stack>
                 <Stack>

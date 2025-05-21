@@ -2,17 +2,17 @@ import { Box, Button, Divider, Menu, MenuItem, Stack, Typography } from "@mui/ma
 import { useReactiveVar } from "@apollo/client"
 import { userVar } from "@/apollo/store"
 import { useEffect, useState } from "react"
-import { NotificationsOutlined } from "@mui/icons-material"
 import { getJwtToken, logOut, updateUserInfo } from "@/libs/auth"
 import { sweetErrorAlert, sweetTopSmallSuccessAlert } from "@/libs/sweetAlert"
 import { useRouter } from "next/router"
+import { serverApi } from "@/libs/config"
 
 const NavbarAdmin = () => {
     //Initializations
     const user = useReactiveVar(userVar)
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
     const openAnchor = Boolean(anchorEl)
-    const imageUrl = user?.memberImage ? `${"http://localhost:3005"}/${user.memberImage}` : "/img/profile/defaultUser.svg";
+    const imageUrl = user?.memberImage ? `${serverApi}/${user.memberImage}` : "/img/profile/defaultUser.svg";
     const router = useRouter()
     
     //LifeCircle

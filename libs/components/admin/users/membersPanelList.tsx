@@ -198,10 +198,10 @@ export const MemberPanelList = (props: MemberPanelListType) => {
 											>
 												{Object.values(MemberType)
 													.filter((ele) => ele !== member?.memberType)
-													.map((type: string) => (
+													.map((type: string,i:number) => (
 														<MenuItem
 															onClick={() => updateMemberHandler({ _id: member._id, memberType: type })}
-															key={type}
+															key={i}
 														>
 															<Typography variant={'subtitle1'} component={'span'}>
 																{type}
@@ -231,10 +231,10 @@ export const MemberPanelList = (props: MemberPanelListType) => {
 											>
 												{Object.values(MemberStatus)
 													.filter((ele: string) => ele !== member?.memberStatus)
-													.map((status: string) => (
+													.map((status: string,i:number) => (
 														<MenuItem
 															onClick={() => updateMemberHandler({ _id: member._id, memberStatus: status })}
-															key={status}
+															key={i}
 														>
 															<Typography variant={'subtitle1'} component={'span'}>
 																{status}

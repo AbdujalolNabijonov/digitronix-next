@@ -160,7 +160,7 @@ const Faq: NextPage = ({ initialProps, ...props }: any) => {
                                         >
                                             {
                                                 Object.values(FaqCategory).map((category: string, index: number) => (
-                                                    (<option value={category} key={index}>{category}</option>)
+                                                    (<option value={category} ={index}>{category}</option>)
                                                 ))
                                             }
                                         </select>

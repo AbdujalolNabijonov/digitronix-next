@@ -109,10 +109,11 @@ const MyProfile = (props: any) => {
             await updateStorage({ jwtToken });
             await updateUserInfo(jwtToken);
             await sweetMixinSuccessAlert("Information Updated Successfully")
-            for (let key in memberUpdate) {
-                //@ts-ignore
-                memberUpdate[key] = ""
-            }
+            memberUpdate.memberAddress = ""
+            memberUpdate.memberDesc = ""
+            memberUpdate.memberFullName = ""
+            memberUpdate.memberNick = ""
+            memberUpdate.memberPhone = ""
             setMemberUpdate({ ...memberUpdate })
         } catch (err: any) {
             console.log(`ERROR: submitUpdateMember, ${err.message}`);
@@ -139,7 +140,7 @@ const MyProfile = (props: any) => {
                                 width: "150px",
                                 border: "4px solid white"
                             }}
-                            src={user.memberImage ? `${serverApi}/${memberUpdate.memberImage}` : "img/profile/noUser.jpg"}
+                            src={memberUpdate.memberImage ? `${serverApi}/${memberUpdate.memberImage}` : "img/profile/noUser.jpg"}
                         />
                         <Fab
                             color="primary"

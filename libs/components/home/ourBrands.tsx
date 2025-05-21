@@ -135,7 +135,7 @@ const OurBrands = () => {
                                                         const link = `/retailers/detail?id=${member._id}`
                                                         router.push(link, link, { scroll: false })
                                                     }}>
-                                                    <HoverButton />
+                                                    <HoverButton text="Discover"/>
                                                 </Box>
                                             </Stack>
                                             <Stack className={"brand-img"}>

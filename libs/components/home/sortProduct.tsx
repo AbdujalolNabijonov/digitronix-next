@@ -170,10 +170,10 @@ const SortProduct: NextPage = ({ initialProps, ...props }: any) => {
                             {getTargetProductsLoading ? <Box sx={{ alignSelf: "center" }}><CircularProgress size={"3rem"} /></Box> :
                                 targetProducts && targetProducts.length > 0 ? (
                                     <Box className="relative">
-                                        <div className="prev-navi absolute left-0 top-[40%] z-20 cursor-pointer w-[60px] h-[60px] bg-gray-200 flex justify-center items-center rounded-full hover:bg-gray-500">
+                                        <div className="prev-navi absolute left-0 top-[40%] z-30 cursor-pointer w-[60px] h-[60px] bg-gray-200 flex justify-center items-center rounded-full hover:bg-gray-500">
                                             <ArrowBackIosOutlined />
                                         </div>
-                                        <div className="next-navi absolute right-0 top-[40%] z-20 cursor-pointer w-[60px] h-[60px] bg-gray-200 flex justify-center items-center rounded-full hover:bg-gray-500">
+                                        <div className="next-navi absolute right-0 top-[40%] z-30 cursor-pointer w-[60px] h-[60px] bg-gray-200 flex justify-center items-center rounded-full hover:bg-gray-500">
                                             <ArrowForwardIosOutlined />
                                         </div>
                                         <Swiper

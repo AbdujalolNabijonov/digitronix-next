@@ -2,11 +2,11 @@ import { NextPage } from "next"
 import { useState } from "react"
 import { useRouter } from "next/router"
 import LayoutFull from "@/libs/components/layouts/LayoutFull"
-import { Avatar, Box, Button, Divider, IconButton, Pagination, Rating, Stack, } from "@mui/material"
+import { Avatar, Box, Button, Divider, IconButton, Rating, Stack, } from "@mui/material"
 import { Swiper, SwiperSlide } from "swiper/react"
 import { Swiper as SwiperType } from "swiper"
 import { FreeMode, Navigation, Thumbs } from "swiper/modules"
-import { AccountBoxRounded, LaunchRounded, LocalShippingRounded, PhoneAndroid, RemoveRedEyeRounded, RestartAltRounded, Star, ThumbUpAltRounded } from "@mui/icons-material"
+import { AccountBoxRounded, LaunchRounded, LocalShippingRounded, PhoneAndroid, RemoveRedEyeRounded, RestartAltRounded, ThumbUpAltRounded } from "@mui/icons-material"
 import ProductCard from "@/libs/components/products/productCard"
 import ProductSpecBoardPc from "@/libs/components/products/ProductSpecBoard"
 import { Circuitry, CurrencyKrw, HandCoins, PaintBrushHousehold } from "@phosphor-icons/react"
@@ -443,7 +443,7 @@ const Detail: NextPage = () => {
                                 <Stack className="product-related">
                                     <Swiper
                                         spaceBetween={10}
-                                        slidesPerView={1}
+                                        slidesPerView={3}
                                         className="swiper-related"
                                     >
                                         {relatedProducts.map((product: Product, index: number) => (

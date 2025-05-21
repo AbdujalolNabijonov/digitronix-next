@@ -1,6 +1,7 @@
 import React from "react";
-import { Box, Button, Stack } from "@mui/material";
+import { Box, Stack } from "@mui/material";
 import SmileRatingSelect from "./smileRateSelect";
+import HoverButton from "./HoverButton";
 
 interface CommentWriteProps {
     setRating: any;
@@ -30,7 +31,19 @@ const CommentWrite = (props: CommentWriteProps) => {
                     setCommentObj({ ...commentObj })
                 }}
             ></textarea>
-            <Button variant="contained" onClick={submitCommentHandler}>Submit</Button>
+            <Stack justifyContent={"end"} direction={"row"}>
+            {
+                commentObj.commentContent ? (
+                    <Box onClick={submitCommentHandler}>
+                        <HoverButton text="Submit" />
+                    </Box>
+                ) : (
+                    <Box onClick={submitCommentHandler} className="bg-gray-400 py-3 w-[200px] rounded-lg flex justify-center text-gray cursor-not-allowed mt-4 font-bold">
+                        Disabled
+                    </Box>
+                )
+            }
+            </Stack>
         </Stack>
     )
 }

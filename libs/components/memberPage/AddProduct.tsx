@@ -726,7 +726,7 @@ const AddProduct = () => {
                                     <li>Relevant image for each product</li>
                                 </ul>
                             </Stack>
-                            <Button endIcon={<ArrowSquareOut size={32} />}>
+                            <Button endIcon={<ArrowSquareOut size={32} />} sx={{ marginTop: "10px" }}>
                                 Browse Files
                             </Button>
                         </FileUploader>

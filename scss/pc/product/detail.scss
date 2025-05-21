@@ -108,10 +108,8 @@
           .product-main-content {
             flex: 1;
             .product-spec-board {
-              flex-direction: row;
-              justify-content: space-evenly;
-              align-items: center;
               margin: 20px 0;
+              gap: 20px;
               .product-spec-item {
                 flex-direction: row;
                 align-items: center;
@@ -204,7 +202,7 @@
           .product-owner {
             width: 340px;
             background-color: #343434;
-            max-height: 650px;
+            height: 20%;
             margin-top: 50px;
             border-radius: 10px;
             padding: 20px;
@@ -231,11 +229,13 @@
                 padding: 15px 10px;
                 border-radius: 5px;
                 font-size: 17px;
+                border: 1px solid rgb(218, 216, 216);
               }
               textarea {
                 border-radius: 10px;
                 padding: 10px;
                 font-size: 17px;
+                border: 1px solid rgb(218, 216, 216);
               }
             }
             button {

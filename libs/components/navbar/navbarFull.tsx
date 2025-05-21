@@ -6,7 +6,6 @@ import {
     LaptopOutlined,
     Logout,
     Mouse,
-    NotificationsOutlined,
     RocketLaunchOutlined,
 } from "@mui/icons-material";
 import {
@@ -38,7 +37,6 @@ import { Notice } from "@/libs/types/notice/notice";
 import moment from "moment";
 import { DELETE_NOTICES } from "@/apollo/user/mutation";
 import useDeviceDetect from "@/libs/hooks/useDeviceDetector";
-import { RippleBadge } from "@/scss/MaterialTheme/styled";
 import { useTranslation } from "next-i18next";
 import MobileBar from "./mobileBar";
 import RingBell from "./RingBell";
@@ -104,7 +102,7 @@ const Navbar: NextPage = (props: any) => {
         },
         onCompleted: ({ getAllNotices }) => {
             setNotices(getAllNotices.list)
-            setTotalNotices(getAllNotices.metaCounter[0].total)
+            setTotalNotices(getAllNotices.metaCounter[0].total ?? 0)
         }
     })
 

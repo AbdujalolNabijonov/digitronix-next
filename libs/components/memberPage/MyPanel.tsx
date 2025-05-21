@@ -51,7 +51,6 @@ const MyPanel = (props: any) => {
                                 <Box className="account-type">{user.memberType}</Box>
                             )
                         }
-
                     </Stack>
                 </Stack>
             </Stack>
