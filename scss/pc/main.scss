@@ -69,11 +69,38 @@
   .item-img {
     height: 220px;
     width: 100%;
+    position: relative;
+  
     img {
       height: 100%;
       width: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      transition: opacity 0.5s ease-in-out;
+    }
+  
+    img:nth-child(1) {
+      opacity: 1;
+      z-index: 1;
+    }
+  
+    img:nth-child(2) {
+      opacity: 0;
+      z-index: 2;
+    }
+  
+    &:hover {
+      img:nth-child(1) {
+        opacity: 0;
+      }
+  
+      img:nth-child(2) {
+        opacity: 1;
+      }
     }
   }
+  
   .title {
     padding-bottom: 10px;
     border-bottom: 1px solid rgb(135, 135, 135);
@@ -112,8 +139,6 @@
   }
 }
 .pc-wrapper {
-  .container {
-  }
   .scrolled {
     position: fixed;
     transition: all 0.3 ease-in-out;

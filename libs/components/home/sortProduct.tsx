@@ -192,7 +192,7 @@ const SortProduct: NextPage = ({ initialProps, ...props }: any) => {
                                         >
                                             {targetProducts.map((product: Product, index: number) => {
                                                 const product_img = `${serverApi}/${product.productImages[0]}`
-                                                const product_img2 = `${serverApi}/${product.productImages[1]}`
+                                                const product_img2 = product.productImages[1] ? `${serverApi}/${product.productImages[1]}` : product_img
                                                 return (
                                                     <SwiperSlide key={product._id}>
                                                         <Stack
@@ -205,12 +205,8 @@ const SortProduct: NextPage = ({ initialProps, ...props }: any) => {
                                                             className={scroll || device === "mobile" ? "product-card aos-animate transition duration-2000" : "product-card transition duration-2000"}
                                                         >
                                                             <Stack className="card-head" alignItems={"center"}>
-                                                                <img src={product_img} alt="" className="toogle-img1" />
-                                                                {
-                                                                    product_img2 ? (
-                                                                        <img src={product_img2} alt="" className="toogle-img2" />
-                                                                    ) : null
-                                                                }
+                                                                <img src={product_img} alt="" />
+                                                                <img src={product_img2} alt="" />
                                                             </Stack>
                                                             <Box>
                                                                 <Stack className="card-body" gap={"5px"}>

@@ -7,6 +7,7 @@ import { useApollo } from "@/apollo/client";
 import ContextProvider from "@/libs/components/context/ContextProvider";
 import { appWithTranslation } from 'next-i18next';
 import {GoogleOAuthProvider} from "@react-oauth/google"
+import { GOOGLE_CLIENT_ID } from "@/libs/config";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/swiper-bundle.css";
@@ -14,7 +15,6 @@ import "../scss/pc/main.scss"
 import "../scss/mobile/main.scss"
 import "../scss/app.scss";
 import "./globals.css";
-import { GOOGLE_CLIENT_ID } from "@/libs/config";
 
 
 function App({ Component, pageProps }: AppProps) {

@@ -24,6 +24,7 @@ import { LIKE_TARGET_MEMBER } from "@/apollo/user/mutation";
 import { NoticeGroup } from "@/libs/enum/notice.enum";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import useDeviceDetect from "@/libs/hooks/useDeviceDetector";
+import RetailerCard from "@/libs/components/retailers/RetailerCard";
 export const getStaticProps = async ({ locale }: any) => ({
     props: {
         ...(await serverSideTranslations(locale, ['common'])),
@@ -115,6 +116,7 @@ const Retailers: NextPage = (props: any) => {
             if (!memberId) throw new Error(Messages.error1);
             await likeTargetMember({ variables: { input: memberId } });
             await getMembersRefetch({ input: searchObj })
+            await noticeHandler(memberId)
         } catch (err: any) {
             console.log(`ERROR: likeTargetHandler: ${err}`);
             await sweetErrorHandling(err)
@@ -139,8 +141,8 @@ const Retailers: NextPage = (props: any) => {
         )
     } else {
         return (
-            <Box className="container">
-                <Stack className="retailer-page">
+            <Box className="retailer-page">
+                <Stack className="container">
                     <Stack className={"retailer-filter"}>
                         <Stack className={"retailer-sort"}>
                             <Box>Sort by</Box>
@@ -164,59 +166,8 @@ const Retailers: NextPage = (props: any) => {
                             <Stack className={"retailers"}>
                                 {
                                     retailers.map((member: Member, index: number) => {
-                                        const imageUrl = member.memberImage ? `${serverApi}/${member.memberImage}` : "/img/profile/noUser.jpg"
                                         return (
-                                            <Stack className="retailer-card" key={index} onClick={() => {
-                                                const url = `/retailers/detail?id=${member._id}`
-                                                router.push(url, url, { scroll: false })
-                                            }}>
-                                                <Box className={"card-head"}>
-                                                    <img src={imageUrl} alt="" />
-                                                    <Stack className={"card-head-items"}>
-                                                        <Stack direction={"row"} alignItems={"center"} gap={"2px"}>
-                                                            <IconButton disableRipple onClick={(e) => { e.stopPropagation() }}>
-                                                                <RemoveRedEyeRounded />
-                                                            </IconButton>
-                                                            <Box>{member.memberViews}</Box>
-                                                        </Stack>
-                                                        <Stack direction={"row"} alignItems={"center"} gap={"2px"}>
-                                                            <IconButton onClick={(e) => {
-                                                                likeTargetHandler(e, member._id)
-                                                                //@ts-ignore
-                                                                if (!member.meLiked[0]?.myFavorite) {
-                                                                    noticeHandler(member._id)
-                                                                }
-                                                            }}>
-                                                                <ThumbUpAltRounded sx={member.meLiked && member.meLiked[0]?.myFavorite ? { fill: "#f44336" } : { fill: "gray" }} />
-                                                            </IconButton>
-                                                            <Box>{member.memberLikes}</Box>
-                                                        </Stack>
-                                                    </Stack>
-                                                </Box>
-                                                <Stack className={"card-body"}>
-                                                    <Box className="card-title">{member.memberFullName ?? member.memberNick}</Box>
-                                                    <Box className="card-subtitle">{member.memberEmail ?? "No email provided"}</Box>
-                                                    <Stack direction={"row"} className="card-info">
-                                                        <Stack className="card-info-item">
-                                                            <Box>{member.memberProducts}</Box>
-                                                            <Box>Products</Box>
-                                                        </Stack>
-                                                        <Stack className="card-info-item">
-                                                            <Box>{member.memberFollowings}</Box>
-                                                            <Box>Followings</Box>
-                                                        </Stack>
-                                                        <Stack className="card-info-item">
-                                                            <Box>{member.memberFollowers}</Box>
-                                                            <Box>Followers</Box>
-                                                        </Stack>
-                                                    </Stack>
-                                                </Stack>
-                                                <Stack className={"card-footer"} direction={"row"}>
-                                                    <Button variant="outlined">
-                                                        View
-                                                    </Button>
-                                                </Stack>
-                                            </Stack>
+                                            <RetailerCard key={index} member={member} likeTargetHandler={likeTargetHandler}/>
                                         )
                                     })
                                 }

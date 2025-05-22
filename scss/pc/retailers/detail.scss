@@ -1,6 +1,7 @@
 .pc-wrapper {
   .main {
     .retailer-detail {
+      background-color: #292929;
       .container {
         flex-direction: row;
         position: relative;
@@ -10,7 +11,7 @@
           margin-bottom: 20px;
           .retailer-products {
             flex-direction: row;
-            gap: 20px;
+            gap: 10px;
             flex-wrap: wrap;
             margin: 40px 0 10px 0;
           }
@@ -25,9 +26,9 @@
         }
         .retailer-info {
           position: relative;
-          width: 400px;
+          width: 350px;
           max-height: 500px;
-          background-color: white;
+          background-image: url("/img/banner/hexagons.svg");
           box-shadow: 0 0 5px white;
           img {
             position: absolute;
@@ -43,10 +44,11 @@
             .title {
               font-size: 30px;
               font-size: 700;
-              color: rgb(76, 76, 76);
+              color: white;
             }
             .contact-info {
               margin-top: 10px;
+              color: white;
               .contact-info-item {
                 flex-direction: row;
                 margin: 3px 0;

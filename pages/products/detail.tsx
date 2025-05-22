@@ -1,5 +1,5 @@
 import { NextPage } from "next"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useRouter } from "next/router"
 import LayoutFull from "@/libs/components/layouts/LayoutFull"
 import { Avatar, Box, Button, Divider, IconButton, Rating, Stack, } from "@mui/material"
@@ -44,7 +44,7 @@ const Detail: NextPage = () => {
     const [product, setProduct] = useState<Product | null>(null)
     const [relatedProducts, setRelatedProducts] = useState([])
     const [rating, setRating] = useState<number>(0)
-    const {setRebuild}=useGlobal()
+    const { setRebuild } = useGlobal()
     const [commentObj, setCommentObj] = useState({
         commentGroup: CommentGroup.PRODUCT,
         commentRank: 0,
@@ -68,6 +68,12 @@ const Detail: NextPage = () => {
     const [totalComments, setTotalComments] = useState(0)
     const user = useReactiveVar(userVar)
     //LifeCircle
+
+    useEffect(() => {
+        window.scrollTo(0, 0)
+    }, [router])
+
+
     const { refetch: getProductRefetch } = useQuery(GET_PRODUCT, {
         fetchPolicy: "cache-and-network",
         variables: {
@@ -211,7 +217,7 @@ const Detail: NextPage = () => {
     }
     const submitClientInfoHandler = async () => {
         try {
-            if(!user._id) throw new Error(Messages.error2)
+            if (!user._id) throw new Error(Messages.error2)
             if (!clientInfo.name || !clientInfo.phone || !clientInfo.email || !clientInfo.desc) {
                 throw new Error(Messages.error3)
             }

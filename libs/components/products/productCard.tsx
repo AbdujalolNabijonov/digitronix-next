@@ -2,10 +2,11 @@ import { NoticeGroup } from "@/libs/enum/notice.enum"
 import { stringSplitterHandler } from "@/libs/features/splitter"
 import { Product } from "@/libs/types/product/product"
 import { FavoriteOutlined, ThumbUpAltRounded, VisibilityOutlined } from "@mui/icons-material"
-import { Button, IconButton, Stack } from "@mui/material"
+import { Box, Button, IconButton, Stack } from "@mui/material"
 import { useRouter } from "next/router"
 import { useReactiveVar } from "@apollo/client"
 import { socketVar, userVar } from "@/apollo/store"
+import LikeButton from "../others/LikeButton"
 
 interface propsData {
     product: Product;
@@ -16,6 +17,7 @@ const ProductCard = (props: propsData) => {
     const user = useReactiveVar(userVar)
     const socket = useReactiveVar(socketVar)
     const prod_img = `${process.env.REACT_APP_API_URL}/${product.productImages[0]}`
+    const prod_img2 = product.productImages[1] ? `${process.env.REACT_APP_API_URL}/${product.productImages[1]}` : prod_img
     const router = useRouter()
     const noticeHandler = (productName: string, noticeTargetId: any) => {
         const messageInput = {
@@ -38,6 +40,7 @@ const ProductCard = (props: propsData) => {
         }>
             <div className="item-img">
                 <img src={prod_img} alt="" />
+                <img src={prod_img2} alt="" />
             </div>
             {product?.productLabel ? (
                 <>
@@ -63,19 +66,20 @@ const ProductCard = (props: propsData) => {
                         <IconButton disableRipple onClick={(e) => { e.stopPropagation() }}>
                             <VisibilityOutlined sx={{ fill: "gray" }} />
                         </IconButton>
-                        <div>{product.productViews}</div>
+                        <div className="text-white">{product.productViews}</div>
                     </Stack>
-                    <Stack direction={"row"} alignItems={"center"}>
-                        <IconButton onClick={(e) => {
+                    <Stack direction={"row"} alignItems={"center"} gap={"5px"}>
+                        <Box onClick={(e) => {
+                            e.stopPropagation()
                             likeTargetProductHandler(e, product._id)
                             //@ts-ignore
                             if (!product?.meLiked[0]?.myFavorite) {
                                 noticeHandler(product.productName, product.memberData?._id)
                             }
-                        }}>
-                            <ThumbUpAltRounded sx={product.meLiked && product.meLiked[0]?.myFavorite ? { fill: "#f44336" } : { fill: "gray" }} />
-                        </IconButton>
-                        <div>{product.productLikes}</div>
+                        }} >
+                            <LikeButton checked={product.meLiked && product.meLiked[0] ? true : false} />
+                        </Box>
+                        <div className="text-white">{product.productLikes}</div>
                     </Stack>
                 </Stack>
             </Stack>

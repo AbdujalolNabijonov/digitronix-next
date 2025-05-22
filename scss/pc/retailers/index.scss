@@ -1,9 +1,10 @@
 .pc-wrapper {
   .main {
-    background-color: #292929;
-    .container {
+
       .retailer-page {
         padding: 30px 0;
+        background-image: url("/img/banner/floating-cogs.svg");
+        background-color: #313132;
         .retailer-filter {
           flex-direction: row;
           justify-content: space-between;
@@ -25,7 +26,7 @@
         .retailers {
           margin: 60px 0 20px 0;
           flex-direction: row;
-          gap: 40px;
+          gap: 20px;
           flex-wrap: wrap;
           justify-content: start;
           .retailer-card {
@@ -123,4 +124,3 @@
       }
     }
   }
-}

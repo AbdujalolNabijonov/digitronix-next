@@ -361,7 +361,7 @@ const Navbar: NextPage = (props: any) => {
                                     {t('Retailers')}
                                 </Link>
                                 <Link
-                                    href={"/community"}
+                                    href={`/community?input={"page":1,"limit":4,"sort":"createdAt","direction":"ASC","search":{}}`}
                                     className={router.pathname.includes("/community") ? "active" : ""}
                                 >
                                     {t('Society')}

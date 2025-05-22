@@ -148,7 +148,7 @@ const MyProfile = (props: any) => {
                             className="image-icon"
                         >
                             <AddAPhotoRounded />
-                            <input type="file" onChange={changeImageHandler} />
+                            <input type="file" onChange={changeImageHandler} className="w-[200px]"/>
                         </Fab>
                     </Stack>
                     <Button onClick={submitUpdateMember} color="warning">

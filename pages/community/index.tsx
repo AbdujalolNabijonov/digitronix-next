@@ -28,7 +28,7 @@ const Community: NextPage = ({ initialProps, ...props }: any) => {
     const router = useRouter()
     const device = useDeviceDetect()
     const user = useReactiveVar(userVar)
-    const [value, setValue] = useState<string>("1")
+    const [value, setValue] = useState<string>("5")
     const [searchObj, setSearchObj] = useState(initialProps)
     const [articles, setArticles] = useState<Article[]>([])
     const [totalArticles, setTotalArticles] = useState<number>(0)
@@ -56,6 +56,9 @@ const Community: NextPage = ({ initialProps, ...props }: any) => {
         }
         if (search) {
             switch (search.search.articleCategory) {
+                case "ALL":
+                    setValue("5")
+                    break
                 case "NEWS":
                     setValue("1")
                     break
@@ -81,8 +84,13 @@ const Community: NextPage = ({ initialProps, ...props }: any) => {
 
     const handleChange = (e: any, value: string) => {
         setValue(value)
-        searchObj.search.articleCategory = e.target.innerText.toUpperCase()
-        setSearchObj({ ...searchObj })
+        if (value === "5") {
+            delete searchObj.search.articleCategory
+            setSearchObj({ ...searchObj })
+        } else {
+            searchObj.search.articleCategory = e.target.innerText.toUpperCase()
+            setSearchObj({ ...searchObj })
+        }
         const url = `/community?input=${JSON.stringify(searchObj)}`
         router.push(url, url, { scroll: false })
     }
@@ -117,7 +125,8 @@ const Community: NextPage = ({ initialProps, ...props }: any) => {
                     <TabContext value={value}>
                         <Stack className="tabs" direction={"row"} justifyContent={"end"}>
                             <TabList onChange={handleChange} aria-label="lab API tabs example">
-                                <Tab className="tab-item" key={"salom"} label="News" value="1" />
+                                <Tab className="tab-item" label="All" value="5" />
+                                <Tab className="tab-item" label="News" value="1" />
                                 <Tab className="tab-item" label="Free" value="2" />
                                 <Tab className="tab-item" label="Humor" value="3" />
                                 <Tab className="tab-item" label="Recommend" value="4" />

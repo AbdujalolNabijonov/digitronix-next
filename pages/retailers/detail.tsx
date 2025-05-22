@@ -21,6 +21,7 @@ import { Messages, serverApi } from "@/libs/config"
 import { NoticeGroup } from "@/libs/enum/notice.enum"
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import useDeviceDetect from "@/libs/hooks/useDeviceDetector"
+import LikeButton from "@/libs/components/others/LikeButton"
 export const getStaticProps = async ({ locale }: any) => ({
     props: {
         ...(await serverSideTranslations(locale, ['common'])),
@@ -263,7 +264,7 @@ const Detail = (props: any) => {
                             <Box className="title">{member?.memberFullName ?? member?.memberNick}</Box>
                             <Stack className="contact-info">
                                 <Stack className={"contact-info-item"}>
-                                    <Devices size={32} style={{ fill: "rgb(48, 47, 47)" }} />
+                                    <Devices size={32} />
                                     <Box>Avaible products {member?.memberProducts}</Box>
                                 </Stack>
                                 <Stack className={"contact-info-item"}>
@@ -275,7 +276,7 @@ const Detail = (props: any) => {
                                     <Box>{member?.memberPhone ?? "No phone provided"}</Box>
                                 </Stack>
                                 <Stack className={"contact-info-item"}>
-                                    <Mailbox size={32} style={{ fill: "rgb(48, 47, 47)" }} />
+                                    <Mailbox size={32} />
                                     <Box>{member?.memberEmail ?? "No email Provided"}</Box>
                                 </Stack>
                             </Stack>
@@ -284,24 +285,24 @@ const Detail = (props: any) => {
                                 <Button className="view-btn" onClick={navigatePageHandler}>
                                     View Profile
                                 </Button>
-                                <Stack direction={"row"} alignItems={"center"} fontSize={"20px"} padding={"2px"}>
+                                <Stack direction={"row"} alignItems={"center"} fontSize={"20px"} padding={"2px"} gap={"10px"}>
                                     <Stack direction={"row"} alignItems={"center"} gap={"2px"}>
                                         <IconButton disableRipple >
-                                            <RemoveRedEyeRounded />
+                                            <RemoveRedEyeRounded sx={{ fill: "gray" }} />
                                         </IconButton>
-                                        <Box>{member?.memberViews}</Box>
+                                        <Box className="text-white">{member?.memberViews}</Box>
                                     </Stack>
-                                    <Stack direction={"row"} alignItems={"center"} gap={"2px"}>
-                                        <IconButton onClick={(e) => {
+                                    <Stack direction={"row"} alignItems={"center"} gap={"5px"}>
+                                        <Box onClick={(e) => {
                                             likeTargetHandler(e, member?._id as string)
                                             //@ts-ignore
-                                            if (!member?.meLiked[0]?.myFavorite) {
+                                            if (member?.meLiked && member?.meLiked[0]?.myFavorite) {
                                                 noticeLikeHandler(member?._id)
                                             }
                                         }}>
-                                            <ThumbUpAltRounded sx={member?.meLiked && member?.meLiked[0]?.myFavorite ? { fill: "#f44336" } : { fill: "gray" }} />
-                                        </IconButton>
-                                        <Box>{member?.memberLikes}</Box>
+                                            <LikeButton checked={member?.meLiked && member.meLiked[0] ? true : false} />
+                                        </Box>
+                                        <Box className="text-white">{member?.memberLikes}</Box>
                                     </Stack>
                                 </Stack>
                             </Stack>
