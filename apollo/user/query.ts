@@ -761,6 +761,13 @@ query GetAllNotices($input: NoticeInquiry!) {
         metaCounter {
             total
         }
+        categoryCount {
+            all
+            product
+            article
+            follow
+            member
+        }
     }
 }
 `

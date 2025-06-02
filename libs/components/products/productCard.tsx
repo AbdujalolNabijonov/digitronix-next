@@ -19,19 +19,6 @@ const ProductCard = (props: propsData) => {
     const prod_img = `${process.env.REACT_APP_API_URL}/${product.productImages[0]}`
     const prod_img2 = product.productImages[1] ? `${process.env.REACT_APP_API_URL}/${product.productImages[1]}` : prod_img
     const router = useRouter()
-    const noticeHandler = (productName: string, noticeTargetId: any) => {
-        const messageInput = {
-            event: "message",
-            data: {
-                event: "notice",
-                noticeGroup: NoticeGroup.PRODUCT,
-                noticeTitle: `Product Liked`,
-                noticeTargetId: noticeTargetId,
-                noticeContent: `${user.memberNick} liked product named ${productName}`
-            }
-        }
-        socket.send(JSON.stringify(messageInput))
-    }
     return (
         <Stack className="item-box" justifyContent={"space-between"} onClick={() => {
             const link = `/products/detail/?id=${product._id}`
@@ -72,10 +59,6 @@ const ProductCard = (props: propsData) => {
                         <Box onClick={(e) => {
                             e.stopPropagation()
                             likeTargetProductHandler(e, product._id)
-                            //@ts-ignore
-                            if (!product?.meLiked[0]?.myFavorite) {
-                                noticeHandler(product.productName, product.memberData?._id)
-                            }
                         }} >
                             <LikeButton checked={product.meLiked && product.meLiked[0] ? true : false} />
                         </Box>

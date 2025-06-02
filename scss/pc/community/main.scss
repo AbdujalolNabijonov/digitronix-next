@@ -3,7 +3,7 @@
     .community-page {
       background-color: #24242d;
       .container {
-        padding: 40px 0;
+        padding: 40px 0 200px 0;
         .tabs {
           .tab-item {
             background-color: #d67b3d;
@@ -11,8 +11,9 @@
             border-radius: 5px;
             color: white;
             font-weight: 600;
-            font-size: 18px;
+            font-size: 15px;
             letter-spacing: 1px;
+            padding: 5px;
           }
           .css-1e698e-MuiTabs-indicator {
             background-color: white;
@@ -52,6 +53,10 @@
           display: flex;
           flex-direction: row;
           gap: 20px;
+          flex-wrap: wrap;
+          .article-card{
+            width: 32%;
+          }
         }
         .article-avb {
           text-align: center;

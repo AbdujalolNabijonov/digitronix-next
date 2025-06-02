@@ -250,20 +250,20 @@ const Join = () => {
                                             </div>
                                         </Stack>
                                         {
-                                            readyRegisterBtn?(
+                                            readyRegisterBtn ? (
                                                 <button
-                                                disabled
-                                                className="tarcking-wider font-bold text-white w-[90%] mt-2 py-2 text-xl bg-gray-500 rounded cursor-not-allowed"
-                                            >
-                                                Verify Email
-                                            </button>
-                                            ):(
+                                                    disabled
+                                                    className="tarcking-wider font-bold text-white w-[90%] mt-2 py-2 text-xl bg-gray-500 rounded cursor-not-allowed"
+                                                >
+                                                    Verify Email
+                                                </button>
+                                            ) : (
                                                 <button
-                                                onClick={handleShowOtp}
-                                                className="tarcking-wider font-bold text-white w-[90%] mt-2 py-2 text-xl bg-[#D77B3D] rounded hover:bg-[#AF3E45] transition duration-300 cursor-pointer"
-                                            >
-                                                Verify Email
-                                            </button>
+                                                    onClick={handleShowOtp}
+                                                    className="tarcking-wider font-bold text-white w-[90%] mt-2 py-2 text-xl bg-[#D77B3D] rounded hover:bg-[#AF3E45] transition duration-300 cursor-pointer"
+                                                >
+                                                    Verify Email
+                                                </button>
                                             )
                                         }
                                         <Box className="self-start mt-3 text-sm text-gray-300">
@@ -303,12 +303,22 @@ const Join = () => {
                                         {hidden ? (<VisibilityOffRounded />) : (<RemoveRedEyeRounded />)}
                                     </Button>
                                 </Stack>
-                                <button
-                                    onClick={handleLogInRequest}
-                                    className="tarcking-wider font-bold text-white w-[90%] mt-2 py-2 text-xl bg-[#D77B3D] rounded hover:bg-[#AF3E45] transition duration-300 cursor-pointer"
-                                >
-                                    Sign In
-                                </button>
+                                {
+                                    input2.email === "" && input2.password === "" ? (
+                                        <button
+                                            className="tarcking-wider font-bold text-white w-[90%] mt-2 py-2 text-xl bg-gray-500 rounded  cursor-not-allowed"
+                                        >
+                                            Sign In
+                                        </button>
+                                    ) : (
+                                        <button
+                                            onClick={handleLogInRequest}
+                                            className="tarcking-wider font-bold text-white w-[90%] mt-2 py-2 text-xl bg-[#D77B3D] rounded hover:bg-[#AF3E45] transition duration-300 cursor-pointer"
+                                        >
+                                            Sign In
+                                        </button>
+                                    )
+                                }
                                 <Box className="self-start mt-3 text-sm text-gray-300">
                                     Don't you have an account yet? <a onClick={() => toggle(false)} className="cursor-pointer text-red-200 tracking-wider">Create an account</a>
                                 </Box>

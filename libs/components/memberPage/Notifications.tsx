@@ -1,4 +1,4 @@
-import { Accordion, AccordionDetails, AccordionSummary, Box, Button, IconButton, Pagination, Stack } from "@mui/material"
+import { Accordion, AccordionDetails, AccordionSummary, Badge, Box, Button, IconButton, Pagination, Stack } from "@mui/material"
 import { useEffect, useState } from "react"
 import { useMutation, useQuery, useReactiveVar } from "@apollo/client"
 import { socketVar, userVar } from "@/apollo/store"
@@ -19,6 +19,13 @@ const Notifications = () => {
     const socket = useReactiveVar(socketVar)
     const router = useRouter()
     const [category, setCategory] = useState("")
+    const [categoryCount, setCategoryCount] = useState({
+        all: 0,
+        product: 0,
+        member: 0,
+        follow: 0,
+        article: 0
+    })
     const [notices, setNotices] = useState<Notice[]>([])
     const [totalNotices, setTotalNotices] = useState(0)
     const [rebuild, setRebuild] = useState(new Date())
@@ -35,32 +42,15 @@ const Notifications = () => {
         variables: { input: searchObj },
         onCompleted: ({ getAllNotices }) => {
             setNotices(getAllNotices.list)
+            setCategoryCount(getAllNotices.categoryCount)
             setTotalNotices(getAllNotices.metaCounter[0].total ?? 0)
         }
     })
-
-    const [deleteNotices] = useMutation(DELETE_NOTICES)
 
     useEffect(() => {
         getTargetNoticesRefetch({ input: searchObj }).then()
     }, [searchObj, socket, rebuild])
 
-    const handleViewNotices = async () => {
-        try {
-            if (notices && notices.length > 0) {
-                const confirm = await sweetConfirmAlert("Do you want to mark as read all?")
-                if (confirm) {
-                    await deleteNotices()
-                    await sweetTopSmallSuccessAlert("You read all notices")
-                    setRebuild(new Date())
-                    setTotalNotices(0)
-                }
-            }
-        } catch (err: any) {
-            console.log(`Error: handleViewNotices, ${err.message}`)
-            await sweetErrorHandling(err)
-        }
-    }
     const changeCategoryHandler = (category: string) => {
         setCategory(category)
         if (category) {
@@ -73,7 +63,7 @@ const Notifications = () => {
 
     const navigateToPageHandler = (memberId: string) => {
         const link = `member?stage=3&memberId=${memberId}`
-        router.push(link, link, { scroll: false})
+        router.push(link, link, { scroll: false })
     }
 
     const handlePaginationChange = (e: any, page: number) => {
@@ -88,42 +78,62 @@ const Notifications = () => {
             <Stack className="notify-body">
                 <Stack flexDirection={"row"} justifyContent={"space-between"} alignItems={"center"}>
                     <Stack className="notify-category">
-                        <Button className={!category ? "on" : ""} onClick={(e: any) => changeCategoryHandler("")}>
-                            All
-                        </Button>
+                        <Box className="relative">
+                            <Button className={!category ? "on" : ""} onClick={(e: any) => changeCategoryHandler("")}>
+                                All
+                            </Button>
+                            <span className="absolute -top-1 -right-1 flex items-center justify-center w-6 h-6 text-sm font-bold text-black-200 bg-blue-200 rounded-full">
+                                {categoryCount.all}
+                            </span>
+                        </Box>
                         {
                             user.memberType === MemberType.RETAILER ? (
-                                <Button
-                                    className={category === NoticeGroup.PRODUCT ? "on" : ""}
-                                    onClick={(e: any) => changeCategoryHandler(NoticeGroup.PRODUCT)}
-                                >
-                                    Product
-                                </Button>
+                                <Box className="relative">
+                                    <Button
+                                        className={category === NoticeGroup.PRODUCT ? "on" : ""}
+                                        onClick={(e: any) => changeCategoryHandler(NoticeGroup.PRODUCT)}
+                                    >
+                                        Product
+                                    </Button>
+                                    <span className="absolute -top-1 -right-1 flex items-center justify-center w-6 h-6 text-sm font-bold text-black-200 bg-blue-200 rounded-full">
+                                        {categoryCount.product}
+                                    </span>
+                                </Box>
                             ) : null
                         }
-                        <Button
-                            className={category === NoticeGroup.ARTICLE ? "on" : ""}
-                            onClick={(e: any) => changeCategoryHandler(NoticeGroup.ARTICLE)}
-                        >
-                            Article
-                        </Button>
-                        <Button
-                            className={category === NoticeGroup.MEMBER ? "on" : ""}
-                            onClick={(e: any) => changeCategoryHandler(NoticeGroup.MEMBER)}
-                        >
-                            Member
-                        </Button>
-                        <Button
-                            className={category === NoticeGroup.FOLLOW ? "on" : ""}
-                            onClick={(e: any) => changeCategoryHandler(NoticeGroup.FOLLOW)}
-                        >
-                            Follow
-                        </Button>
-                    </Stack>
-                    <Stack flexDirection={"row"} justifyContent={"end"} padding={"0 10px"}>
-                        <IconButton onClick={handleViewNotices}>
-                            <BookOpenText size={32} color={'white'} />
-                        </IconButton>
+                        <Box className="relative">
+                            <Button
+                                className={category === NoticeGroup.ARTICLE ? "on" : ""}
+                                onClick={(e: any) => changeCategoryHandler(NoticeGroup.ARTICLE)}
+                            >
+                                Article
+                            </Button>
+                            <span className="absolute -top-1 -right-1 flex items-center justify-center w-6 h-6 text-sm font-bold text-black-200 bg-blue-200 rounded-full">
+                                {categoryCount.article}
+                            </span>
+                        </Box>
+                        <Box className="relative">
+                            <Button
+                                className={category === NoticeGroup.MEMBER ? "on" : ""}
+                                onClick={(e: any) => changeCategoryHandler(NoticeGroup.MEMBER)}
+                            >
+                                Member
+                            </Button>
+                            <span className="absolute -top-1 -right-1 flex items-center justify-center w-6 h-6 text-sm font-bold text-black-200 bg-blue-200 rounded-full">
+                                {categoryCount.member}
+                            </span>
+                        </Box>
+                        <Box className="relative">
+                            <Button
+                                className={category === NoticeGroup.FOLLOW ? "on" : ""}
+                                onClick={(e: any) => changeCategoryHandler(NoticeGroup.FOLLOW)}
+                            >
+                                Follow
+                            </Button>
+                            <span className="absolute -top-1 -right-1 flex items-center justify-center w-6 h-6 text-sm font-bold text-black-200 bg-blue-200 rounded-full">
+                                {categoryCount.follow}
+                            </span>
+                        </Box>
                     </Stack>
                 </Stack>
                 {

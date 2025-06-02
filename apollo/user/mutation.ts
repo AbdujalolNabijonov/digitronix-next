@@ -20,6 +20,21 @@ mutation CheckOTPConfirmation($input:String!) {
     }
 }
 `
+export const READ_ALL_NOTICES=gql`
+    mutation ReadAllNotices($input:ReadAll!) {
+    readAllNotices(input: $input) {
+        list {
+            _id
+            noticeTitle
+            noticeContent
+            noticeGroup
+            memberId
+            createdAt
+            updatedAt
+        }
+    }
+}
+`
 
 export const SIGN_UP = gql`
 mutation Signup($input: MemberInput!) {

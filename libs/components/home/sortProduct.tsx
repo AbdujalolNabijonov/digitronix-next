@@ -84,19 +84,6 @@ const SortProduct: NextPage = ({ initialProps, ...props }: any) => {
             await sweetErrorHandling(err)
         }
     }
-    const noticeHandler = (productName: string, noticeTargetId: any) => {
-        const messageInput = {
-            event: "message",
-            data: {
-                event: "notice",
-                noticeGroup: NoticeGroup.PRODUCT,
-                noticeTitle: `Product Liked`,
-                noticeTargetId: noticeTargetId,
-                noticeContent: `${user.memberNick} liked product named ${productName}`
-            }
-        }
-        socket.send(JSON.stringify(messageInput))
-    }
     return (
         <>
             <Stack className="trend-products relative">
@@ -229,10 +216,6 @@ const SortProduct: NextPage = ({ initialProps, ...props }: any) => {
                                                                         <IconButton onClick={(e) => {
                                                                             e.stopPropagation();
                                                                             handleLikeTargetProduct(e, product._id)
-                                                                            //@ts-ignore
-                                                                            if (!product.meLiked[0]?.myFavorite) {
-                                                                                noticeHandler(product.productName, product.memberData?._id)
-                                                                            }
                                                                         }}>
                                                                             <LikeButton checked={product?.meLiked && product?.meLiked[0] ? true : false} />
                                                                         </IconButton>

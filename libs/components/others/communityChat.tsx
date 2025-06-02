@@ -61,7 +61,7 @@ const CommunityChat = () => {
                 socket.onmessage = null; // Cleanup
             }
         };
-    }, [socket]);
+    }, [socket?.onmessage]);
 
     const submitMessageHandler = async () => {
         try {
@@ -143,6 +143,11 @@ const CommunityChat = () => {
                                         >
                                         </Button>
                                     }
+                                    onKeyUp={(e:any)=>{
+                                        if(e.key==="Enter"){
+                                            submitMessageHandler()
+                                        }
+                                    }}
                                     startDecorator={
                                         device === "mobile" ? null : (
                                             <Button

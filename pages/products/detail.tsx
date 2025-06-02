@@ -176,20 +176,6 @@ const Detail: NextPage = () => {
         }
     }
 
-    const noticeLikeHandler = (productName: string, noticeTargetId: any) => {
-        const messageInput = {
-            event: "message",
-            data: {
-                event: "notice",
-                noticeGroup: NoticeGroup.PRODUCT,
-                noticeTitle: `Product Liked`,
-                noticeTargetId: noticeTargetId,
-                noticeContent: `${user.memberNick} liked product named ${productName}`
-            }
-        }
-        socket.send(JSON.stringify(messageInput))
-    }
-
     const noticeCommentHandler = (productName: any, noticeTargetId: any) => {
         const messageInput = {
             event: "message",
@@ -222,7 +208,7 @@ const Detail: NextPage = () => {
                 throw new Error(Messages.error3)
             }
             if (clientInfo.name.length < 2) throw new Error("Name should be at least 3 letters")
-            if (clientInfo.phone.length < 2) throw new Error("Phone should be at least 11 numbers")
+            if (clientInfo.phone.length != 11) throw new Error("Phone should be at least 11 numbers")
             if (clientInfo.email.length < 2 || !clientInfo.email.includes("@")) throw new Error("Not Valid Email")
             if (clientInfo.desc.length < 5) throw new Error("Description should be at least 5 letters")
             const messageInput = {
@@ -240,6 +226,7 @@ const Detail: NextPage = () => {
                     `
                 }
             }
+            console.log("messages",messageInput)
             socket.send(JSON.stringify(messageInput))
             await sweetTopSuccessAlert("Successfully submited!")
             setRebuild(new Date())
@@ -348,10 +335,6 @@ const Detail: NextPage = () => {
                                     <Stack direction={"row"} alignItems={"center"} gap={"10px"}>
                                         <IconButton onClick={(e) => {
                                             likeTargetProductHandler(e, product?._id)
-                                            //@ts-ignore
-                                            if (product && !product?.meLiked[0]?.myFavorite) {
-                                                noticeLikeHandler(product?.productName, user._id)
-                                            }
                                         }}>
                                             <ThumbUpAltRounded sx={product?.meLiked && product.meLiked[0]?.myFavorite ? { fill: "#f44336" } : { fill: "gray" }} />
                                         </IconButton>

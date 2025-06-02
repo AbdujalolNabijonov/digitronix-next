@@ -1,4 +1,4 @@
-import { useState,useEffect } from "react"
+import { useState, useEffect } from "react"
 import { Box, Pagination, Stack } from "@mui/material"
 import ArticleCard from "../article/articleCard";
 import { Article } from "@/libs/types/article/article";
@@ -61,16 +61,16 @@ const Articles = (props: any) => {
     return (
         <Stack className="article">
             <Stack className="article-head">
-                <Box className="title">Articles</Box>
-                <Box className="subtitle">More Article you have more friends you can get!</Box>
+                <Box className="text-white font-bold text-2xl">Articles</Box>
+                <Box className="subtitle text-gray-300 mb-4">More Article you have more friends you can get!</Box>
             </Stack>
             {
                 articles && articles.length > 0 ? (
                     <>
-                        <Stack className="article-body">
+                        <Stack className="articles">
                             {
-                                articles.map((article: Article) => (
-                                    <ArticleCard article={article} likeTargetArticle={likeTargetArticleHandler} />
+                                articles.map((article: Article, index: number) => (
+                                    <ArticleCard article={article} likeTargetArticle={likeTargetArticleHandler} key={index} />
                                 ))
                             }
                         </Stack>

@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import {
+    AccountCircleOutlined,
     Chair,
     ErrorOutline,
     Keyboard,
@@ -21,7 +22,7 @@ import {
 } from "@mui/material";
 import { NextPage } from "next";
 import Link from "next/link";
-import { CaretDown, DesktopTower, X } from "phosphor-react"
+import { CaretDown, DesktopTower, User, X } from "phosphor-react"
 import { alpha, styled } from '@mui/material/styles';
 import { useRouter } from "next/router";
 import { useMutation, useQuery, useReactiveVar } from "@apollo/client";
@@ -35,7 +36,7 @@ import { BookOpenText, GraphicsCard } from "@phosphor-icons/react";
 import { GET_NOTICES } from "@/apollo/user/query";
 import { Notice } from "@/libs/types/notice/notice";
 import moment from "moment";
-import { DELETE_NOTICES } from "@/apollo/user/mutation";
+import { DELETE_NOTICES, READ_ALL_NOTICES } from "@/apollo/user/mutation";
 import useDeviceDetect from "@/libs/hooks/useDeviceDetector";
 import { useTranslation } from "next-i18next";
 import MobileBar from "./mobileBar";
@@ -59,7 +60,9 @@ const Navbar: NextPage = (props: any) => {
     const [searchObj, setSearchObj] = useState({
         page: 1,
         limit: 10,
-        search: {}
+        search: {
+            nonRead: true
+        }
     })
     const [rebuild, setRebuild] = useState(new Date())
     const logoutOpen = Boolean(logoutAnchor)
@@ -106,14 +109,15 @@ const Navbar: NextPage = (props: any) => {
         }
     })
 
-    const [deleteNotices] = useMutation(DELETE_NOTICES)
+    const [readAllNotices] = useMutation(READ_ALL_NOTICES)
 
     useEffect(() => {
         getNoticesRefetch({ input: searchObj }).then()
         socket.onmessage = ({ data }) => {
+            console.log(data)
             getNoticesRefetch({ input: searchObj }).then()
         }
-    }, [socket, rebuild])
+    }, [socket?.onmessage, rebuild])
 
 
     //Customize Style
@@ -159,9 +163,16 @@ const Navbar: NextPage = (props: any) => {
     const handleViewNotices = async () => {
         try {
             if (notices && notices.length > 0) {
+                console.log(notices.map((notice: Notice) => notice._id))
                 const confirm = await sweetConfirmAlert("Do you want to mark as read all?")
                 if (confirm) {
-                    await deleteNotices()
+                    await readAllNotices({
+                        variables: {
+                            input: {
+                                listNotices: notices.map((notice: Notice) => notice._id)
+                            }
+                        }
+                    })
                     await sweetTopSmallSuccessAlert("You read all notices")
                     setAnchorEl4(null)
                     setRebuild(new Date())
@@ -366,16 +377,6 @@ const Navbar: NextPage = (props: any) => {
                                 >
                                     {t('Society')}
                                 </Link>
-                                {
-                                    !user._id ? null : (
-                                        <Link
-                                            href={"/member?stage=7"}
-                                            className={router.pathname.includes("member") ? "active" : ""}
-                                        >
-                                            {t('My Profile')}
-                                        </Link>
-                                    )
-                                }
                                 <Link
                                     href={"/cs"}
                                     className={router.pathname === "/cs" ? "active" : ""}
@@ -406,9 +407,15 @@ const Navbar: NextPage = (props: any) => {
                                                         }}
                                                         sx={{ mt: '5px' }}
                                                     >
-                                                        <MenuItem onClick={handleLogOut}>
-                                                            <Logout fontSize="small" style={{ color: 'blue', marginRight: '10px' }} />
+                                                        <MenuItem onClick={handleLogOut} className="p-3">
+                                                            <Logout fontSize="small" style={{ color: 'black', marginRight: '10px' }} />
                                                             {t('Logout')}
+                                                        </MenuItem>
+                                                        <MenuItem onClick={() => {
+                                                            router.push("/member?stage=7")
+                                                        }} className="p-3">
+                                                            <AccountCircleOutlined fontSize="small" style={{ color: 'black', marginRight: '10px' }} />
+                                                            {t('Profile')}
                                                         </MenuItem>
                                                     </Menu>
                                                 </>
@@ -428,7 +435,7 @@ const Navbar: NextPage = (props: any) => {
                                 </div>
                                 <Stack className="notify">
                                     <Box className="notify-ring" onClick={toggleNotificationHandler}>
-                                        <RingBell />
+                                        <RingBell total={totalNotices} />
                                     </Box>
                                     <Menu
                                         anchorEl={anchorEl4}

@@ -116,24 +116,10 @@ const Retailers: NextPage = (props: any) => {
             if (!memberId) throw new Error(Messages.error1);
             await likeTargetMember({ variables: { input: memberId } });
             await getMembersRefetch({ input: searchObj })
-            await noticeHandler(memberId)
         } catch (err: any) {
             console.log(`ERROR: likeTargetHandler: ${err}`);
             await sweetErrorHandling(err)
         }
-    }
-    const noticeHandler = (noticeTargetId: any) => {
-        const messageInput = {
-            event: "message",
-            data: {
-                event: "notice",
-                noticeGroup: NoticeGroup.MEMBER,
-                noticeTitle: `Member Liked`,
-                noticeTargetId: noticeTargetId,
-                noticeContent: `${user.memberNick} liked You`
-            }
-        }
-        socket.send(JSON.stringify(messageInput))
     }
     if (device === "mobile") {
         return (
