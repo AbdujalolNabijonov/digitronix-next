@@ -137,9 +137,6 @@ const Community: NextPage = ({ initialProps, ...props }: any) => {
                                 <Box>Board Article</Box>
                                 <Box>Express your opinions freely here without content restrictions</Box>
                             </Stack>
-                            <Box>
-                                <Button variant={"contained"} endIcon={<Edit />} onClick={navigateGoHandler}>Write</Button>
-                            </Box>
                         </Stack>
                         <TabPanel value={value} sx={{ height: "500px" }}>
                             {

@@ -39,7 +39,7 @@ const CommunityChat = () => {
     }
 
     useEffect(() => {
-        const handleMessage = ({ data }: MessageEvent) => {
+        socket.onmessage = ({ data }: MessageEvent) => {
             const payload = JSON.parse(data);
             if (payload.event === "info") {
                 setTotalClients(payload.totalClients);
@@ -52,14 +52,8 @@ const CommunityChat = () => {
             }
         };
 
-        if (socket) {
-            socket.onmessage = handleMessage;
-        }
-
         return () => {
-            if (socket) {
-                socket.onmessage = null; // Cleanup
-            }
+            socket.close()
         };
     }, [socket?.onmessage]);
 
@@ -71,6 +65,7 @@ const CommunityChat = () => {
             messageObj.data = ""
             setMessageObj({ ...messageObj })
         } catch (err: any) {
+            setAnchorEl(null)
             await sweetErrorHandling(err)
         }
     }

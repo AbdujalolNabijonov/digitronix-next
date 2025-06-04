@@ -258,10 +258,10 @@ const Detail = (props: any) => {
                             submitCommentHandler={submitCommentHandler}
                         />
                     </Stack>
-                    <Stack className="retailer-info">
-                        <img src={member?.memberImage ? `${serverApi}/${member?.memberImage}` : "/img/profile/model5.jpeg"} alt="" />
+                    <Stack className="retailer-info rounded-lg">
+                        <img src={member?.memberImage ? `${serverApi}/${member?.memberImage}` : "/img/profile/model5.jpeg"} alt="" className="hover:scale-90 transition-transform duration-300"/>
                         <Stack className="info-body">
-                            <Box className="title">{member?.memberFullName ?? member?.memberNick}</Box>
+                            <Box className="text-white text-2xl tracking-wider">{member?.memberFullName ?? member?.memberNick}</Box>
                             <Stack className="contact-info">
                                 <Stack className={"contact-info-item"}>
                                     <Devices size={32} />

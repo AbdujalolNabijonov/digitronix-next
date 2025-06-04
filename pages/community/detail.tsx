@@ -171,11 +171,6 @@ const ArticleDetail = (props: any) => {
                                 <Box>{articleCategory ?? "".toUpperCase()} BOARD</Box>
                                 <Box>Express your opinions freely here without content restrictions</Box>
                             </Stack>
-                            <Button endIcon={<Edit />} onClick={() => {
-                                router.push(`/member?stage=6`)
-                            }}>
-                                Write
-                            </Button>
                         </Stack>
                         <Stack className="article">
                             <Box className="article-title">{article?.articleTitle}</Box>
@@ -215,7 +210,6 @@ const ArticleDetail = (props: any) => {
                             <Divider />
                             <Stack className="article-context">
                                 <ToastViewerComponent markDown={article?.articleContext} />
-                                <IconButton onClick={likeTargetArticleHandler}><ThumbUpAltRounded sx={article?.meLiked[0]?.myFavorite ? { fill: "#f44336", marginRight: "5px" } : { fill: "white", marginRight: "5px" }} /> {article?.articleLikes}</IconButton>
                             </Stack>
                         </Stack>
                         <Stack className="comment">
@@ -238,77 +232,6 @@ const ArticleDetail = (props: any) => {
                                 submitCommentHandler={submitCommentHandler}
                             />
                         </Stack>
-                    </Stack>
-                    <Stack className="community-board">
-                        <Box className="title">Community Article</Box>
-                        <List>
-                            <ListItem onClick={() => {
-                                const searchObj = {
-                                    page: 1,
-                                    limit: 4,
-                                    sort: "createdAt",
-                                    direction: "ASC",
-                                    search: {
-                                        articleCategory: ArticleCategory.NEWS
-                                    }
-                                }
-                                const link = `/community?input=${JSON.stringify(searchObj)}`
-                                router.push(link, link, { scroll: false })
-                            }}>
-                                <Button className={articleCategory === ArticleCategory.NEWS ? "on" : "off"}>News</Button>
-                            </ListItem>
-                            <ListItem
-                                onClick={() => {
-                                    const searchObj = {
-                                        page: 1,
-                                        limit: 4,
-                                        sort: "createdAt",
-                                        direction: "ASC",
-                                        search: {
-                                            articleCategory: ArticleCategory.FREE
-                                        }
-                                    }
-                                    const link = `/community?input=${JSON.stringify(searchObj)}`
-                                    router.push(link, link, { scroll: false })
-                                }}
-                            >
-                                <Button className={articleCategory === ArticleCategory.FREE ? "on" : "off"}>Free</Button>
-                            </ListItem>
-                            <ListItem
-                                onClick={() => {
-                                    const searchObj = {
-                                        page: 1,
-                                        limit: 4,
-                                        sort: "createdAt",
-                                        direction: "ASC",
-                                        search: {
-                                            articleCategory: ArticleCategory.HUMOR
-                                        }
-                                    }
-                                    const link = `/community?input=${JSON.stringify(searchObj)}`
-                                    router.push(link, link, { scroll: false })
-                                }}
-                            >
-                                <Button className={articleCategory === ArticleCategory.HUMOR ? "on" : "off"}>Humor</Button>
-                            </ListItem>
-                            <ListItem
-                                onClick={() => {
-                                    const searchObj = {
-                                        page: 1,
-                                        limit: 4,
-                                        sort: "createdAt",
-                                        direction: "ASC",
-                                        search: {
-                                            articleCategory: ArticleCategory.RECOMMEND
-                                        }
-                                    }
-                                    const link = `/community?input=${JSON.stringify(searchObj)}`
-                                    router.push(link, link, { scroll: false })
-                                }}
-                            >
-                                <Button className={articleCategory === ArticleCategory.RECOMMEND ? "on" : "off"}>Recomendation</Button>
-                            </ListItem>
-                        </List>
                     </Stack>
                 </Stack>
             </Stack>

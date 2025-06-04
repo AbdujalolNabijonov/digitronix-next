@@ -226,7 +226,6 @@ const Detail: NextPage = () => {
                     `
                 }
             }
-            console.log("messages",messageInput)
             socket.send(JSON.stringify(messageInput))
             await sweetTopSuccessAlert("Successfully submited!")
             setRebuild(new Date())
