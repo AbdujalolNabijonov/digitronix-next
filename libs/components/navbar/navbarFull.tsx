@@ -57,7 +57,7 @@ const Navbar: NextPage = (props: any) => {
     const [notices, setNotices] = useState([])
     const { t, i18n } = useTranslation('common');
     const [totalNotices, setTotalNotices] = useState(0)
-    const [ searchObj, setSearchObj] = useState({
+    const [searchObj, setSearchObj] = useState({
         page: 1,
         limit: 10,
         search: {
@@ -116,7 +116,7 @@ const Navbar: NextPage = (props: any) => {
         socket.onmessage = ({ data }) => {
             getNoticesRefetch({ input: searchObj }).then()
         }
-    }, [socket?.onmessage, rebuild])
+    }, [socket, rebuild])
 
 
     //Customize Style

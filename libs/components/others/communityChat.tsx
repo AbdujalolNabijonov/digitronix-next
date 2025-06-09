@@ -39,6 +39,10 @@ const CommunityChat = () => {
     }
 
     useEffect(() => {
+        if (localStorage.getItem("messages")) {
+            const cacheMsg = JSON.parse(localStorage.getItem("messages") as string);
+            setMessages([...cacheMsg])
+        }
         socket.onmessage = ({ data }: MessageEvent) => {
             const payload = JSON.parse(data);
             if (payload.event === "info") {
@@ -46,16 +50,13 @@ const CommunityChat = () => {
             }
             if (payload.event === "messages") {
                 setMessages([...payload.messages]);
+                localStorage.setItem("messages", JSON.stringify(payload.messages))
             }
             if (payload.event === "message") {
                 setMessages((prev) => [...prev, payload]);
             }
         };
-
-        return () => {
-            socket.close()
-        };
-    }, [socket?.onmessage]);
+    }, [socket]);
 
     const submitMessageHandler = async () => {
         try {
@@ -138,8 +139,8 @@ const CommunityChat = () => {
                                         >
                                         </Button>
                                     }
-                                    onKeyUp={(e:any)=>{
-                                        if(e.key==="Enter"){
+                                    onKeyUp={(e: any) => {
+                                        if (e.key === "Enter") {
                                             submitMessageHandler()
                                         }
                                     }}
