@@ -274,7 +274,7 @@ const Detail: NextPage = () => {
                                         })
                                     }
                                 </Swiper>
-                                <Box className="product-description">
+                                <Stack className="product-description">
                                     <Box className="product-title">
                                         {product?.productName}
                                     </Box>
@@ -301,8 +301,8 @@ const Detail: NextPage = () => {
                                         <CurrencyKrw size={32} />
                                         <Box>{numberSplitterHandler(product?.productPrice as number, 3, ",")}</Box>
                                     </Stack>
-                                    <Button variant="contained" onClick={contactInfo}>Contact Now</Button>
-                                </Box>
+                                    <button className="self-end bg-[#EB6753] w-[200px] mt-4 py-2 rounded cursor-pointer hover:bg-red-400 border-2 transition duration-1000 text-center text-white" onClick={contactInfo}>Contact Now</button>
+                                </Stack>
                             </Stack>
                             <Stack direction={"row"} alignItems={"end"} justifyContent={"space-between"}>
                                 <Swiper
@@ -402,13 +402,6 @@ const Detail: NextPage = () => {
                                             </Box>
                                         </Stack>
                                     </Stack>
-                                </Stack>
-                                <Stack className="product-address">
-                                    <Box className="title">Address</Box>
-                                    <iframe
-                                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d57594.66061049844!2d126.9045532639416!3d35.178808128837545!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3571892301f5a7af%3A0x5f4d2ed0125f548!2sGwangju!5e0!3m2!1sen!2skr!4v1737363106815!5m2!1sen!2skr"
-                                        loading="lazy">
-                                    </iframe>
                                 </Stack>
                                 {
                                     comments && comments.length > 0 ? (
