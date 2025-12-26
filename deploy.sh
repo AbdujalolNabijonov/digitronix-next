@@ -3,4 +3,4 @@ git checkout master
 git pull origin master
 
 npm install yarn -g
-docker-compose up -d
+docker compose up -d

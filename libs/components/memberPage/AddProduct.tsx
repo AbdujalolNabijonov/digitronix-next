@@ -101,7 +101,7 @@ const AddProduct = () => {
             for (let key in files) {
                 formData.append(`${key}`, files[key])
             }
-            const response = await axios.post(`${process.env.REACT_APP_API_GRAPHQL_URL}`, formData, {
+            const response = await axios.post(`${"localhost:3005"}`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                     'apollo-require-preflight': true,
