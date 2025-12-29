@@ -29,7 +29,7 @@ import {
 } from "@/libs/sweetAlert";
 import axios from "axios";
 import { getJwtToken } from "@/libs/auth";
-import { Messages, serverApi } from "@/libs/config";
+import { Messages, serverApi, serverGpaphql } from "@/libs/config";
 import { useMutation, useQuery } from "@apollo/client";
 import { CREATE_PRODUCT, UPDATE_PRODUCT } from "@/apollo/user/mutation";
 import { numberSplitterHandler } from "@/libs/features/splitter";
@@ -170,7 +170,7 @@ const AddProduct = () => {
       for (let key in files) {
         formData.append(`${key}`, files[key]);
       }
-      const response = await axios.post(`${serverApi}`, formData, {
+      const response = await axios.post(`${serverGpaphql}`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
           "apollo-require-preflight": true,

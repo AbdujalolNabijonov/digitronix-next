@@ -5,8 +5,8 @@
   "license": "ITC",
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
+    "build": "NODE_ENV=development&& next build",
+    "start": " next start",
     "lint": "next lint"
   },
   "dependencies": {
