@@ -1,27 +1,29 @@
-import { RemoveRedEyeRounded } from '@mui/icons-material';
-import { Box, Stack } from '@mui/material';
-import { Devices } from '@phosphor-icons/react';
-import React from 'react';
-import styled from 'styled-components';
-import LikeButton from '../others/LikeButton';
-import { Member } from '@/libs/types/member/member';
-import { serverApi } from '@/libs/config';
-import { useRouter } from 'next/router';
+import { RemoveRedEyeRounded } from "@mui/icons-material";
+import { Box, Stack } from "@mui/material";
+import { Devices } from "@phosphor-icons/react";
+import React from "react";
+import styled from "styled-components";
+import LikeButton from "../others/LikeButton";
+import { Member } from "@/libs/types/member/member";
+import { serverApi } from "@/libs/config";
+import { useRouter } from "next/router";
 
 interface RetailerCard {
   member: Member;
-  likeTargetHandler: any
+  likeTargetHandler: any;
 }
 
 const RetailerCard = (props: RetailerCard) => {
-  const { member, likeTargetHandler } = props
-  const router = useRouter()
-  const img_url = member.memberImage ? `${serverApi}/${member.memberImage}` : "/img/profile/defaultUser.svg"
+  const { member, likeTargetHandler } = props;
+  const router = useRouter();
+  const img_url = member.memberImage
+    ? `${serverApi}/${member.memberImage}`
+    : "/img/profile/defaultUser.svg";
   return (
     <StyledWrapper>
       <div className="card">
         <div className="card__img">
-          <img src="/img/banner/pattern.svg" alt="" />
+          <img src={img_url} alt="user img" />
         </div>
         <div className="card__avatar mb-3">
           <img src={img_url} alt="" />
@@ -31,39 +33,62 @@ const RetailerCard = (props: RetailerCard) => {
           <button
             className="p-1 bg-gray-200 rounded cursor-pointer w-[200px] mt-2 tracking-wider uppercase hover:bg-gray-400"
             onClick={() => {
-              router.push(`/retailers/detail/?id=${member._id}`)
+              router.push(`/retailers/detail/?id=${member._id}`);
             }}
           >
             explore
           </button>
         </div>
-        <Stack flexDirection={"row"} className='mt-2' justifyContent={"space-evenly"} gap={"10px"}>
-          <Stack className='p-2 px-3' justifyContent={"center"} alignItems={"center"}>
+        <Stack
+          flexDirection={"row"}
+          className="mt-2"
+          justifyContent={"space-evenly"}
+          gap={"10px"}
+        >
+          <Stack
+            className="p-2 px-3"
+            justifyContent={"center"}
+            alignItems={"center"}
+          >
             <RemoveRedEyeRounded sx={{ fill: "white" }} />
-            <Box className='text-white'>{member.memberViews}</Box>
+            <Box className="text-white">{member.memberViews}</Box>
           </Stack>
-          <Stack className=' p-2 px-3' justifyContent={"center"} alignItems={"center"}>
+          <Stack
+            className=" p-2 px-3"
+            justifyContent={"center"}
+            alignItems={"center"}
+          >
             <Devices size={25} style={{ fill: "white" }} />
-            <Box className='text-white'>{member.memberProducts}</Box>
+            <Box className="text-white">{member.memberProducts}</Box>
           </Stack>
-          <Stack className=' py-1 px-3' justifyContent={"center"} alignItems={"center"}>
+          <Stack
+            className=" py-1 px-3"
+            justifyContent={"center"}
+            alignItems={"center"}
+          >
             <Box onClick={(e: any) => likeTargetHandler(e, member._id)}>
-              <LikeButton checked={member.meLiked && member.meLiked[0]?.myFavorite ? true : false} />
+              <LikeButton
+                checked={
+                  member.meLiked && member.meLiked[0]?.myFavorite ? true : false
+                }
+              />
             </Box>
-            <Box className='text-white'>{member.memberLikes}</Box>
+            <Box className="text-white">{member.memberLikes}</Box>
           </Stack>
         </Stack>
       </div>
     </StyledWrapper>
   );
-}
+};
 
 const StyledWrapper = styled.div`
   .card {
     --main-color: #000;
-    --submain-color: #78858F;
+    --submain-color: #78858f;
     --bg-color: #fff;
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+      Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue",
+      sans-serif;
     position: relative;
     width: 300px;
     height: 404px;
@@ -71,15 +96,19 @@ const StyledWrapper = styled.div`
     flex-direction: column;
     align-items: center;
     border-radius: 20px;
-    background:rgb(68, 68, 68);
-    overflow:hidden;
+    background: rgb(68, 68, 68);
+    overflow: hidden;
   }
 
   .card__img {
-    height: 192px;
+    height: 210px;
     width: 100%;
-    overflow:hidden;
-    background-color:gray;
+    overflow: hidden;
+    background-color: gray;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .card__img svg {
@@ -89,15 +118,15 @@ const StyledWrapper = styled.div`
 
   .card__avatar {
     position: absolute;
-    width: 114px;
-    height: 114px;
+    width: 100px;
+    height: 100px;
     background: var(--bg-color);
     border-radius: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
     top: calc(50% - 70px);
-    overflow:hidden;
+    overflow: hidden;
   }
 
   .card__avatar img {
@@ -133,6 +162,7 @@ const StyledWrapper = styled.div`
   .card__btn-solid:hover {
     background: var(--bg-color);
     color: var(--main-color);
-  }`;
+  }
+`;
 
 export default RetailerCard;
